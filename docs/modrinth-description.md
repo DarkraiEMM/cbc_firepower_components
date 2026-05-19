@@ -1,8 +1,17 @@
 # CBC: Firepower Components
 
-CBC: Firepower Components adds compact mounts and ammunition automation blocks for Create Big Cannons.
+A small Create Big Cannons addon for people who want tighter cannon setups and less awkward ammo routing.
 
-## Requirements
+## Blocks
+
+- **Compact Cannon Mount** - a one-block side-mounted big cannon mount.
+- **Compact Autocannon Mount** - a compact mount for autocannons.
+- **Autocannon Ammo Feed** - moves loose autocannon rounds into nearby assembled compact mounts.
+- **Cannon Magazine Loader** - holds three projectile + powered cartridge pairs and feeds an assembled big cannon mount.
+
+The magazine loader is meant to behave like a simple external magazine. Automation fills projectile slots first, then the matching powered cartridges. Once all three rounds are ready, it starts feeding the cannon. Spent empty big cartridges can be extracted from the sides, back, or bottom.
+
+## Current build
 
 - Minecraft 1.21.1
 - NeoForge 21.1.x
@@ -10,19 +19,4 @@ CBC: Firepower Components adds compact mounts and ammunition automation blocks f
 - Create Big Cannons 5.11.3
 - Ritchie's Projectile Library 2.1.2
 
-## Blocks
-
-- Compact Cannon Mount: one-block side-mounted big cannon mount.
-- Compact Autocannon Mount: compact autocannon-focused mount.
-- Autocannon Ammo Feed: feeds loose autocannon ammunition into adjacent assembled compact mounts.
-- Cannon Magazine Loader: stores three projectile plus powered big-cartridge pairs, feeds adjacent assembled big cannon mounts, and outputs spent empty big cartridges from the sides, back, and bottom.
-
-## Cannon Magazine Loader Automation
-
-The loader is designed as a three-round external magazine. Mechanical input fills projectile slots first, then powered big cartridges in the matching columns. Once automation starts a cycle, new mechanical input is locked until all three ammunition pairs have been sent and spent cartridges have been removed. Manual insertion and removal remain available for testing and emergency changes.
-
-The side, back, and bottom faces expose spent empty big cartridges as a single output slot for hoppers, chutes, and funnels. The front display face and top face are deposit-only virtual input ports, so automation cannot pull unfired ammunition out of the loader.
-
-## Notes
-
-This release targets NeoForge 1.21.1. Older Forge source files may exist in the repository but are not part of this release package.
+There is also an older Forge 1.20.1 source set in the repository. The main public build is the 1.21.1 NeoForge version.

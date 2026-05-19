@@ -1,52 +1,47 @@
 # CBC: Firepower Components
 
-Compact mounts and automation-friendly ammunition feeders for Create Big Cannons.
+Small Create Big Cannons addon focused on compact cannon mounts and cleaner ammo handling.
 
-## Release Target
+## What it adds
 
-The current release candidate is:
+- **Compact Cannon Mount** - a one-block side-mounted mount for big cannons.
+- **Compact Autocannon Mount** - the same idea, but tuned for autocannons.
+- **Autocannon Ammo Feed** - feeds loose autocannon rounds into adjacent assembled compact mounts.
+- **Cannon Magazine Loader** - a three-round external magazine for big cannon mounts.
 
-- Minecraft 1.21.1
-- NeoForge 21.1.x
-- Create 6.0.x
-- Create Big Cannons 5.11.3
-- Ritchie's Projectile Library 2.1.2
+The magazine loader takes projectile + powered cartridge pairs, waits until it has three complete rounds, then feeds the mounted cannon. Spent empty big cartridges can be pulled from the sides, back, or bottom with normal item automation.
 
-The `versions/forge-1.20.1` source set is kept as a legacy development target and is not part of the current public release candidate.
+## Versions
 
-## Features
+| Minecraft | Loader | Status |
+| --- | --- | --- |
+| 1.21.1 | NeoForge 21.1.x | Current release line |
+| 1.20.1 | Forge | Older port kept in the repo |
 
-- Compact Cannon Mount: a one-block side-mounted CBC cannon mount.
-- Compact Autocannon Mount: a compact mount intended for autocannons.
-- Autocannon Ammo Feed: pushes loose autocannon ammo into adjacent assembled compact mounts.
-- Cannon Magazine Loader: stores three projectile plus big-cartridge pairs, feeds adjacent assembled big cannon mounts, and outputs spent empty big cartridges from its side, back, and bottom automation faces.
+The 1.21.1 build expects Create 6.0.x, Create Big Cannons 5.11.3, and Ritchie's Projectile Library 2.1.2.
 
-## Cannon Magazine Loader Rules
+## Download
 
-- Manual insertion and removal are always allowed.
-- Automation input accepts projectiles first, then a powered big cartridge in the matching column.
-- Automation waits for all three ammunition pairs before starting a mechanical loading cycle.
-- During a cycle, automation input is locked until all three pairs have been sent and spent empty cartridges have been removed.
-- Side, back, and bottom item handlers expose spent empty big cartridges as a single output slot for hoppers, chutes, and funnels.
-- The front display face and top face are deposit-only virtual ports, so automation cannot pull unfired ammunition out of the loader.
+Grab the latest jar from the GitHub Releases page.
 
-## Build
+For 1.21.1 NeoForge, use the file named like:
+
+```text
+cbc_firepower_components-neoforge-1.21.1-<version>+mc.1.21.1-neoforge.jar
+```
+
+## Building
+
+Build the current NeoForge version:
 
 ```powershell
 .\gradlew.bat :neoforge-1.21.1:build
 ```
 
-Output jars are written under:
+The jar will be in:
 
-```powershell
+```text
 versions\neoforge-1.21.1\build\libs
 ```
 
-## Release Checklist
-
-- Build the NeoForge 1.21.1 target.
-- Test in a clean client with only required dependencies.
-- Test on a dedicated server.
-- Verify three-round magazine loading, firing, spent-cartridge ejection, and bottom extraction.
-- Verify save/reload with partially filled and locked loaders.
-- Prepare screenshots that show the compact mounts, ammo feed, and magazine loader in use.
+The older Forge 1.20.1 source is under `versions/forge-1.20.1`.
