@@ -1,0 +1,39 @@
+{
+  "parent": "minecraft:block/block",
+  "textures": {
+    "shaft": "createbigcannons:block/cannon_mount/cannon_mount_side_shaft",
+    "axis": "create:block/axis",
+    "axis_top": "create:block/axis_top",
+    "top": "createbigcannons:block/cannon_mount/cannon_mount_top",
+    "nook": "createbigcannons:block/pole_contraption_nook",
+    "fire": "createbigcannons:block/cannon_mount/cannon_mount_firing",
+    "toggle": "createbigcannons:block/cannon_mount/cannon_mount_toggle",
+    "particle": "createbigcannons:block/cannon_mount/cannon_mount_top"
+  },
+  "elements": [
+    {
+      "from": [0, 0, 0],
+      "to": [16, 16, 16],
+      "faces": {
+        "north": { "uv": [0, 0, 16, 16], "texture": "#toggle" },
+        "east": { "uv": [0, 0, 16, 16], "texture": "#nook" },
+        "south": { "uv": [0, 0, 16, 16], "texture": "#fire" },
+        "west": { "uv": [0, 0, 16, 16], "texture": "#shaft" },
+        "up": { "uv": [0, 0, 16, 16], "texture": "#shaft" },
+        "down": { "uv": [0, 0, 16, 16], "texture": "#shaft" }
+      }
+    },
+    {
+      "from": [16, 6, 6],
+      "to": [32, 10, 10],
+      "faces": {
+        "north": { "uv": [6, 0, 10, 16], "rotation": 90, "texture": "#axis" },
+        "east": { "uv": [6, 6, 10, 10], "texture": "#axis_top" },
+        "south": { "uv": [6, 0, 10, 16], "rotation": 270, "texture": "#axis" },
+        "west": { "uv": [6, 6, 10, 10], "texture": "#axis_top" },
+        "up": { "uv": [6, 0, 10, 16], "rotation": 90, "texture": "#axis" },
+        "down": { "uv": [6, 0, 10, 16], "rotation": 270, "texture": "#axis" }
+      }
+    }
+  ]
+}

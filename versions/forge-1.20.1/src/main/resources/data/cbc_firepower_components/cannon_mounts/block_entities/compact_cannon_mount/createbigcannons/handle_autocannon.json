@@ -1,0 +1,34 @@
+{
+  "pitch_range": {
+    "maximum_depression": 0,
+    "maximum_elevation": 0
+  },
+  "cbc_firepower_components:compact_cannon_mount": {
+    "vertical_direction=down": {
+      "pitch_range": {
+        "maximum_depression": 45,
+        "maximum_elevation": 90
+      }
+    },
+    "vertical_direction=up": {
+      "pitch_range": {
+        "maximum_depression": 90,
+        "maximum_elevation": 15
+      }
+    }
+  },
+  "cbc_firepower_components:compact_autocannon_mount": {
+    "vertical_direction=down": {
+      "pitch_range": {
+        "maximum_depression": 15,
+        "maximum_elevation": 85
+      }
+    },
+    "vertical_direction=up": {
+      "pitch_range": {
+        "maximum_depression": 85,
+        "maximum_elevation": 15
+      }
+    }
+  }
+}

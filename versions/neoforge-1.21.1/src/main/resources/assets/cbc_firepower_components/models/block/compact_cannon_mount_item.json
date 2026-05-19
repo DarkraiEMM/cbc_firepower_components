@@ -1,0 +1,25 @@
+{
+  "parent": "minecraft:block/block",
+  "textures": {
+    "shaft": "createbigcannons:block/cannon_mount/cannon_mount_side_shaft",
+    "top": "createbigcannons:block/cannon_mount/cannon_mount_top",
+    "nook": "createbigcannons:block/pole_contraption_nook",
+    "fire": "createbigcannons:block/cannon_mount/cannon_mount_firing",
+    "toggle": "createbigcannons:block/cannon_mount/cannon_mount_toggle",
+    "particle": "createbigcannons:block/cannon_mount/cannon_mount_top"
+  },
+  "elements": [
+    {
+      "from": [0, 0, 0],
+      "to": [16, 16, 16],
+      "faces": {
+        "north": { "uv": [0, 0, 16, 16], "texture": "#toggle" },
+        "east": { "uv": [0, 0, 16, 16], "texture": "#nook" },
+        "south": { "uv": [0, 0, 16, 16], "texture": "#fire" },
+        "west": { "uv": [0, 0, 16, 16], "texture": "#shaft" },
+        "up": { "uv": [0, 0, 16, 16], "texture": "#shaft" },
+        "down": { "uv": [0, 0, 16, 16], "texture": "#shaft" }
+      }
+    }
+  ]
+}

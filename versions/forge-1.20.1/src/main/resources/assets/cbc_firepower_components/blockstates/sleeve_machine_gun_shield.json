@@ -1,0 +1,8 @@
+{
+  "variants": {
+    "facing=south": { "model": "cbc_firepower_components:block/sleeve_machine_gun_shield" },
+    "facing=north": { "model": "cbc_firepower_components:block/sleeve_machine_gun_shield", "y": 180 },
+    "facing=east": { "model": "cbc_firepower_components:block/sleeve_machine_gun_shield", "y": 270 },
+    "facing=west": { "model": "cbc_firepower_components:block/sleeve_machine_gun_shield", "y": 90 }
+  }
+}

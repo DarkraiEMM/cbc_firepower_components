@@ -1,0 +1,68 @@
+{
+  "multipart": [
+    {
+      "when": { "facing": "south", "vertical_direction": "down", "signals_reversed": "false" },
+      "apply": { "model": "cbc_firepower_components:block/compact_cannon_mount" }
+    },
+    {
+      "when": { "facing": "north", "vertical_direction": "down", "signals_reversed": "false" },
+      "apply": { "model": "cbc_firepower_components:block/compact_cannon_mount", "y": 180 }
+    },
+    {
+      "when": { "facing": "east", "vertical_direction": "down", "signals_reversed": "false" },
+      "apply": { "model": "cbc_firepower_components:block/compact_cannon_mount", "y": 270 }
+    },
+    {
+      "when": { "facing": "west", "vertical_direction": "down", "signals_reversed": "false" },
+      "apply": { "model": "cbc_firepower_components:block/compact_cannon_mount", "y": 90 }
+    },
+    {
+      "when": { "facing": "south", "vertical_direction": "up", "signals_reversed": "false" },
+      "apply": { "model": "cbc_firepower_components:block/compact_cannon_mount_flipped" }
+    },
+    {
+      "when": { "facing": "north", "vertical_direction": "up", "signals_reversed": "false" },
+      "apply": { "model": "cbc_firepower_components:block/compact_cannon_mount_flipped", "y": 180 }
+    },
+    {
+      "when": { "facing": "east", "vertical_direction": "up", "signals_reversed": "false" },
+      "apply": { "model": "cbc_firepower_components:block/compact_cannon_mount_flipped", "y": 270 }
+    },
+    {
+      "when": { "facing": "west", "vertical_direction": "up", "signals_reversed": "false" },
+      "apply": { "model": "cbc_firepower_components:block/compact_cannon_mount_flipped", "y": 90 }
+    },
+    {
+      "when": { "facing": "south", "vertical_direction": "down", "signals_reversed": "true" },
+      "apply": { "model": "cbc_firepower_components:block/compact_cannon_mount_signals_reversed" }
+    },
+    {
+      "when": { "facing": "north", "vertical_direction": "down", "signals_reversed": "true" },
+      "apply": { "model": "cbc_firepower_components:block/compact_cannon_mount_signals_reversed", "y": 180 }
+    },
+    {
+      "when": { "facing": "east", "vertical_direction": "down", "signals_reversed": "true" },
+      "apply": { "model": "cbc_firepower_components:block/compact_cannon_mount_signals_reversed", "y": 270 }
+    },
+    {
+      "when": { "facing": "west", "vertical_direction": "down", "signals_reversed": "true" },
+      "apply": { "model": "cbc_firepower_components:block/compact_cannon_mount_signals_reversed", "y": 90 }
+    },
+    {
+      "when": { "facing": "south", "vertical_direction": "up", "signals_reversed": "true" },
+      "apply": { "model": "cbc_firepower_components:block/compact_cannon_mount_signals_reversed_flipped" }
+    },
+    {
+      "when": { "facing": "north", "vertical_direction": "up", "signals_reversed": "true" },
+      "apply": { "model": "cbc_firepower_components:block/compact_cannon_mount_signals_reversed_flipped", "y": 180 }
+    },
+    {
+      "when": { "facing": "east", "vertical_direction": "up", "signals_reversed": "true" },
+      "apply": { "model": "cbc_firepower_components:block/compact_cannon_mount_signals_reversed_flipped", "y": 270 }
+    },
+    {
+      "when": { "facing": "west", "vertical_direction": "up", "signals_reversed": "true" },
+      "apply": { "model": "cbc_firepower_components:block/compact_cannon_mount_signals_reversed_flipped", "y": 90 }
+    }
+  ]
+}

@@ -1,0 +1,8 @@
+{
+  "variants": {
+    "facing=north": { "model": "cbc_firepower_components:block/autocannon_ammo_feed" },
+    "facing=south": { "model": "cbc_firepower_components:block/autocannon_ammo_feed", "y": 180 },
+    "facing=west": { "model": "cbc_firepower_components:block/autocannon_ammo_feed", "y": 270 },
+    "facing=east": { "model": "cbc_firepower_components:block/autocannon_ammo_feed", "y": 90 }
+  }
+}

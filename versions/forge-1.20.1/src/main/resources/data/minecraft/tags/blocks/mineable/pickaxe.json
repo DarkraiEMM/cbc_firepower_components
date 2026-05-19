@@ -1,0 +1,10 @@
+{
+  "replace": false,
+  "values": [
+    "cbc_firepower_components:compact_cannon_mount",
+    "cbc_firepower_components:compact_autocannon_mount",
+    "cbc_firepower_components:autocannon_ammo_feed",
+    "cbc_firepower_components:cannon_magazine_loader",
+    "cbc_firepower_components:sleeve_machine_gun_shield"
+  ]
+}

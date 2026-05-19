@@ -1,0 +1,9 @@
+plugins {
+    id 'base'
+}
+
+tasks.register('buildAll') {
+    group = 'build'
+    description = 'Build all supported Minecraft loader/version targets.'
+    dependsOn ':forge-1.20.1:build', ':neoforge-1.21.1:build'
+}

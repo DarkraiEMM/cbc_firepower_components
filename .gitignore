@@ -1,0 +1,28 @@
+# Gradle
+.gradle/
+**/build/
+
+# Local run directories
+run/
+runs/
+**/run/
+**/runs/
+
+# IDE files
+.idea/
+.vscode/
+*.iml
+
+# Logs and crash reports
+logs/
+crash-reports/
+*.log
+hs_err_pid*
+
+# Built artifacts
+*.jar
+!gradle/wrapper/gradle-wrapper.jar
+
+# Unused legacy root source snapshot; active source sets live under versions/.
+/src/
+/libs/

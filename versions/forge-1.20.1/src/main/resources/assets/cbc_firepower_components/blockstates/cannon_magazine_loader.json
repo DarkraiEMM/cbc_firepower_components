@@ -1,0 +1,8 @@
+{
+  "variants": {
+    "facing=north": { "model": "cbc_firepower_components:block/cannon_magazine_loader" },
+    "facing=south": { "model": "cbc_firepower_components:block/cannon_magazine_loader", "y": 180 },
+    "facing=west": { "model": "cbc_firepower_components:block/cannon_magazine_loader", "y": 270 },
+    "facing=east": { "model": "cbc_firepower_components:block/cannon_magazine_loader", "y": 90 }
+  }
+}
