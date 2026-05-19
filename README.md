@@ -15,8 +15,8 @@ The magazine loader takes projectile + powered cartridge pairs, waits until it h
 
 | Minecraft | Loader | Status |
 | --- | --- | --- |
-| 1.21.1 | NeoForge 21.1.x | Current release line |
-| 1.20.1 | Forge | Older port kept in the repo |
+| 1.21.1 | NeoForge 21.1.x | NeoForge release line |
+| 1.20.1 | Forge 47.x | Forge release line |
 
 The 1.21.1 build expects Create 6.0.x, Create Big Cannons 5.11.3, and Ritchie's Projectile Library 2.1.2.
 
@@ -44,4 +44,8 @@ The jar will be in:
 versions\neoforge-1.21.1\build\libs
 ```
 
-The older Forge 1.20.1 source is under `versions/forge-1.20.1`.
+The Forge 1.20.1 source is under `versions/forge-1.20.1` and can be built as its own release line:
+
+```powershell
+.\gradlew.bat :forge-1.20.1:build
+```
