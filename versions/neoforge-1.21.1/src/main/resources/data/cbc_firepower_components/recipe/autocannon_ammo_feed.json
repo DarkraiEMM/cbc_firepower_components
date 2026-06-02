@@ -2,20 +2,27 @@
   "type": "minecraft:crafting_shaped",
   "category": "redstone",
   "pattern": [
-    " I ",
-    "IBI",
-    " I "
+    " H ",
+    "IAI",
+    " B "
   ],
   "key": {
-    "I": {
-      "item": "create:industrial_iron_block"
+    "A": {
+      "item": "createbigcannons:autocannon_ammo_container"
     },
     "B": {
       "item": "create:brass_casing"
+    },
+    "H": {
+      "item": "minecraft:hopper"
+    },
+    "I": {
+      "item": "create:industrial_iron_block"
     }
   },
   "result": {
     "id": "cbc_firepower_components:autocannon_ammo_feed",
     "count": 1
-  }
+  },
+  "show_notification": true
 }

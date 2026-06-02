@@ -14,14 +14,14 @@
       "item": "create:brass_casing"
     },
     "H": {
-      "item": "minecraft:hopper"
+      "item": "create:andesite_funnel"
     },
     "I": {
       "item": "create:industrial_iron_block"
     }
   },
   "result": {
-    "item": "cbc_firepower_components:autocannon_ammo_feed",
+    "id": "cbc_firepower_components:autocannon_ammo_feed",
     "count": 1
   },
   "show_notification": true

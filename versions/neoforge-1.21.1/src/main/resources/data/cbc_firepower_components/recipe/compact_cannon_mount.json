@@ -2,26 +2,29 @@
   "type": "minecraft:crafting_shaped",
   "category": "misc",
   "pattern": [
-    "ISI",
-    "SBS",
+    "PSP",
+    "CBC",
     "GSG"
   ],
   "key": {
     "B": {
       "item": "create:brass_casing"
     },
+    "C": {
+      "item": "create:cogwheel"
+    },
     "G": {
       "tag": "createbigcannons:gunpowder"
     },
-    "I": {
-      "tag": "forge:plates/iron"
+    "P": {
+      "tag": "c:plates/iron"
     },
     "S": {
       "item": "create:shaft"
     }
   },
   "result": {
-    "id": "cbc_firepower_components:compact_autocannon_mount",
+    "id": "cbc_firepower_components:compact_cannon_mount",
     "count": 1
   },
   "show_notification": true

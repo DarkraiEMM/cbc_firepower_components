@@ -1,5 +1,13 @@
 # Changelog
 
+## 0.1.7
+
+- Added survival crafting recipes for the compact mounts, ammo feed, and magazine loader.
+- Added hopper and andesite funnel recipes for the Autocannon Ammo Feed.
+- Fixed NeoForge 1.21.1 recipe loading by moving recipe data to the 1.21 `recipe` directory.
+- Updated NeoForge iron plate recipe tags to the Create 6 `c:plates/iron` tag.
+- Added Chinese and English usage guides with release images.
+
 ## 0.1.6
 
 - Reworked the Cannon Magazine Loader automation interface into virtual ports.

@@ -24,7 +24,7 @@
     }
   },
   "result": {
-    "item": "cbc_firepower_components:cannon_magazine_loader",
+    "id": "cbc_firepower_components:cannon_magazine_loader",
     "count": 1
   },
   "show_notification": true

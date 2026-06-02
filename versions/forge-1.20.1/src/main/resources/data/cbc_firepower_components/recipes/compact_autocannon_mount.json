@@ -2,18 +2,24 @@
   "type": "minecraft:crafting_shaped",
   "category": "misc",
   "pattern": [
-    "ISI",
-    "SBS",
-    "GSG"
+    "PSP",
+    "CAC",
+    "GBG"
   ],
   "key": {
+    "A": {
+      "item": "create:andesite_casing"
+    },
     "B": {
-      "item": "create:brass_casing"
+      "item": "create:brass_sheet"
+    },
+    "C": {
+      "item": "create:cogwheel"
     },
     "G": {
       "tag": "createbigcannons:gunpowder"
     },
-    "I": {
+    "P": {
       "tag": "forge:plates/iron"
     },
     "S": {
