@@ -4,10 +4,12 @@ import static net.minecraft.ChatFormatting.GRAY;
 import static rbasamoyai.createbigcannons.cannon_control.cannon_mount.CannonMountBlockEntity.cannonBlockOutsideOfWorld;
 
 import java.util.List;
+import java.util.Locale;
 
 import javax.annotation.Nullable;
 
 import com.cbcfirepowercomponents.FirepowerComponents;
+import com.cbcfirepowercomponents.content.cannon_limiter.CannonLimiterSettings;
 import com.cbcfirepowercomponents.registry.MTBlockEntities;
 import com.simibubi.create.AllSoundEvents;
 import com.simibubi.create.api.equipment.goggles.IHaveGoggleInformation;
@@ -58,9 +60,26 @@ import rbasamoyai.createbigcannons.munitions.autocannon.ammo_container.Autocanno
 public class CompactCannonMountBlockEntity extends SmartBlockEntity implements IDisplayAssemblyExceptions,
 	ControlPitchContraption.Block, HasMultipleKineticInterfaces, IHaveGoggleInformation {
 
+	public enum LimitType {
+		PITCH_MIN,
+		PITCH_MAX,
+		YAW_MIN,
+		YAW_MAX
+	}
+
 	private AssemblyException lastException = null;
 	protected PitchOrientedContraptionEntity mountedContraption;
 	private boolean running;
+	private boolean reassemble;
+	private boolean hasPitchMin;
+	private boolean hasPitchMax;
+	private boolean hasYawMin;
+	private boolean hasYawMax;
+	private float pitchMin;
+	private float pitchMax;
+	private float yawMin;
+	private float yawMax;
+	private ItemStack cannonLimiter = ItemStack.EMPTY;
 
 	private float cannonYaw;
 	private float cannonPitch;
@@ -110,6 +129,10 @@ public class CompactCannonMountBlockEntity extends SmartBlockEntity implements I
 	@Override
 	public void tick() {
 		super.tick();
+		if (this.reassemble && this.getLevel() instanceof ServerLevel serverLevel) {
+			this.getBlockState().tick(serverLevel, this.worldPosition, serverLevel.getRandom());
+			this.reassemble = false;
+		}
 		this.pitchInterface.tick();
 		this.yawInterface.tick();
 
@@ -153,9 +176,9 @@ public class CompactCannonMountBlockEntity extends SmartBlockEntity implements I
 				this.pitchInterface.setSequencedAngleLimit(Math.max(0, pitchAngleLimit - Math.abs(pitchSpeed)));
 			}
 
-			this.cannonYaw = (this.cannonYaw + yawSpeed) % 360.0f;
+			this.cannonYaw = this.clampYawToLimits(this.cannonYaw + yawSpeed);
 			float newPitch = this.cannonPitch + pitchSpeed * sign;
-			this.cannonPitch = Mth.clamp(newPitch % 360.0f, -this.getMaxDepress(), this.getMaxElevate());
+			this.cannonPitch = this.clampPitchToLimits(Mth.clamp(newPitch % 360.0f, -this.getMaxDepress(), this.getMaxElevate()));
 		}
 		this.applyRotation();
 	}
@@ -183,8 +206,8 @@ public class CompactCannonMountBlockEntity extends SmartBlockEntity implements I
 		if (!this.mountedContraption.canBeTurnedByController(this)) {
 			float minPitch = -this.mountedContraption.maximumDepression();
 			float maxPitch = this.mountedContraption.maximumElevation();
-			this.cannonPitch = Mth.clamp(this.mountedContraption.pitch, minPitch, maxPitch) * sign;
-			this.cannonYaw = this.mountedContraption.yaw;
+			this.cannonPitch = this.clampPitchToLimits(Mth.clamp(this.mountedContraption.pitch, minPitch, maxPitch) * sign);
+			this.cannonYaw = this.clampYawToLimits(this.mountedContraption.yaw);
 		} else {
 			this.mountedContraption.pitch = this.cannonPitch * sign;
 			this.mountedContraption.yaw = this.cannonYaw;
@@ -192,7 +215,7 @@ public class CompactCannonMountBlockEntity extends SmartBlockEntity implements I
 	}
 
 	public void onRedstoneUpdate(boolean assemblyPowered, boolean prevAssemblyPowered, boolean firePowered, boolean prevFirePowered, int firePower) {
-		if (assemblyPowered != prevAssemblyPowered) {
+		if (assemblyPowered != prevAssemblyPowered || this.reassemble) {
 			this.getLevel().setBlock(this.worldPosition, this.getBlockState().setValue(CompactCannonMountBlock.ASSEMBLY_POWERED, assemblyPowered), 3);
 			if (assemblyPowered) {
 				try {
@@ -237,7 +260,7 @@ public class CompactCannonMountBlockEntity extends SmartBlockEntity implements I
 		double pitchLimit = this.pitchInterface.getSequencedAngleLimit();
 		if (pitchLimit >= 0)
 			speed = (float) Mth.clamp(speed, -pitchLimit, pitchLimit);
-		float pitchOffset = Mth.lerp(partialTicks, this.cannonPitch, this.cannonPitch + speed * horizontalSign);
+		float pitchOffset = Mth.lerp(partialTicks, this.cannonPitch, this.clampPitchToLimits(this.cannonPitch + speed * horizontalSign));
 		if (this.mountedContraption != null) {
 			float minPitch = -this.getMaxDepress();
 			float maxPitch = this.getMaxElevate();
@@ -263,11 +286,169 @@ public class CompactCannonMountBlockEntity extends SmartBlockEntity implements I
 		double yawLimit = this.yawInterface.getSequencedAngleLimit();
 		if (yawLimit >= 0)
 			speed = (float) Mth.clamp(speed, -yawLimit, yawLimit);
-		return Mth.lerp(partialTicks, this.cannonYaw, this.cannonYaw + speed);
+		return Mth.lerp(partialTicks, this.cannonYaw, this.clampYawToLimits(this.cannonYaw + speed));
 	}
 
 	public float getDisplayPitch() {
 		return Math.abs(this.cannonPitch) < 1e-1f ? 0 : this.cannonPitch;
+	}
+
+	public boolean hasLimiter() {
+		return !this.cannonLimiter.isEmpty() || this.hasAnyLimit();
+	}
+
+	public ItemStack getLimiterStack() {
+		return this.cannonLimiter;
+	}
+
+	public void installLimiter(ItemStack stack) {
+		this.cannonLimiter = stack.copyWithCount(1);
+		this.applyLimiterSettings(CannonLimiterSettings.get(this.cannonLimiter));
+		this.setChanged();
+		this.sendData();
+	}
+
+	public ItemStack removeLimiter() {
+		if (!this.hasLimiter())
+			return ItemStack.EMPTY;
+		ItemStack removed = this.cannonLimiter.copy();
+		this.cannonLimiter = ItemStack.EMPTY;
+		this.clearAllLimits();
+		this.setChanged();
+		this.sendData();
+		return removed;
+	}
+
+	private void applyLimiterSettings(CannonLimiterSettings settings) {
+		settings.normalize();
+		this.hasPitchMin = settings.hasPitchMin;
+		this.pitchMin = settings.pitchMin;
+		this.hasPitchMax = settings.hasPitchMax;
+		this.pitchMax = settings.pitchMax;
+		this.hasYawMin = settings.hasYawMin;
+		this.yawMin = settings.yawMin;
+		this.hasYawMax = settings.hasYawMax;
+		this.yawMax = settings.yawMax;
+	}
+
+	private void clearAllLimits() {
+		this.hasPitchMin = false;
+		this.hasPitchMax = false;
+		this.hasYawMin = false;
+		this.hasYawMax = false;
+	}
+
+	private void normalizeLimiterFields() {
+		CannonLimiterSettings settings = new CannonLimiterSettings();
+		settings.hasPitchMin = this.hasPitchMin;
+		settings.pitchMin = this.pitchMin;
+		settings.hasPitchMax = this.hasPitchMax;
+		settings.pitchMax = this.pitchMax;
+		settings.hasYawMin = this.hasYawMin;
+		settings.yawMin = this.yawMin;
+		settings.hasYawMax = this.hasYawMax;
+		settings.yawMax = this.yawMax;
+		this.applyLimiterSettings(settings);
+	}
+
+	public float setLimit(LimitType type) {
+		float value = this.getCurrentLimitValue(type);
+		switch (type) {
+			case PITCH_MIN -> {
+				this.pitchMin = value;
+				this.hasPitchMin = true;
+			}
+			case PITCH_MAX -> {
+				this.pitchMax = value;
+				this.hasPitchMax = true;
+			}
+			case YAW_MIN -> {
+				this.yawMin = value;
+				this.hasYawMin = true;
+			}
+			case YAW_MAX -> {
+				this.yawMax = value;
+				this.hasYawMax = true;
+			}
+		}
+		this.setChanged();
+		this.sendData();
+		return value;
+	}
+
+	public void clearLimit(LimitType type) {
+		switch (type) {
+			case PITCH_MIN -> this.hasPitchMin = false;
+			case PITCH_MAX -> this.hasPitchMax = false;
+			case YAW_MIN -> this.hasYawMin = false;
+			case YAW_MAX -> this.hasYawMax = false;
+		}
+		this.setChanged();
+		this.sendData();
+	}
+
+	public float getCurrentLimitValue(LimitType type) {
+		return switch (type) {
+			case PITCH_MIN, PITCH_MAX -> this.cannonPitch;
+			case YAW_MIN, YAW_MAX -> this.getYawDelta();
+		};
+	}
+
+	public void setLimitedPitch(float pitch) {
+		this.cannonPitch = this.clampPitchToLimits(pitch);
+		this.applyRotation();
+		this.setChanged();
+		this.sendData();
+	}
+
+	public void setLimitedYaw(float yaw) {
+		this.cannonYaw = this.clampYawToLimits(yaw);
+		this.applyRotation();
+		this.setChanged();
+		this.sendData();
+	}
+
+	private float clampPitchToLimits(float pitch) {
+		float result = pitch;
+		if (this.hasPitchMin && this.hasPitchMax) {
+			float min = Math.min(this.pitchMin, this.pitchMax);
+			float max = Math.max(this.pitchMin, this.pitchMax);
+			result = Mth.clamp(result, min, max);
+		} else {
+			if (this.hasPitchMin)
+				result = Math.max(result, this.pitchMin);
+			if (this.hasPitchMax)
+				result = Math.min(result, this.pitchMax);
+		}
+		return result;
+	}
+
+	private float clampYawToLimits(float yaw) {
+		if (!this.hasYawMin && !this.hasYawMax)
+			return yaw;
+		float neutralYaw = this.getNeutralYaw();
+		float delta = Mth.wrapDegrees(yaw - neutralYaw);
+		if (this.hasYawMin && this.hasYawMax) {
+			float min = Math.min(this.yawMin, this.yawMax);
+			float max = Math.max(this.yawMin, this.yawMax);
+			delta = Mth.clamp(delta, min, max);
+		} else {
+			if (this.hasYawMin)
+				delta = Math.max(delta, this.yawMin);
+			if (this.hasYawMax)
+				delta = Math.min(delta, this.yawMax);
+		}
+		return neutralYaw + delta;
+	}
+
+	private float getYawDelta() {
+		return Mth.wrapDegrees(this.cannonYaw - this.getNeutralYaw());
+	}
+
+	private float getNeutralYaw() {
+		if (this.mountedContraption != null)
+			return this.getContraptionDirection().toYRot();
+		return this.getBlockState().getValue(CompactCannonMountBlock.HORIZONTAL_FACING).toYRot();
 	}
 
 	public Direction getContraptionDirection() {
@@ -382,6 +563,7 @@ public class CompactCannonMountBlockEntity extends SmartBlockEntity implements I
 	@Override
 	protected void write(CompoundTag tag, HolderLookup.Provider registries, boolean clientPacket) {
 		super.write(tag, registries, clientPacket);
+		this.normalizeLimiterFields();
 		tag.putBoolean("Running", this.running);
 		tag.putFloat("CannonYaw", this.cannonYaw);
 		tag.putFloat("CannonPitch", this.cannonPitch);
@@ -394,6 +576,19 @@ public class CompactCannonMountBlockEntity extends SmartBlockEntity implements I
 		CompoundTag yawTag = new CompoundTag();
 		this.yawInterface.saveAdditional(yawTag, registries);
 		tag.put("YawInterface", yawTag);
+
+		if (this.reassemble)
+			tag.putBoolean("TryReassembling", true);
+		if (this.hasPitchMin)
+			tag.putFloat("PitchMin", this.pitchMin);
+		if (this.hasPitchMax)
+			tag.putFloat("PitchMax", this.pitchMax);
+		if (this.hasYawMin)
+			tag.putFloat("YawMin", this.yawMin);
+		if (this.hasYawMax)
+			tag.putFloat("YawMax", this.yawMax);
+		if (!this.cannonLimiter.isEmpty())
+			tag.put("CannonLimiter", this.cannonLimiter.saveOptional(registries));
 	}
 
 	@Override
@@ -412,6 +607,19 @@ public class CompactCannonMountBlockEntity extends SmartBlockEntity implements I
 			this.pitchInterface.loadWithComponents(tag.getCompound("PitchInterface"), registries);
 			this.yawInterface.loadWithComponents(tag.getCompound("YawInterface"), registries);
 		}
+		this.reassemble = tag.contains("TryReassembling");
+		this.hasPitchMin = tag.contains("PitchMin");
+		this.pitchMin = this.hasPitchMin ? tag.getFloat("PitchMin") : 0;
+		this.hasPitchMax = tag.contains("PitchMax");
+		this.pitchMax = this.hasPitchMax ? tag.getFloat("PitchMax") : 0;
+		this.hasYawMin = tag.contains("YawMin");
+		this.yawMin = this.hasYawMin ? tag.getFloat("YawMin") : 0;
+		this.hasYawMax = tag.contains("YawMax");
+		this.yawMax = this.hasYawMax ? tag.getFloat("YawMax") : 0;
+		this.cannonLimiter = tag.contains("CannonLimiter") ? ItemStack.parseOptional(registries, tag.getCompound("CannonLimiter")) : ItemStack.EMPTY;
+		if (!this.cannonLimiter.isEmpty())
+			this.applyLimiterSettings(CannonLimiterSettings.get(this.cannonLimiter));
+		this.normalizeLimiterFields();
 
 		if (!clientPacket)
 			return;
@@ -459,6 +667,10 @@ public class CompactCannonMountBlockEntity extends SmartBlockEntity implements I
 	}
 
 	@Override public BlockPos getControllerBlockPos() { return this.worldPosition; }
+
+	public void markForReassembly() {
+		this.reassemble = true;
+	}
 
 	@Override
 	public Vec3 getDismountPositionForContraption(PitchOrientedContraptionEntity poce) {
@@ -637,7 +849,38 @@ public class CompactCannonMountBlockEntity extends SmartBlockEntity implements I
 			}
 		}
 		ExtendsCannonMount.addCannonInfoToTooltip(tooltip, this.mountedContraption);
+		this.addLimiterTooltip(tooltip);
 		return true;
+	}
+
+	private void addLimiterTooltip(List<Component> tooltip) {
+		if (!this.hasAnyLimit()) {
+			tooltip.add(Component.translatable("block.cbc_firepower_components.compact_cannon_mount.limiter.none")
+				.withStyle(ChatFormatting.DARK_GRAY));
+			return;
+		}
+		tooltip.add(Component.translatable("block.cbc_firepower_components.compact_cannon_mount.limiter.header")
+			.withStyle(ChatFormatting.GRAY));
+		tooltip.add(Component.translatable("block.cbc_firepower_components.compact_cannon_mount.limiter.pitch_min",
+				formatLimit(this.hasPitchMin, this.pitchMin))
+			.withStyle(ChatFormatting.GOLD));
+		tooltip.add(Component.translatable("block.cbc_firepower_components.compact_cannon_mount.limiter.pitch_max",
+				formatLimit(this.hasPitchMax, this.pitchMax))
+			.withStyle(ChatFormatting.GOLD));
+		tooltip.add(Component.translatable("block.cbc_firepower_components.compact_cannon_mount.limiter.yaw_min",
+				formatLimit(this.hasYawMin, this.yawMin))
+			.withStyle(ChatFormatting.YELLOW));
+		tooltip.add(Component.translatable("block.cbc_firepower_components.compact_cannon_mount.limiter.yaw_max",
+				formatLimit(this.hasYawMax, this.yawMax))
+			.withStyle(ChatFormatting.YELLOW));
+	}
+
+	private boolean hasAnyLimit() {
+		return this.hasPitchMin || this.hasPitchMax || this.hasYawMin || this.hasYawMax;
+	}
+
+	private static String formatLimit(boolean hasLimit, float value) {
+		return hasLimit ? String.format(Locale.ROOT, "%.1f", value) : "-";
 	}
 
 	@Nullable

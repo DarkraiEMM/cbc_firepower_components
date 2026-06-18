@@ -1,5 +1,29 @@
 # Changelog
 
+## 0.2.0
+
+- Updated the NeoForge 1.21.1 target to Create Big Cannons 5.11.6 for the newer Aeronautics/Simulated compatibility line.
+- Added fuze support to the Cannon Magazine Loader so fuzes can be applied to stored fuzed projectiles before loading.
+- Prevented the Cannon Magazine Loader from loading fuzed projectiles before a fuze is attached.
+- Updated README, Modrinth description, and usage guides for the fuze loading workflow and CBC 5.11.6 dependency.
+- Kept the compact cannon mount reassembly compatibility fix for newer Create Big Cannons versions.
+- Kept the 1.20.1 Forge target on the same mod version for the matching release package.
+
+## 0.1.8
+
+- Added the Cannon Limiter tool for compact cannon mounts and compact autocannon mounts.
+- Added a Cannon Limiter configuration screen with enable toggles, sliders, and numeric angle fields.
+- Changed the limiter into an installable template item: configure it first, then right-click a compact mount to install it.
+- Added mount-side limiter storage so the installed limiter and pitch/yaw limits persist after save/reload.
+- Added sneak-right-click removal for installed limiters, which also clears the mount limits.
+- Added an installed limiter visual marker rendered on compact mounts.
+- Clamped compact mount mechanical rotation against saved pitch and yaw limits.
+- Added goggle tooltip information for the current limiter state.
+- Added survival crafting recipes, item model, creative tab entry, and Chinese/English localization for the Cannon Limiter.
+- Fixed a compact cannon mount crash when Sable/Simulated swivel bearings disassemble sublevels.
+- Added delayed reassembly handling for newer Create Big Cannons versions.
+- Kept compatibility with the 5.11.x Create Big Cannons release line.
+
 ## 0.1.7
 
 - Added survival crafting recipes for the compact mounts, ammo feed, and magazine loader.

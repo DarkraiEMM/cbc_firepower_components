@@ -5,6 +5,7 @@ import com.cbcfirepowercomponents.registry.MTBlocks;
 import com.cbcfirepowercomponents.registry.MTCreativeTabs;
 import com.cbcfirepowercomponents.registry.MTItems;
 import com.cbcfirepowercomponents.registry.MTArmInteractionPointTypes;
+import com.cbcfirepowercomponents.network.MTNetwork;
 
 import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.fml.common.Mod;
@@ -25,6 +26,7 @@ public class FirepowerComponents {
 		MTBlockEntities.register(modBus);
 		MTCreativeTabs.register(modBus);
 		MTArmInteractionPointTypes.init();
+		MTNetwork.register();
 		modBus.addListener(this::commonSetup);
 	}
 

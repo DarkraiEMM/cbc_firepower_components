@@ -9,6 +9,7 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.ListTag;
+import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.entity.BlockEntity;
@@ -17,8 +18,10 @@ import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.common.capabilities.ForgeCapabilities;
 import net.minecraftforge.common.util.LazyOptional;
 import net.minecraftforge.items.IItemHandler;
+import rbasamoyai.createbigcannons.munitions.big_cannon.FuzedProjectileBlock;
 import rbasamoyai.createbigcannons.munitions.big_cannon.ProjectileBlockItem;
 import rbasamoyai.createbigcannons.munitions.big_cannon.propellant.BigCartridgeBlockItem;
+import rbasamoyai.createbigcannons.munitions.fuzes.FuzeItem;
 
 public class CannonMagazineLoaderBlockEntity extends BlockEntity {
 	private static final int PROJECTILE_SLOTS = 3;
@@ -61,6 +64,8 @@ public class CannonMagazineLoaderBlockEntity extends BlockEntity {
 		for (int slot = 0; slot < SLOT_COUNT; ++slot) {
 			ItemStack stored = this.items[slot];
 			if (stored.isEmpty())
+				continue;
+			if (canApplyFuze(stored))
 				continue;
 			ItemStack remainder = mount.insertCannonMagazineAmmo(stored, false);
 			if (ItemStack.matches(remainder, stored) && remainder.getCount() == stored.getCount())
@@ -114,12 +119,60 @@ public class CannonMagazineLoaderBlockEntity extends BlockEntity {
 			|| isCartridgeSlot(slot) && stack.getItem() instanceof BigCartridgeBlockItem;
 	}
 
+	private ItemStack insertFuze(ItemStack stack, boolean simulate) {
+		if (!isFuze(stack))
+			return stack;
+		for (int slot = 0; slot < PROJECTILE_SLOTS; ++slot) {
+			ItemStack projectile = this.items[slot];
+			if (!canApplyFuze(projectile))
+				continue;
+			ItemStack remainder = stack.copy();
+			remainder.shrink(1);
+			if (!simulate) {
+				ItemStack fusedProjectile = projectile.copy();
+				applyFuze(fusedProjectile, stack);
+				this.items[slot] = fusedProjectile;
+				this.setChanged();
+			}
+			return remainder;
+		}
+		return stack;
+	}
+
+	private boolean canInsertFuze(ItemStack stack) {
+		if (!isFuze(stack))
+			return false;
+		for (int slot = 0; slot < PROJECTILE_SLOTS; ++slot)
+			if (canApplyFuze(this.items[slot]))
+				return true;
+		return false;
+	}
+
+	private static boolean isFuze(ItemStack stack) {
+		return stack.getItem() instanceof FuzeItem;
+	}
+
+	private static boolean canApplyFuze(ItemStack projectile) {
+		return projectile.getItem() instanceof BlockItem blockItem
+			&& blockItem.getBlock() instanceof FuzedProjectileBlock
+			&& FuzedProjectileBlock.getFuzeFromItemStack(projectile).isEmpty();
+	}
+
+	private static void applyFuze(ItemStack projectile, ItemStack fuze) {
+		ItemStack storedFuze = fuze.copy();
+		storedFuze.setCount(1);
+		CompoundTag blockEntityTag = projectile.getOrCreateTagElement("BlockEntityTag");
+		blockEntityTag.put("Fuze", storedFuze.save(new CompoundTag()));
+	}
+
 	private class MagazineItemHandler implements IItemHandler {
 		@Override public int getSlots() { return SLOT_COUNT; }
 		@Override public ItemStack getStackInSlot(int slot) { return slot >= 0 && slot < SLOT_COUNT ? CannonMagazineLoaderBlockEntity.this.items[slot] : ItemStack.EMPTY; }
 
 		@Override
 		public ItemStack insertItem(int slot, ItemStack stack, boolean simulate) {
+			if (isFuze(stack))
+				return CannonMagazineLoaderBlockEntity.this.insertFuze(stack, simulate);
 			if (slot < 0 || slot >= SLOT_COUNT || stack.isEmpty() || !isValidForSlot(slot, stack))
 				return stack;
 			ItemStack stored = CannonMagazineLoaderBlockEntity.this.items[slot];
@@ -148,6 +201,8 @@ public class CannonMagazineLoaderBlockEntity extends BlockEntity {
 		}
 
 		@Override public int getSlotLimit(int slot) { return 1; }
-		@Override public boolean isItemValid(int slot, ItemStack stack) { return isValidForSlot(slot, stack); }
+		@Override public boolean isItemValid(int slot, ItemStack stack) {
+			return isFuze(stack) ? CannonMagazineLoaderBlockEntity.this.canInsertFuze(stack) : isValidForSlot(slot, stack);
+		}
 	}
 }

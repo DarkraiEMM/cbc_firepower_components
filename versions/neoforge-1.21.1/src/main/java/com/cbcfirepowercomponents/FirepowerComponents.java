@@ -6,6 +6,7 @@ import com.cbcfirepowercomponents.registry.MTCreativeTabs;
 import com.cbcfirepowercomponents.registry.MTItems;
 import com.cbcfirepowercomponents.registry.MTCapabilities;
 import com.cbcfirepowercomponents.registry.MTArmInteractionPointTypes;
+import com.cbcfirepowercomponents.network.MTNetwork;
 
 import net.neoforged.bus.api.IEventBus;
 import net.neoforged.fml.common.Mod;
@@ -25,6 +26,7 @@ public class FirepowerComponents {
 		MTCreativeTabs.register(modBus);
 		MTArmInteractionPointTypes.register(modBus);
 		modBus.addListener(MTCapabilities::register);
+		modBus.addListener(MTNetwork::register);
 		modBus.addListener(this::commonSetup);
 	}
 

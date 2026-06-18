@@ -21,6 +21,7 @@ Required mods:
 - Compact Autocannon Mount: a lighter mount made specifically for autocannons.
 - Autocannon Ammo Feed: feeds loose autocannon rounds into adjacent assembled compact mounts.
 - Cannon Magazine Loader: a three-round external magazine for assembled big cannon mounts.
+- Cannon Limiter: a configurable item that installs pitch and yaw limits onto compact mounts.
 
 ## Guide Images
 
@@ -45,6 +46,39 @@ Both compact mounts follow the same basic control language as Create Big Cannons
 - Wrench the top or bottom face: the Compact Cannon Mount rotates horizontally; the Compact Autocannon Mount switches its autocannon mounting face.
 
 After assembly, item input into the mount is forwarded to the mounted cannon. Hoppers, funnels, mechanical arms, and similar item automation can interact with the mount or with this mod's loading blocks.
+
+## Cannon Limiter
+
+The Cannon Limiter is a configurable setup item for both Compact Cannon Mounts and Compact Autocannon Mounts. It does not occupy any firing, assembly, or kinetic input face. When installed, a small limiter model is rendered on the mount so you can see that the mount is limited.
+
+Configurable rows:
+
+- Pitch lower limit
+- Pitch upper limit
+- Left yaw limit
+- Right yaw limit
+
+Use:
+
+1. Right-click air with the Cannon Limiter to open its configuration screen.
+2. Enable the rows you want and set each angle with the slider or number box.
+3. Right-click a compact mount with the configured limiter to install it.
+4. Sneak-right-click the mount with a limiter item to remove the installed limiter and clear the mount limits.
+
+Angle notes:
+
+- Pitch limits use the mount's local pitch angle.
+- Yaw limits use the signed yaw offset from the mount's neutral forward direction, not the absolute world direction.
+- If no limits are set, the mount behaves the same as an unrestricted compact mount.
+- The limiter works on both compact mount types; the Compact Autocannon Mount still accepts autocannons only.
+- Goggles show the current limiter state on the mount.
+
+Typical setup:
+
+1. Configure one Cannon Limiter with the safe pitch and yaw range for the turret.
+2. Install it into the compact mount.
+3. Run the kinetic controls normally; the mount clamps movement at the installed limits.
+4. Sneak-right-click the mount to remove the limiter if you need to reconfigure or cancel the limits.
 
 ## Compact Cannon Mount
 
@@ -162,12 +196,14 @@ The Cannon Magazine Loader is a three-round external magazine for big cannons. P
 Accepted input:
 
 - Big cannon projectiles
+- Big cannon fuzes, if a stored projectile can accept one
 - Powered big cartridges
 
 Not accepted:
 
 - Loose autocannon ammunition
 - Autocannon ammo containers
+- Fuzes when no compatible unfuzed projectile is stored
 - Empty big cartridges as propellant
 - Normal items
 
@@ -176,19 +212,23 @@ The important slot rule:
 - Upper three slots: projectiles.
 - Lower three slots: powered big cartridges.
 - Each column is one round: projectile above, matching cartridge below.
+- Fuzed projectiles must receive a fuze before that column is considered ready.
 - The loader feeds each round as projectile first, then the matching powered cartridge.
 
 Manual use:
 
 1. Right-click with a big cannon projectile to place it into the upper row.
-2. Right-click with a powered big cartridge to place it into the lower row.
-3. Empty-hand right-click a visible slot to remove that item.
+2. If that projectile needs a fuze, right-click with a fuze to attach it to the stored projectile.
+3. Right-click with a powered big cartridge to place it into the lower row.
+4. Empty-hand right-click a visible slot to remove that item.
 
 Automated input:
 
 - Automated projectile input fills empty upper-row slots first.
+- Automated fuze input attaches the fuze to the first stored fuzed projectile that does not already have one.
 - Automated powered-cartridge input only goes under a column that already has a projectile.
 - Once automation starts filling the loader, it waits until all three columns are complete before starting the loading cycle.
+- For fuzed projectiles, "complete" means projectile plus fuze plus powered cartridge. Non-fuzed projectiles only need the projectile and powered cartridge.
 - Manual insertion and removal are always allowed.
 
 Connection to mounts:
@@ -196,6 +236,7 @@ Connection to mounts:
 - The loader must be placed next to an assembled big cannon mount.
 - It can feed adjacent compact cannon mounts or Create Big Cannons big cannon mounts.
 - It loads projectile first, then the matching powered cartridge.
+- Fuzes are stored on the cached projectile item before loading; they are not inserted into the cannon as a separate loading step.
 
 Empty cartridge output:
 
@@ -239,6 +280,14 @@ Brass Casing          Cannon Loader  Brass Casing
 Industrial Iron Block Redstone       Industrial Iron Block
 ```
 
+Cannon Limiter:
+
+```text
+Empty        Shaft           Empty
+Brass Sheet  Redstone        Brass Sheet
+Empty        Andesite Alloy  Empty
+```
+
 ## Troubleshooting
 
 The mount does not assemble:
@@ -252,6 +301,7 @@ The mount does not rotate:
 - Check that yaw and pitch are connected to the correct shaft inputs.
 - Check kinetic speed and direction.
 - Check whether the assembled cannon is blocked or stalled.
+- Check the Cannon Limiter goggle tooltip; a saved pitch or yaw limit may be stopping the mount.
 
 The Autocannon Ammo Feed does not feed:
 
@@ -263,4 +313,5 @@ The Cannon Magazine Loader does not start:
 
 - With automated input, the loader waits for all three columns to be complete.
 - Make sure each column has a projectile and a matching powered big cartridge.
+- If the projectile accepts a fuze, make sure a fuze has been inserted after the projectile.
 - Make sure the loader is adjacent to an assembled big cannon mount.

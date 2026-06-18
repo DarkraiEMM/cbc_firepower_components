@@ -1,5 +1,7 @@
 package com.cbcfirepowercomponents.content.cannon_magazine_loader;
 
+import java.util.List;
+
 import javax.annotation.Nullable;
 
 import com.cbcfirepowercomponents.content.compact_cannon_mount.CompactCannonMountBlockEntity;
@@ -16,6 +18,7 @@ import net.minecraft.network.protocol.game.ClientGamePacketListener;
 import net.minecraft.network.protocol.game.ClientboundBlockEntityDataPacket;
 import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.component.ItemContainerContents;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.entity.BlockEntity;
@@ -29,12 +32,15 @@ import rbasamoyai.createbigcannons.cannons.big_cannons.BigCannonBehavior;
 import rbasamoyai.createbigcannons.cannons.big_cannons.BigCannonBlock;
 import rbasamoyai.createbigcannons.cannons.big_cannons.IBigCannonBlockEntity;
 import rbasamoyai.createbigcannons.cannons.big_cannons.breeches.quickfiring_breech.CannonMountPoint;
+import rbasamoyai.createbigcannons.index.CBCDataComponents;
 import rbasamoyai.createbigcannons.munitions.big_cannon.BigCannonMunitionBlock;
+import rbasamoyai.createbigcannons.munitions.big_cannon.FuzedProjectileBlock;
 import rbasamoyai.createbigcannons.munitions.big_cannon.ProjectileBlock;
 import rbasamoyai.createbigcannons.munitions.big_cannon.ProjectileBlockItem;
 import rbasamoyai.createbigcannons.munitions.big_cannon.propellant.BigCannonPropellantBlock;
 import rbasamoyai.createbigcannons.munitions.big_cannon.propellant.BigCartridgeBlock;
 import rbasamoyai.createbigcannons.munitions.big_cannon.propellant.BigCartridgeBlockItem;
+import rbasamoyai.createbigcannons.munitions.fuzes.FuzeItem;
 
 public class CannonMagazineLoaderBlockEntity extends BlockEntity {
 	public static final int GROUP_COUNT = 3;
@@ -79,6 +85,8 @@ public class CannonMagazineLoaderBlockEntity extends BlockEntity {
 	public ItemStack insertManual(ItemStack stack) {
 		if (stack.isEmpty())
 			return stack;
+		if (isFuze(stack))
+			return this.insertFuze(stack, false);
 		int start = isProjectile(stack) ? 0 : isPropellant(stack) ? PROJECTILE_SLOTS : -1;
 		int end = isProjectile(stack) ? PROJECTILE_SLOTS : isPropellant(stack) ? SLOT_COUNT : -1;
 		if (start < 0)
@@ -92,6 +100,14 @@ public class CannonMagazineLoaderBlockEntity extends BlockEntity {
 	}
 
 	public ItemStack insertAutomation(ItemStack stack, boolean simulate) {
+		if (stack.isEmpty())
+			return stack;
+		if (isFuze(stack)) {
+			ItemStack remainder = this.insertFuze(stack, simulate);
+			if (!simulate && wasAccepted(stack, remainder))
+				this.automationFillStarted = true;
+			return remainder;
+		}
 		int slot = this.findAutomationSlot(stack);
 		if (slot < 0)
 			return stack;
@@ -393,8 +409,32 @@ public class CannonMagazineLoaderBlockEntity extends BlockEntity {
 		return remainder;
 	}
 
+	private ItemStack insertFuze(ItemStack stack, boolean simulate) {
+		if (!isFuze(stack))
+			return stack;
+		for (int slot = 0; slot < PROJECTILE_SLOTS; ++slot) {
+			ItemStack projectile = this.items[slot];
+			if (!canApplyFuze(projectile))
+				continue;
+			ItemStack remainder = consumeOne(stack);
+			if (!simulate) {
+				ItemStack fusedProjectile = projectile.copy();
+				applyFuze(fusedProjectile, stack);
+				this.items[slot] = fusedProjectile;
+				this.normalizePendingState();
+				this.setChangedAndSync();
+			}
+			return remainder;
+		}
+		return stack;
+	}
+
 	private int findAutomationSlot(ItemStack stack) {
-		if (stack.isEmpty() || this.automaticLocked)
+		if (stack.isEmpty())
+			return -1;
+		if (isFuze(stack))
+			return this.canInsertFuze(stack) ? 0 : -1;
+		if (this.automaticLocked)
 			return -1;
 		if (isProjectile(stack)) {
 			for (int slot = 0; slot < PROJECTILE_SLOTS; ++slot)
@@ -410,6 +450,15 @@ public class CannonMagazineLoaderBlockEntity extends BlockEntity {
 			}
 		}
 		return -1;
+	}
+
+	private boolean canInsertFuze(ItemStack stack) {
+		if (!isFuze(stack))
+			return false;
+		for (int slot = 0; slot < PROJECTILE_SLOTS; ++slot)
+			if (canApplyFuze(this.items[slot]))
+				return true;
+		return false;
 	}
 
 	private void normalizePendingState() {
@@ -467,7 +516,7 @@ public class CannonMagazineLoaderBlockEntity extends BlockEntity {
 	}
 
 	private boolean isGroupComplete(int group) {
-		return isProjectile(this.items[group]) && isPropellant(this.items[cartridgeSlot(group)]);
+		return isLoadReadyProjectile(this.items[group]) && isPropellant(this.items[cartridgeSlot(group)]);
 	}
 
 	private static int cartridgeSlot(int group) {
@@ -492,6 +541,10 @@ public class CannonMagazineLoaderBlockEntity extends BlockEntity {
 			|| stack.getItem() instanceof BlockItem blockItem && blockItem.getBlock() instanceof ProjectileBlock;
 	}
 
+	private static boolean isLoadReadyProjectile(ItemStack stack) {
+		return isProjectile(stack) && !canApplyFuze(stack);
+	}
+
 	private static boolean isPropellant(ItemStack stack) {
 		if (!(stack.getItem() instanceof BlockItem blockItem))
 			return false;
@@ -499,6 +552,20 @@ public class CannonMagazineLoaderBlockEntity extends BlockEntity {
 		if (block instanceof BigCartridgeBlock)
 			return stack.getItem() instanceof BigCartridgeBlockItem && BigCartridgeBlockItem.getPower(stack) > 0;
 		return block instanceof BigCannonPropellantBlock;
+	}
+
+	private static boolean isFuze(ItemStack stack) {
+		return stack.getItem() instanceof FuzeItem;
+	}
+
+	private static boolean canApplyFuze(ItemStack projectile) {
+		return projectile.getItem() instanceof BlockItem blockItem
+			&& blockItem.getBlock() instanceof FuzedProjectileBlock
+			&& FuzedProjectileBlock.getFuzeFromItemStack(projectile).isEmpty();
+	}
+
+	private static void applyFuze(ItemStack projectile, ItemStack fuze) {
+		projectile.set(CBCDataComponents.FUZE, ItemContainerContents.fromItems(List.of(fuze.copyWithCount(1))));
 	}
 
 	private static boolean wasAccepted(ItemStack original, ItemStack remainder) {
