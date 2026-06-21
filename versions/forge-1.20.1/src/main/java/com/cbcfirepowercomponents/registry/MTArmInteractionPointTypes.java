@@ -6,16 +6,20 @@ import com.cbcfirepowercomponents.FirepowerComponents;
 import com.cbcfirepowercomponents.content.autocannon_ammo_feed.AutocannonAmmoFeedBlockEntity;
 import com.cbcfirepowercomponents.content.cannon_magazine_loader.CannonMagazineLoaderBlockEntity;
 import com.cbcfirepowercomponents.content.compact_cannon_mount.CompactCannonMountBlockEntity;
+import com.simibubi.create.api.registry.CreateRegistries;
+import com.simibubi.create.content.kinetics.mechanicalArm.AllArmInteractionPointTypes.DepositOnlyArmInteractionPoint;
 import com.simibubi.create.content.kinetics.mechanicalArm.ArmInteractionPoint;
 import com.simibubi.create.content.kinetics.mechanicalArm.ArmInteractionPointType;
 
 import net.minecraft.core.BlockPos;
-import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.Vec3;
+import net.minecraftforge.eventbus.api.IEventBus;
+import net.minecraftforge.registries.DeferredRegister;
+import net.minecraftforge.registries.RegistryObject;
 import rbasamoyai.createbigcannons.cannon_control.contraption.AbstractMountedCannonContraption;
 import rbasamoyai.createbigcannons.cannon_control.contraption.ItemCannon;
 import rbasamoyai.createbigcannons.cannon_control.contraption.MountedAutocannonContraption;
@@ -26,23 +30,21 @@ import rbasamoyai.createbigcannons.munitions.autocannon.AutocannonAmmoItem;
 import rbasamoyai.createbigcannons.munitions.autocannon.ammo_container.AutocannonAmmoContainerItem;
 
 public class MTArmInteractionPointTypes {
-	public static final CompactCannonMountType COMPACT_CANNON_MOUNT = register("compact_cannon_mount", CompactCannonMountType::new);
-	public static final AutocannonAmmoFeedType AUTOCANNON_AMMO_FEED = register("autocannon_ammo_feed", AutocannonAmmoFeedType::new);
-	public static final CannonMagazineLoaderType CANNON_MAGAZINE_LOADER = register("cannon_magazine_loader", CannonMagazineLoaderType::new);
+	private static final DeferredRegister<ArmInteractionPointType> ARM_INTERACTION_POINT_TYPES =
+		DeferredRegister.create(CreateRegistries.ARM_INTERACTION_POINT_TYPE, FirepowerComponents.MOD_ID);
 
-	private static <T extends ArmInteractionPointType> T register(String name, java.util.function.Function<ResourceLocation, T> factory) {
-		T type = factory.apply(new ResourceLocation(FirepowerComponents.MOD_ID, name));
-		ArmInteractionPointType.register(type);
-		return type;
+	public static final RegistryObject<CompactCannonMountType> COMPACT_CANNON_MOUNT =
+		ARM_INTERACTION_POINT_TYPES.register("compact_cannon_mount", CompactCannonMountType::new);
+	public static final RegistryObject<AutocannonAmmoFeedType> AUTOCANNON_AMMO_FEED =
+		ARM_INTERACTION_POINT_TYPES.register("autocannon_ammo_feed", AutocannonAmmoFeedType::new);
+	public static final RegistryObject<CannonMagazineLoaderType> CANNON_MAGAZINE_LOADER =
+		ARM_INTERACTION_POINT_TYPES.register("cannon_magazine_loader", CannonMagazineLoaderType::new);
+
+	public static void register(IEventBus bus) {
+		ARM_INTERACTION_POINT_TYPES.register(bus);
 	}
 
-	public static void init() {}
-
 	public static class CompactCannonMountType extends ArmInteractionPointType {
-		public CompactCannonMountType(ResourceLocation id) {
-			super(id);
-		}
-
 		@Override
 		public boolean canCreatePoint(Level level, BlockPos pos, BlockState state) {
 			return (MTBlocks.COMPACT_CANNON_MOUNT.get() == state.getBlock()
@@ -58,10 +60,6 @@ public class MTArmInteractionPointTypes {
 	}
 
 	public static class AutocannonAmmoFeedType extends ArmInteractionPointType {
-		public AutocannonAmmoFeedType(ResourceLocation id) {
-			super(id);
-		}
-
 		@Override
 		public boolean canCreatePoint(Level level, BlockPos pos, BlockState state) {
 			return MTBlocks.AUTOCANNON_AMMO_FEED.get() == state.getBlock()
@@ -76,10 +74,6 @@ public class MTArmInteractionPointTypes {
 	}
 
 	public static class CannonMagazineLoaderType extends ArmInteractionPointType {
-		public CannonMagazineLoaderType(ResourceLocation id) {
-			super(id);
-		}
-
 		@Override
 		public boolean canCreatePoint(Level level, BlockPos pos, BlockState state) {
 			return MTBlocks.CANNON_MAGAZINE_LOADER.get() == state.getBlock()
@@ -89,7 +83,34 @@ public class MTArmInteractionPointTypes {
 		@Nullable
 		@Override
 		public ArmInteractionPoint createPoint(Level level, BlockPos pos, BlockState state) {
-			return new ArmInteractionPoint(this, level, pos, state);
+			return new CannonMagazineLoaderPoint(this, level, pos, state);
+		}
+	}
+
+	public static class CannonMagazineLoaderPoint extends DepositOnlyArmInteractionPoint {
+		public CannonMagazineLoaderPoint(ArmInteractionPointType type, Level level, BlockPos pos, BlockState state) {
+			super(type, level, pos, state);
+		}
+
+		@Override
+		protected Vec3 getInteractionPositionVector() {
+			return Vec3.atCenterOf(this.pos).add(0, 0.1, 0);
+		}
+
+		@Override
+		public ItemStack insert(ItemStack stack, boolean simulate) {
+			BlockEntity blockEntity = this.getLevel().getBlockEntity(this.pos);
+			return blockEntity instanceof CannonMagazineLoaderBlockEntity loader ? loader.insertAutomation(stack, simulate) : stack;
+		}
+
+		@Override
+		public ItemStack extract(int slot, int amount, boolean simulate) {
+			return ItemStack.EMPTY;
+		}
+
+		@Override
+		public ItemStack extract(int amount, boolean simulate) {
+			return ItemStack.EMPTY;
 		}
 	}
 

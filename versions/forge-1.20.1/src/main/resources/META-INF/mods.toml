@@ -26,14 +26,21 @@ side="BOTH"
 [[dependencies.${mod_id}]]
 modId="create"
 mandatory=true
-versionRange="[0.5.1.h,)"
+versionRange="${create_version_range}"
+ordering="AFTER"
+side="BOTH"
+
+[[dependencies.${mod_id}]]
+modId="ritchiesprojectilelib"
+mandatory=true
+versionRange="${rpl_version_range}"
 ordering="AFTER"
 side="BOTH"
 
 [[dependencies.${mod_id}]]
 modId="createbigcannons"
 mandatory=true
-versionRange="[5.8.0,5.9.0)"
+versionRange="${cbc_version_range}"
 ordering="AFTER"
 side="BOTH"
 

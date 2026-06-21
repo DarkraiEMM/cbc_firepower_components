@@ -3,11 +3,12 @@
 ## 0.2.0
 
 - Updated the NeoForge 1.21.1 target to Create Big Cannons 5.11.6 for the newer Aeronautics/Simulated compatibility line.
+- Updated the Forge 1.20.1 target to Create 6.0.8, Create Big Cannons 5.11.4, and Ritchie's Projectile Library 2.1.1.
 - Added fuze support to the Cannon Magazine Loader so fuzes can be applied to stored fuzed projectiles before loading.
 - Prevented the Cannon Magazine Loader from loading fuzed projectiles before a fuze is attached.
 - Updated README, Modrinth description, and usage guides for the fuze loading workflow and CBC 5.11.6 dependency.
 - Kept the compact cannon mount reassembly compatibility fix for newer Create Big Cannons versions.
-- Kept the 1.20.1 Forge target on the same mod version for the matching release package.
+- Kept both release targets on the same mod version for the matching release package.
 
 ## 0.1.8
 

@@ -22,3 +22,5 @@ The project has two release lines:
 - Minecraft 1.20.1 / Forge 47.x
 
 The 1.21.1 NeoForge build expects Create 6.0.x, Create Big Cannons 5.11.6, and Ritchie's Projectile Library 2.1.2.
+
+The 1.20.1 Forge build expects Create 6.0.8, Create Big Cannons 5.11.4, and Ritchie's Projectile Library 2.1.1.

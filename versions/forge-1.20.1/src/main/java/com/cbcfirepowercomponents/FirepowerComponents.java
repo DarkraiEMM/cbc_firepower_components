@@ -25,7 +25,7 @@ public class FirepowerComponents {
 		MTItems.register(modBus);
 		MTBlockEntities.register(modBus);
 		MTCreativeTabs.register(modBus);
-		MTArmInteractionPointTypes.init();
+		MTArmInteractionPointTypes.register(modBus);
 		MTNetwork.register();
 		modBus.addListener(this::commonSetup);
 	}

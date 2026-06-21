@@ -23,6 +23,8 @@ The Cannon Limiter stores pitch lower, pitch upper, left yaw, and right yaw sett
 
 The 1.21.1 build expects Create 6.0.x, Create Big Cannons 5.11.6, and Ritchie's Projectile Library 2.1.2.
 
+The 1.20.1 Forge build expects Create 6.0.8, Create Big Cannons 5.11.4, and Ritchie's Projectile Library 2.1.1.
+
 ## Download
 
 Grab the latest jar from the GitHub Releases page.

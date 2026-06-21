@@ -4,7 +4,7 @@ import java.util.List;
 
 import javax.annotation.Nullable;
 
-import com.simibubi.create.foundation.utility.Lang;
+import com.simibubi.create.foundation.utility.CreateLang;
 
 import net.minecraft.ChatFormatting;
 import net.minecraft.client.gui.screens.Screen;
@@ -56,10 +56,10 @@ public class CompactCannonMountItem extends BlockItem {
 	}
 
 	private static void addHoldShift(boolean expanded, List<Component> tooltip) {
-		String[] holdDesc = Lang.translateDirect("tooltip.holdForDescription", "$").getString().split("\\$");
+		String[] holdDesc = CreateLang.translateDirect("tooltip.holdForDescription", "$").getString().split("\\$");
 		if (holdDesc.length < 2)
 			return;
-		Component keyShift = Lang.translateDirect("tooltip.keyShift");
+		Component keyShift = CreateLang.translateDirect("tooltip.keyShift");
 		MutableComponent line = Component.literal("");
 		line.append(Component.literal(holdDesc[0]).withStyle(ChatFormatting.DARK_GRAY));
 		line.append(keyShift.plainCopy().withStyle(expanded ? ChatFormatting.WHITE : ChatFormatting.GRAY));

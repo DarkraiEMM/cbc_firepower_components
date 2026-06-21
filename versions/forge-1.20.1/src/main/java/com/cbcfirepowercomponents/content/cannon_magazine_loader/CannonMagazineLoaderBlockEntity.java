@@ -119,6 +119,19 @@ public class CannonMagazineLoaderBlockEntity extends BlockEntity {
 			|| isCartridgeSlot(slot) && stack.getItem() instanceof BigCartridgeBlockItem;
 	}
 
+	public ItemStack insertAutomation(ItemStack stack, boolean simulate) {
+		if (stack.isEmpty())
+			return stack;
+		if (isFuze(stack))
+			return this.insertFuze(stack, simulate);
+		for (int slot = 0; slot < SLOT_COUNT; ++slot) {
+			if (!this.items[slot].isEmpty() || !isValidForSlot(slot, stack))
+				continue;
+			return this.insertIntoSlot(slot, stack, simulate);
+		}
+		return stack;
+	}
+
 	private ItemStack insertFuze(ItemStack stack, boolean simulate) {
 		if (!isFuze(stack))
 			return stack;
@@ -165,6 +178,17 @@ public class CannonMagazineLoaderBlockEntity extends BlockEntity {
 		blockEntityTag.put("Fuze", storedFuze.save(new CompoundTag()));
 	}
 
+	private ItemStack insertIntoSlot(int slot, ItemStack stack, boolean simulate) {
+		ItemStack remainder = stack.copy();
+		remainder.shrink(1);
+		if (!simulate) {
+			this.items[slot] = stack.copy();
+			this.items[slot].setCount(1);
+			this.setChanged();
+		}
+		return remainder;
+	}
+
 	private class MagazineItemHandler implements IItemHandler {
 		@Override public int getSlots() { return SLOT_COUNT; }
 		@Override public ItemStack getStackInSlot(int slot) { return slot >= 0 && slot < SLOT_COUNT ? CannonMagazineLoaderBlockEntity.this.items[slot] : ItemStack.EMPTY; }
@@ -178,14 +202,7 @@ public class CannonMagazineLoaderBlockEntity extends BlockEntity {
 			ItemStack stored = CannonMagazineLoaderBlockEntity.this.items[slot];
 			if (!stored.isEmpty())
 				return stack;
-			ItemStack remainder = stack.copy();
-			remainder.shrink(1);
-			if (!simulate) {
-				CannonMagazineLoaderBlockEntity.this.items[slot] = stack.copy();
-				CannonMagazineLoaderBlockEntity.this.items[slot].setCount(1);
-				CannonMagazineLoaderBlockEntity.this.setChanged();
-			}
-			return remainder;
+			return CannonMagazineLoaderBlockEntity.this.insertIntoSlot(slot, stack, simulate);
 		}
 
 		@Override

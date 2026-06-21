@@ -12,18 +12,18 @@ import com.cbcfirepowercomponents.FirepowerComponents;
 import com.cbcfirepowercomponents.content.cannon_limiter.CannonLimiterSettings;
 import com.cbcfirepowercomponents.registry.MTBlockEntities;
 import com.simibubi.create.AllSoundEvents;
+import com.simibubi.create.api.equipment.goggles.IHaveGoggleInformation;
 import com.simibubi.create.content.contraptions.AbstractContraptionEntity;
 import com.simibubi.create.content.contraptions.AssemblyException;
 import com.simibubi.create.content.contraptions.IDisplayAssemblyExceptions;
-import com.simibubi.create.content.equipment.goggles.IHaveGoggleInformation;
 import com.simibubi.create.content.kinetics.base.IRotate;
 import com.simibubi.create.content.kinetics.base.KineticBlockEntity;
 import com.simibubi.create.foundation.blockEntity.SmartBlockEntity;
 import com.simibubi.create.foundation.blockEntity.behaviour.BlockEntityBehaviour;
-import com.simibubi.create.foundation.utility.AngleHelper;
-import com.simibubi.create.foundation.utility.Lang;
+import com.simibubi.create.foundation.utility.CreateLang;
 import com.simibubi.create.foundation.utility.ServerSpeedProvider;
 
+import net.createmod.catnip.math.AngleHelper;
 import net.minecraft.ChatFormatting;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
@@ -675,8 +675,8 @@ public class CompactCannonMountBlockEntity extends SmartBlockEntity implements I
 	}
 
 	@Override
-	public BlockPos getDismountPositionForContraption(PitchOrientedContraptionEntity poce) {
-		return this.worldPosition.relative(this.getCannonSide().getOpposite());
+	public Vec3 getDismountPositionForContraption(PitchOrientedContraptionEntity poce) {
+		return Vec3.atBottomCenterOf(this.worldPosition.relative(this.getCannonSide().getOpposite()));
 	}
 
 	@Override public AssemblyException getLastAssemblyException() { return this.lastException; }
@@ -843,15 +843,15 @@ public class CompactCannonMountBlockEntity extends SmartBlockEntity implements I
 			float pitchStress = this.pitchInterface.calculateStressApplied();
 			float yawStress = this.yawInterface.calculateStressApplied();
 			if (!Mth.equal(pitchStress + yawStress, 0)) {
-				Lang.translate("gui.goggles.kinetic_stats").forGoggles(tooltip);
-				Lang.translate("tooltip.stressImpact").style(GRAY).forGoggles(tooltip);
+				CreateLang.translate("gui.goggles.kinetic_stats").forGoggles(tooltip);
+				CreateLang.translate("tooltip.stressImpact").style(GRAY).forGoggles(tooltip);
 				float stressTotal = pitchStress * Math.abs(this.pitchInterface.getTheoreticalSpeed())
 					+ yawStress * Math.abs(this.yawInterface.getTheoreticalSpeed());
-				Lang.number(stressTotal)
+				CreateLang.number(stressTotal)
 					.translate("generic.unit.stress")
 					.style(ChatFormatting.AQUA)
 					.space()
-					.add(Lang.translate("gui.goggles.at_current_speed").style(ChatFormatting.DARK_GRAY))
+					.add(CreateLang.translate("gui.goggles.at_current_speed").style(ChatFormatting.DARK_GRAY))
 					.forGoggles(tooltip, 1);
 			}
 		}
