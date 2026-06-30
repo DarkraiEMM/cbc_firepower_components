@@ -8,6 +8,7 @@ import com.simibubi.create.foundation.utility.CreateLang;
 
 import net.minecraft.ChatFormatting;
 import net.minecraft.client.gui.screens.Screen;
+import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.world.item.BlockItem;
@@ -28,6 +29,13 @@ public class CompactCannonMountItem extends BlockItem {
 	public CompactCannonMountItem(Block block, Item.Properties properties, String tooltipKey) {
 		super(block, properties);
 		this.tooltipKey = tooltipKey;
+	}
+
+	@Override
+	public void verifyTagAfterLoad(CompoundTag tag) {
+		super.verifyTagAfterLoad(tag);
+		tag.remove("BlockStateTag");
+		tag.remove("BlockEntityTag");
 	}
 
 	@Override

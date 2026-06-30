@@ -5,6 +5,7 @@ import javax.annotation.Nullable;
 import com.cbcfirepowercomponents.FirepowerComponents;
 import com.cbcfirepowercomponents.content.autocannon_ammo_feed.AutocannonAmmoFeedBlockEntity;
 import com.cbcfirepowercomponents.content.cannon_magazine_loader.CannonMagazineLoaderBlockEntity;
+import com.cbcfirepowercomponents.content.large_autocannon_ammo_box.LargeAutocannonAmmoBoxItem;
 import com.cbcfirepowercomponents.content.compact_cannon_mount.CompactCannonMountBlockEntity;
 import com.simibubi.create.api.registry.CreateRegistries;
 import com.simibubi.create.content.kinetics.mechanicalArm.AllArmInteractionPointTypes.DepositOnlyArmInteractionPoint;
@@ -180,6 +181,7 @@ public class MTArmInteractionPointTypes {
 				return ItemStack.EMPTY;
 			ItemStack inserted = stack.copy();
 			inserted.setCount(1);
+			LargeAutocannonAmmoBoxItem.sanitizeForCbcMagazine(inserted);
 			breech.setMagazine(inserted);
 			breech.setChanged();
 			return oldContainer.isEmpty() ? ItemStack.EMPTY : oldContainer.copy();

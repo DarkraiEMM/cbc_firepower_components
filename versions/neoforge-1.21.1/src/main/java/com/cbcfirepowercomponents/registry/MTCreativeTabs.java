@@ -20,6 +20,7 @@ public class MTCreativeTabs {
 			output.accept(MTItems.COMPACT_CANNON_MOUNT.get());
 			output.accept(MTItems.COMPACT_AUTOCANNON_MOUNT.get());
 			output.accept(MTItems.AUTOCANNON_AMMO_FEED.get());
+			output.accept(MTItems.LARGE_AUTOCANNON_AMMO_BOX.get());
 			output.accept(MTItems.CANNON_MAGAZINE_LOADER.get());
 			output.accept(MTItems.CANNON_LIMITER.get());
 		})

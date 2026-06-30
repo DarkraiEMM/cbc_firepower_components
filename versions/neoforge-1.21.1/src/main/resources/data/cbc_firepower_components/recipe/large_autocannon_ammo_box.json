@@ -1,0 +1,28 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "redstone",
+  "pattern": [
+    "IAI",
+    "ACA",
+    "IBI"
+  ],
+  "key": {
+    "A": {
+      "item": "createbigcannons:autocannon_ammo_container"
+    },
+    "B": {
+      "item": "create:brass_block"
+    },
+    "C": {
+      "item": "create:brass_casing"
+    },
+    "I": {
+      "item": "create:industrial_iron_block"
+    }
+  },
+  "result": {
+    "id": "cbc_firepower_components:large_autocannon_ammo_box",
+    "count": 1
+  },
+  "show_notification": true
+}

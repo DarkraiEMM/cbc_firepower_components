@@ -5,6 +5,7 @@ import com.cbcfirepowercomponents.content.autocannon_ammo_feed.AutocannonAmmoFee
 import com.cbcfirepowercomponents.content.cannon_magazine_loader.CannonMagazineLoaderBlock;
 import com.cbcfirepowercomponents.content.compact_cannon_mount.CompactAutocannonMountBlock;
 import com.cbcfirepowercomponents.content.compact_cannon_mount.CompactCannonMountBlock;
+import com.cbcfirepowercomponents.content.large_autocannon_ammo_box.LargeAutocannonAmmoBoxBlock;
 
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.state.BlockBehaviour;
@@ -35,6 +36,14 @@ public class MTBlocks {
 			.mapColor(MapColor.METAL)
 			.requiresCorrectToolForDrops()
 			.strength(2.5f, 6.0f)
+			.noOcclusion()
+			.isRedstoneConductor((state, level, pos) -> false)));
+
+	public static final DeferredHolder<Block, LargeAutocannonAmmoBoxBlock> LARGE_AUTOCANNON_AMMO_BOX = BLOCKS.register("large_autocannon_ammo_box",
+		() -> new LargeAutocannonAmmoBoxBlock(BlockBehaviour.Properties.of()
+			.mapColor(MapColor.METAL)
+			.requiresCorrectToolForDrops()
+			.strength(3.0f, 6.0f)
 			.noOcclusion()
 			.isRedstoneConductor((state, level, pos) -> false)));
 

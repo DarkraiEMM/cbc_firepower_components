@@ -3,6 +3,7 @@ package com.cbcfirepowercomponents.content;
 import java.util.List;
 
 import net.minecraft.ChatFormatting;
+import net.minecraft.core.component.DataComponents;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.Item;
@@ -18,6 +19,13 @@ public class SimpleTooltipBlockItem extends BlockItem {
 		super(block, properties);
 		this.tooltipKey = tooltipKey;
 		this.detailLines = detailLines;
+	}
+
+	@Override
+	public void verifyComponentsAfterLoad(ItemStack stack) {
+		super.verifyComponentsAfterLoad(stack);
+		stack.remove(DataComponents.BLOCK_STATE);
+		stack.remove(DataComponents.BLOCK_ENTITY_DATA);
 	}
 
 	@Override

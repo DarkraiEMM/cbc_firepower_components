@@ -1,5 +1,16 @@
 # Changelog
 
+## 0.3.1
+
+- Added the Large Autocannon Ammo Box with CBC-style ammo container behavior.
+- Set the large ammo box capacity to 64 main rounds plus 64 matching tracer rounds for autocannon or machine gun ammunition.
+- Added a NeoForge 1.21.1 compatibility bridge for the Create Big Cannons 5.11.6 recoil API change.
+- Prevented older CBC addon cannon contraptions from crashing when they call the old two-argument recoil hook.
+- Added compact cannon mount pitch data for CBC: Neo Warfare, CBC Military Supplement, and CBC: Advanced Technologies cannon types.
+- Added defensive compact mount checks around redstone updates, contraption direction lookup, and cannon stress calculation.
+- This should help reports involving CBC: Advanced Technologies, CBC: Neo Warfare, and CBC Military Supplement cannons on CBC 5.11.6.
+- Kept the Forge 1.20.1 target on the matching release version.
+
 ## 0.2.0
 
 - Updated the NeoForge 1.21.1 target to Create Big Cannons 5.11.6 for the newer Aeronautics/Simulated compatibility line.

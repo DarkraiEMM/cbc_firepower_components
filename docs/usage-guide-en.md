@@ -20,6 +20,7 @@ Required mods:
 - Compact Cannon Mount: a one-block general compact mount for big cannons, drop mortars, autocannons, and handle autocannons.
 - Compact Autocannon Mount: a lighter mount made specifically for autocannons.
 - Autocannon Ammo Feed: feeds loose autocannon rounds into adjacent assembled compact mounts.
+- Large Autocannon Ammo Box: stores 64 main rounds and 64 matching tracer rounds for CBC autocannon or machine gun ammunition.
 - Cannon Magazine Loader: a three-round external magazine for assembled big cannon mounts.
 - Cannon Limiter: a configurable item that installs pitch and yaw limits onto compact mounts.
 
@@ -245,6 +246,52 @@ Empty cartridge output:
 - Sides, back, and bottom can output empty big cartridges to hoppers, funnels, and similar automation.
 - Front and top are better used as input faces and do not serve as empty-cartridge output faces.
 - Automation will not extract unfired projectiles or powered cartridges from the output faces.
+
+## Large Autocannon Ammo Box
+
+The Large Autocannon Ammo Box keeps the CBC autocannon ammo box behavior, but with a larger capacity. It can store CBC autocannon ammunition or CBC machine gun rounds; a filled box should stay on one ammo type at a time.
+
+Capacity:
+
+- 64 main rounds
+- 64 matching tracer rounds
+
+Empty the box before switching between autocannon ammunition and machine gun rounds. The tracer slot should use the same ammo family as the main slot.
+
+## Addon Cannon Compatibility
+
+The Compact Cannon Mount tries to support cannon types provided by other Create Big Cannons addons, but compatibility has several layers:
+
+- Assembly support: the mount can recognize and assemble the cannon.
+- Rotation support: the mount has pitch-range data for that cannon type.
+- Firing support: the cannon follows a CBC-compatible firing control path.
+- Automatic loading support: the cannon uses CBC's standard item input behavior, or this mod provides a dedicated adapter.
+
+The 0.3.x line focuses on the first three layers: assembly, rotation, firing, and crash prevention. Automatic loading must be verified per cannon type; addon cannons should not be assumed to behave exactly like CBC's base big cannons or autocannons.
+
+Current NeoForge 1.21.1 compatibility data includes:
+
+- CBC: Advanced Technologies: heavy autocannon, twin autocannon, manual twin autocannon, rocket pod, and medium rocket pod.
+- CBC Military Supplement: dual cannon, projectile rack, and torpedo tube.
+- CBC: Neo Warfare-style cannon types: some compact mount data is present, but loading behavior should still be tested per cannon.
+
+Notes:
+
+- If an addon cannon can assemble and fire but cannot be loaded through this mod's loading blocks, it probably has its own ammunition interface or custom item input logic.
+- The Autocannon Ammo Feed only handles loose autocannon ammunition for Compact Autocannon Mount setups. It does not automatically understand every addon ammo box.
+- The Cannon Magazine Loader is built around the CBC big-cannon flow of projectile plus powered big cartridge. It does not handle rocket pods, torpedo tubes, ready racks, or other special weapon systems.
+- The Forge 1.20.1 release line follows its matching 1.20.1 dependency set and should not be read as the same addon compatibility list as NeoForge 1.21.1.
+
+## Not Included Yet
+
+The following ideas are tracked for future development, but they are not current-version features:
+
+- Specialized ammo boxes beyond the current Large Autocannon Ammo Box.
+- Heavy autocannons, twin steel autocannons, and new rocket weapon families.
+- Heavy autocannon rounds, semi-armor-piercing rounds, anti-tank rounds, and other new ammunition families.
+- A standalone CBCMS-style ready ammunition rack.
+
+These require new models, textures, loading logic, balance testing, and tutorials. They should not be merged as ordinary compatibility fixes.
 
 ## Survival Recipes
 

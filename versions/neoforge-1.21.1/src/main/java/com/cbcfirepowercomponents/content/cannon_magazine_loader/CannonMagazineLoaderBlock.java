@@ -58,7 +58,7 @@ public class CannonMagazineLoaderBlock extends BaseEntityBlock {
 	@Override
 	public BlockState getStateForPlacement(BlockPlaceContext context) {
 		Direction linkedDirection = this.findLinkedMount(context.getLevel(), context.getClickedPos());
-		return this.defaultBlockState().setValue(FACING, linkedDirection == null ? context.getHorizontalDirection().getOpposite() : linkedDirection);
+		return this.defaultBlockState().setValue(FACING, linkedDirection == null ? context.getHorizontalDirection().getOpposite() : linkedDirection.getOpposite());
 	}
 
 	@Override
@@ -66,8 +66,8 @@ public class CannonMagazineLoaderBlock extends BaseEntityBlock {
 		if (level.isClientSide)
 			return;
 		Direction linkedDirection = this.findLinkedMount(level, pos);
-		if (linkedDirection != null && linkedDirection != state.getValue(FACING))
-			level.setBlock(pos, state.setValue(FACING, linkedDirection), 3);
+		if (linkedDirection != null && linkedDirection.getOpposite() != state.getValue(FACING))
+			level.setBlock(pos, state.setValue(FACING, linkedDirection.getOpposite()), 3);
 	}
 
 	private Direction findLinkedMount(LevelAccessor level, BlockPos pos) {

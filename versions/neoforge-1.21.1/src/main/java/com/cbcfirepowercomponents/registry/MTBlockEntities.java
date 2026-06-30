@@ -4,6 +4,7 @@ import com.cbcfirepowercomponents.FirepowerComponents;
 import com.cbcfirepowercomponents.content.autocannon_ammo_feed.AutocannonAmmoFeedBlockEntity;
 import com.cbcfirepowercomponents.content.cannon_magazine_loader.CannonMagazineLoaderBlockEntity;
 import com.cbcfirepowercomponents.content.compact_cannon_mount.CompactCannonMountBlockEntity;
+import com.cbcfirepowercomponents.content.large_autocannon_ammo_box.LargeAutocannonAmmoBoxBlockEntity;
 
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.core.registries.Registries;
@@ -21,6 +22,9 @@ public class MTBlockEntities {
 
 	public static final DeferredHolder<BlockEntityType<?>, BlockEntityType<AutocannonAmmoFeedBlockEntity>> AUTOCANNON_AMMO_FEED = BLOCK_ENTITIES.register("autocannon_ammo_feed",
 		() -> BlockEntityType.Builder.of(AutocannonAmmoFeedBlockEntity::new, MTBlocks.AUTOCANNON_AMMO_FEED.get()).build(null));
+
+	public static final DeferredHolder<BlockEntityType<?>, BlockEntityType<LargeAutocannonAmmoBoxBlockEntity>> LARGE_AUTOCANNON_AMMO_BOX = BLOCK_ENTITIES.register("large_autocannon_ammo_box",
+		() -> BlockEntityType.Builder.of(LargeAutocannonAmmoBoxBlockEntity::new, MTBlocks.LARGE_AUTOCANNON_AMMO_BOX.get()).build(null));
 
 	public static final DeferredHolder<BlockEntityType<?>, BlockEntityType<CannonMagazineLoaderBlockEntity>> CANNON_MAGAZINE_LOADER = BLOCK_ENTITIES.register("cannon_magazine_loader",
 		() -> BlockEntityType.Builder.of(CannonMagazineLoaderBlockEntity::new, MTBlocks.CANNON_MAGAZINE_LOADER.get()).build(null));

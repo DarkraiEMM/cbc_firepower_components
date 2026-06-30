@@ -1,0 +1,15 @@
+{
+  "required": true,
+  "package": "com.cbcfirepowercomponents.mixin",
+  "compatibilityLevel": "JAVA_21",
+  "mixins": [
+    "AutocannonAmmoContainerItemContainerAccessor",
+    "AutocannonAmmoContainerWrapperAccessor",
+    "ControlPitchContraptionCompatMixin",
+    "LargeAutocannonAmmoBoxContainerWrapperMixin",
+    "LargeAutocannonAmmoBoxMenuSlotMixin"
+  ],
+  "injectors": {
+    "defaultRequire": 1
+  }
+}

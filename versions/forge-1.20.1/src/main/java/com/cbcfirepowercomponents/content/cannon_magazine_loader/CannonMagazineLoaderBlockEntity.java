@@ -114,6 +114,10 @@ public class CannonMagazineLoaderBlockEntity extends BlockEntity {
 		return slot >= PROJECTILE_SLOTS && slot < SLOT_COUNT;
 	}
 
+	public ItemStack getStackInSlot(int slot) {
+		return slot >= 0 && slot < SLOT_COUNT ? this.items[slot] : ItemStack.EMPTY;
+	}
+
 	private static boolean isValidForSlot(int slot, ItemStack stack) {
 		return isProjectileSlot(slot) && stack.getItem() instanceof ProjectileBlockItem
 			|| isCartridgeSlot(slot) && stack.getItem() instanceof BigCartridgeBlockItem;
@@ -191,7 +195,7 @@ public class CannonMagazineLoaderBlockEntity extends BlockEntity {
 
 	private class MagazineItemHandler implements IItemHandler {
 		@Override public int getSlots() { return SLOT_COUNT; }
-		@Override public ItemStack getStackInSlot(int slot) { return slot >= 0 && slot < SLOT_COUNT ? CannonMagazineLoaderBlockEntity.this.items[slot] : ItemStack.EMPTY; }
+		@Override public ItemStack getStackInSlot(int slot) { return CannonMagazineLoaderBlockEntity.this.getStackInSlot(slot); }
 
 		@Override
 		public ItemStack insertItem(int slot, ItemStack stack, boolean simulate) {

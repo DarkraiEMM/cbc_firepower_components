@@ -1,0 +1,10 @@
+{
+  "variants": {
+    "axis=x,state=closed": { "model": "cbc_firepower_components:block/large_autocannon_ammo_box", "y": 90 },
+    "axis=x,state=empty": { "model": "cbc_firepower_components:block/large_autocannon_ammo_box", "y": 90 },
+    "axis=x,state=filled": { "model": "cbc_firepower_components:block/large_autocannon_ammo_box", "y": 90 },
+    "axis=z,state=closed": { "model": "cbc_firepower_components:block/large_autocannon_ammo_box" },
+    "axis=z,state=empty": { "model": "cbc_firepower_components:block/large_autocannon_ammo_box" },
+    "axis=z,state=filled": { "model": "cbc_firepower_components:block/large_autocannon_ammo_box" }
+  }
+}

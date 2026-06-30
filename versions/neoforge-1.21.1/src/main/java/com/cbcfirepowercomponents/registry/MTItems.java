@@ -4,6 +4,7 @@ import com.cbcfirepowercomponents.FirepowerComponents;
 import com.cbcfirepowercomponents.content.SimpleTooltipBlockItem;
 import com.cbcfirepowercomponents.content.cannon_limiter.CannonLimiterItem;
 import com.cbcfirepowercomponents.content.compact_cannon_mount.CompactCannonMountItem;
+import com.cbcfirepowercomponents.content.large_autocannon_ammo_box.LargeAutocannonAmmoBoxItem;
 
 import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.Item;
@@ -25,6 +26,9 @@ public class MTItems {
 	public static final DeferredHolder<Item, BlockItem> AUTOCANNON_AMMO_FEED = ITEMS.register("autocannon_ammo_feed",
 		() -> new SimpleTooltipBlockItem(MTBlocks.AUTOCANNON_AMMO_FEED.get(), new Item.Properties(),
 			"block.cbc_firepower_components.autocannon_ammo_feed.tooltip", 2));
+
+	public static final DeferredHolder<Item, BlockItem> LARGE_AUTOCANNON_AMMO_BOX = ITEMS.register("large_autocannon_ammo_box",
+		() -> new LargeAutocannonAmmoBoxItem(MTBlocks.LARGE_AUTOCANNON_AMMO_BOX.get(), new Item.Properties()));
 
 	public static final DeferredHolder<Item, BlockItem> CANNON_MAGAZINE_LOADER = ITEMS.register("cannon_magazine_loader",
 		() -> new SimpleTooltipBlockItem(MTBlocks.CANNON_MAGAZINE_LOADER.get(), new Item.Properties(),

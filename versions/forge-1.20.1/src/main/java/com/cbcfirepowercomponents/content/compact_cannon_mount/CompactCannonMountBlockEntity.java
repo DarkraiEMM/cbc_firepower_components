@@ -10,6 +10,7 @@ import javax.annotation.Nullable;
 
 import com.cbcfirepowercomponents.FirepowerComponents;
 import com.cbcfirepowercomponents.content.cannon_limiter.CannonLimiterSettings;
+import com.cbcfirepowercomponents.content.large_autocannon_ammo_box.LargeAutocannonAmmoBoxItem;
 import com.cbcfirepowercomponents.registry.MTBlockEntities;
 import com.simibubi.create.AllSoundEvents;
 import com.simibubi.create.api.equipment.goggles.IHaveGoggleInformation;
@@ -234,8 +235,9 @@ public class CompactCannonMountBlockEntity extends SmartBlockEntity implements I
 		if (firePowered != prevFirePowered)
 			this.getLevel().setBlock(this.worldPosition, this.getBlockState().setValue(CompactCannonMountBlock.FIRE_POWERED, firePowered), 3);
 
-		if (this.running && this.mountedContraption != null && this.getLevel() instanceof ServerLevel serverLevel) {
-			((AbstractMountedCannonContraption) this.mountedContraption.getContraption()).onRedstoneUpdate(serverLevel, this.mountedContraption, firePowered != prevFirePowered, firePower, this);
+		if (this.running && this.mountedContraption != null && this.getLevel() instanceof ServerLevel serverLevel
+			&& this.mountedContraption.getContraption() instanceof AbstractMountedCannonContraption cannon) {
+			cannon.onRedstoneUpdate(serverLevel, this.mountedContraption, firePowered != prevFirePowered, firePower, this);
 		}
 	}
 
@@ -454,7 +456,8 @@ public class CompactCannonMountBlockEntity extends SmartBlockEntity implements I
 	}
 
 	public Direction getContraptionDirection() {
-		return this.mountedContraption == null ? Direction.NORTH : ((AbstractMountedCannonContraption) this.mountedContraption.getContraption()).initialOrientation();
+		return this.mountedContraption != null && this.mountedContraption.getContraption() instanceof AbstractMountedCannonContraption cannon
+			? cannon.initialOrientation() : Direction.NORTH;
 	}
 
 	public float getAngularSpeed(float value, float clientDiff) {
@@ -555,10 +558,9 @@ public class CompactCannonMountBlockEntity extends SmartBlockEntity implements I
 	}
 
 	public float calculateCannonStressApplied() {
-		if (this.running && this.mountedContraption != null) {
-			AbstractMountedCannonContraption contraption = (AbstractMountedCannonContraption) this.mountedContraption.getContraption();
+		if (this.running && this.mountedContraption != null
+			&& this.mountedContraption.getContraption() instanceof AbstractMountedCannonContraption contraption)
 			return contraption.getWeightForStress();
-		}
 		return 0.0f;
 	}
 
@@ -750,6 +752,7 @@ public class CompactCannonMountBlockEntity extends SmartBlockEntity implements I
 			return ItemStack.EMPTY;
 		ItemStack inserted = stack.copy();
 		inserted.setCount(1);
+		LargeAutocannonAmmoBoxItem.sanitizeForCbcMagazine(inserted);
 		breech.setMagazine(inserted);
 		breech.setChanged();
 		return oldContainer.isEmpty() ? ItemStack.EMPTY : oldContainer.copy();

@@ -2,6 +2,7 @@ package com.cbcfirepowercomponents.content.compact_cannon_mount;
 
 import java.util.List;
 
+import net.minecraft.core.component.DataComponents;
 import net.minecraft.ChatFormatting;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.item.BlockItem;
@@ -21,6 +22,13 @@ public class CompactCannonMountItem extends BlockItem {
 	public CompactCannonMountItem(Block block, Item.Properties properties, String tooltipKey) {
 		super(block, properties);
 		this.tooltipKey = tooltipKey;
+	}
+
+	@Override
+	public void verifyComponentsAfterLoad(ItemStack stack) {
+		super.verifyComponentsAfterLoad(stack);
+		stack.remove(DataComponents.BLOCK_STATE);
+		stack.remove(DataComponents.BLOCK_ENTITY_DATA);
 	}
 
 	@Override
