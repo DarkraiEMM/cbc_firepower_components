@@ -5,7 +5,6 @@ import javax.annotation.Nullable;
 import com.cbcfirepowercomponents.FirepowerComponents;
 import com.cbcfirepowercomponents.content.autocannon_ammo_feed.AutocannonAmmoFeedBlockEntity;
 import com.cbcfirepowercomponents.content.cannon_magazine_loader.CannonMagazineLoaderBlockEntity;
-import com.cbcfirepowercomponents.content.large_autocannon_ammo_box.LargeAutocannonAmmoBoxItem;
 import com.cbcfirepowercomponents.content.compact_cannon_mount.CompactCannonMountBlockEntity;
 import com.simibubi.create.api.registry.CreateRegistries;
 import com.simibubi.create.content.kinetics.mechanicalArm.AllArmInteractionPointTypes.DepositOnlyArmInteractionPoint;
@@ -22,14 +21,7 @@ import net.minecraft.world.phys.Vec3;
 import net.neoforged.bus.api.IEventBus;
 import net.neoforged.neoforge.registries.DeferredHolder;
 import net.neoforged.neoforge.registries.DeferredRegister;
-import rbasamoyai.createbigcannons.cannon_control.contraption.AbstractMountedCannonContraption;
-import rbasamoyai.createbigcannons.cannon_control.contraption.ItemCannon;
-import rbasamoyai.createbigcannons.cannon_control.contraption.MountedAutocannonContraption;
-import rbasamoyai.createbigcannons.cannon_control.contraption.PitchOrientedContraptionEntity;
-import rbasamoyai.createbigcannons.cannons.autocannon.breech.AbstractAutocannonBreechBlockEntity;
 import rbasamoyai.createbigcannons.cannons.big_cannons.breeches.quickfiring_breech.CannonMountPoint;
-import rbasamoyai.createbigcannons.munitions.autocannon.AutocannonAmmoItem;
-import rbasamoyai.createbigcannons.munitions.autocannon.ammo_container.AutocannonAmmoContainerItem;
 
 public class MTArmInteractionPointTypes {
 	private static final DeferredRegister<ArmInteractionPointType> ARM_INTERACTION_POINT_TYPES =
@@ -134,69 +126,8 @@ public class MTArmInteractionPointTypes {
 			BlockEntity targetBE = this.getLevel().getBlockEntity(this.pos);
 			if (!(targetBE instanceof CompactCannonMountBlockEntity mount))
 				return stack;
-			PitchOrientedContraptionEntity poce = mount.getContraption();
-			if (poce == null || !(poce.getContraption() instanceof AbstractMountedCannonContraption cannon))
-				return stack;
-			if (cannon instanceof MountedAutocannonContraption autocannon) {
-				ItemStack insertedContainer = tryInsertAutocannonAmmoContainer(stack, simulate, autocannon);
-				if (insertedContainer.getCount() != stack.getCount() || !ItemStack.matches(insertedContainer, stack))
-					return insertedContainer;
-				ItemStack insertedAmmo = tryInsertLooseAutocannonAmmo(stack, simulate, autocannon);
-				if (insertedAmmo.getCount() != stack.getCount())
-					return insertedAmmo;
-			}
-			if (cannon instanceof ItemCannon itemCannon)
-				return itemCannon.insertItemIntoCannon(stack, simulate);
-			return this.getInsertedResultAndDoSomething(stack, simulate, cannon, poce);
+			return mount.insertMountedWeaponAmmo(stack, simulate);
 		}
 
-		private static ItemStack tryInsertLooseAutocannonAmmo(ItemStack stack, boolean simulate, MountedAutocannonContraption cannon) {
-			if (!(stack.getItem() instanceof AutocannonAmmoItem))
-				return stack;
-			AbstractAutocannonBreechBlockEntity breech = findAutocannonBreech(cannon);
-			if (breech == null || breech.isInputFull())
-				return stack;
-			ItemStack remainder = stack.copy();
-			remainder.shrink(1);
-			if (!simulate) {
-				ItemStack inserted = stack.copy();
-				inserted.setCount(1);
-				breech.getInputBuffer().add(inserted);
-				breech.setChanged();
-			}
-			return remainder;
-		}
-
-		private static ItemStack tryInsertAutocannonAmmoContainer(ItemStack stack, boolean simulate, MountedAutocannonContraption cannon) {
-			if (!(stack.getItem() instanceof AutocannonAmmoContainerItem))
-				return stack;
-			AbstractAutocannonBreechBlockEntity breech = findAutocannonBreech(cannon);
-			if (breech == null)
-				return stack;
-			ItemStack oldContainer = breech.getMagazine();
-			if (oldContainer.getItem() instanceof AutocannonAmmoContainerItem
-				&& AutocannonAmmoContainerItem.getTotalAmmoCount(oldContainer) > 0)
-				return stack;
-			if (simulate)
-				return ItemStack.EMPTY;
-			ItemStack inserted = stack.copy();
-			inserted.setCount(1);
-			LargeAutocannonAmmoBoxItem.sanitizeForCbcMagazine(inserted);
-			breech.setMagazine(inserted);
-			breech.setChanged();
-			return oldContainer.isEmpty() ? ItemStack.EMPTY : oldContainer.copy();
-		}
-
-		@Nullable
-		private static AbstractAutocannonBreechBlockEntity findAutocannonBreech(MountedAutocannonContraption cannon) {
-			BlockEntity startBE = cannon.presentBlockEntities.get(cannon.getStartPos());
-			if (startBE instanceof AbstractAutocannonBreechBlockEntity breech)
-				return breech;
-			for (BlockEntity be : cannon.presentBlockEntities.values()) {
-				if (be instanceof AbstractAutocannonBreechBlockEntity breech)
-					return breech;
-			}
-			return null;
-		}
 	}
 }
