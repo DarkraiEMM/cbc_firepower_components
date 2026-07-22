@@ -21,6 +21,15 @@ public class MTCreativeTabs {
 			output.accept(MTItems.COMPACT_AUTOCANNON_MOUNT.get());
 			output.accept(MTItems.AUTOCANNON_AMMO_FEED.get());
 			output.accept(MTItems.LARGE_AUTOCANNON_AMMO_BOX.get());
+			output.accept(MTItems.LARGE_AUTOCANNON_BREECH.get());
+			output.accept(MTItems.STEEL_LARGE_AUTOCANNON_BARREL.get());
+			output.accept(MTItems.STEEL_THICK_LARGE_AUTOCANNON_BARREL.get());
+			output.accept(MTItems.STEEL_LARGE_AUTOCANNON_MUZZLE_BRAKE.get());
+			output.accept(MTItems.TWIN_LARGE_AUTOCANNON_BREECH.get());
+			output.accept(MTItems.STEEL_TWIN_LARGE_AUTOCANNON_BARREL.get());
+			output.accept(MTItems.STEEL_TWIN_LARGE_AUTOCANNON_MUZZLE_BRAKE.get());
+			output.accept(MTItems.LARGE_AUTOCANNON_ROUND.get());
+			output.accept(MTItems.LARGE_AUTOCANNON_HE_ROUND.get());
 			output.accept(MTItems.CANNON_MAGAZINE_LOADER.get());
 			output.accept(MTItems.CANNON_LIMITER.get());
 		})

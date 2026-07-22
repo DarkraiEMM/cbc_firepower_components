@@ -1,0 +1,212 @@
+﻿{
+    "variants":  {
+                     "connected_back=false,connected_front=false,facing=down,handle=false":  {
+                                                                                                 "model":  "cbc_firepower_components:block/twin_large_autocannon_breech",
+                                                                                                 "x":  180
+                                                                                             },
+                     "connected_back=false,connected_front=false,facing=down,handle=true":  {
+                                                                                                "model":  "cbc_firepower_components:block/twin_large_autocannon_breech_handle",
+                                                                                                "x":  180
+                                                                                            },
+                     "connected_back=false,connected_front=false,facing=east,handle=false":  {
+                                                                                                 "model":  "cbc_firepower_components:block/twin_large_autocannon_breech",
+                                                                                                 "x":  90,
+                                                                                                 "y":  90
+                                                                                             },
+                     "connected_back=false,connected_front=false,facing=east,handle=true":  {
+                                                                                                "model":  "cbc_firepower_components:block/twin_large_autocannon_breech_handle",
+                                                                                                "x":  90,
+                                                                                                "y":  90
+                                                                                            },
+                     "connected_back=false,connected_front=false,facing=north,handle=false":  {
+                                                                                                  "model":  "cbc_firepower_components:block/twin_large_autocannon_breech",
+                                                                                                  "x":  90
+                                                                                              },
+                     "connected_back=false,connected_front=false,facing=north,handle=true":  {
+                                                                                                 "model":  "cbc_firepower_components:block/twin_large_autocannon_breech_handle",
+                                                                                                 "x":  90
+                                                                                             },
+                     "connected_back=false,connected_front=false,facing=south,handle=false":  {
+                                                                                                  "model":  "cbc_firepower_components:block/twin_large_autocannon_breech",
+                                                                                                  "x":  90,
+                                                                                                  "y":  180
+                                                                                              },
+                     "connected_back=false,connected_front=false,facing=south,handle=true":  {
+                                                                                                 "model":  "cbc_firepower_components:block/twin_large_autocannon_breech_handle",
+                                                                                                 "x":  90,
+                                                                                                 "y":  180
+                                                                                             },
+                     "connected_back=false,connected_front=false,facing=up,handle=false":  {
+                                                                                               "model":  "cbc_firepower_components:block/twin_large_autocannon_breech"
+                                                                                           },
+                     "connected_back=false,connected_front=false,facing=up,handle=true":  {
+                                                                                              "model":  "cbc_firepower_components:block/twin_large_autocannon_breech_handle"
+                                                                                          },
+                     "connected_back=false,connected_front=false,facing=west,handle=false":  {
+                                                                                                 "model":  "cbc_firepower_components:block/twin_large_autocannon_breech",
+                                                                                                 "x":  90,
+                                                                                                 "y":  270
+                                                                                             },
+                     "connected_back=false,connected_front=false,facing=west,handle=true":  {
+                                                                                                "model":  "cbc_firepower_components:block/twin_large_autocannon_breech_handle",
+                                                                                                "x":  90,
+                                                                                                "y":  270
+                                                                                            },
+                     "connected_back=false,connected_front=true,facing=down,handle=false":  {
+                                                                                                "model":  "cbc_firepower_components:block/twin_large_autocannon_breech_back_end",
+                                                                                                "x":  180
+                                                                                            },
+                     "connected_back=false,connected_front=true,facing=down,handle=true":  {
+                                                                                               "model":  "cbc_firepower_components:block/twin_large_autocannon_breech_handle_back_end",
+                                                                                               "x":  180
+                                                                                           },
+                     "connected_back=false,connected_front=true,facing=east,handle=false":  {
+                                                                                                "model":  "cbc_firepower_components:block/twin_large_autocannon_breech_back_end",
+                                                                                                "x":  90,
+                                                                                                "y":  90
+                                                                                            },
+                     "connected_back=false,connected_front=true,facing=east,handle=true":  {
+                                                                                               "model":  "cbc_firepower_components:block/twin_large_autocannon_breech_handle_back_end",
+                                                                                               "x":  90,
+                                                                                               "y":  90
+                                                                                           },
+                     "connected_back=false,connected_front=true,facing=north,handle=false":  {
+                                                                                                 "model":  "cbc_firepower_components:block/twin_large_autocannon_breech_back_end",
+                                                                                                 "x":  90
+                                                                                             },
+                     "connected_back=false,connected_front=true,facing=north,handle=true":  {
+                                                                                                "model":  "cbc_firepower_components:block/twin_large_autocannon_breech_handle_back_end",
+                                                                                                "x":  90
+                                                                                            },
+                     "connected_back=false,connected_front=true,facing=south,handle=false":  {
+                                                                                                 "model":  "cbc_firepower_components:block/twin_large_autocannon_breech_back_end",
+                                                                                                 "x":  90,
+                                                                                                 "y":  180
+                                                                                             },
+                     "connected_back=false,connected_front=true,facing=south,handle=true":  {
+                                                                                                "model":  "cbc_firepower_components:block/twin_large_autocannon_breech_handle_back_end",
+                                                                                                "x":  90,
+                                                                                                "y":  180
+                                                                                            },
+                     "connected_back=false,connected_front=true,facing=up,handle=false":  {
+                                                                                              "model":  "cbc_firepower_components:block/twin_large_autocannon_breech_back_end"
+                                                                                          },
+                     "connected_back=false,connected_front=true,facing=up,handle=true":  {
+                                                                                             "model":  "cbc_firepower_components:block/twin_large_autocannon_breech_handle_back_end"
+                                                                                         },
+                     "connected_back=false,connected_front=true,facing=west,handle=false":  {
+                                                                                                "model":  "cbc_firepower_components:block/twin_large_autocannon_breech_back_end",
+                                                                                                "x":  90,
+                                                                                                "y":  270
+                                                                                            },
+                     "connected_back=false,connected_front=true,facing=west,handle=true":  {
+                                                                                               "model":  "cbc_firepower_components:block/twin_large_autocannon_breech_handle_back_end",
+                                                                                               "x":  90,
+                                                                                               "y":  270
+                                                                                           },
+                     "connected_back=true,connected_front=false,facing=down,handle=false":  {
+                                                                                                "model":  "cbc_firepower_components:block/twin_large_autocannon_breech_front_end",
+                                                                                                "x":  180
+                                                                                            },
+                     "connected_back=true,connected_front=false,facing=down,handle=true":  {
+                                                                                               "model":  "cbc_firepower_components:block/twin_large_autocannon_breech_handle_front_end",
+                                                                                               "x":  180
+                                                                                           },
+                     "connected_back=true,connected_front=false,facing=east,handle=false":  {
+                                                                                                "model":  "cbc_firepower_components:block/twin_large_autocannon_breech_front_end",
+                                                                                                "x":  90,
+                                                                                                "y":  90
+                                                                                            },
+                     "connected_back=true,connected_front=false,facing=east,handle=true":  {
+                                                                                               "model":  "cbc_firepower_components:block/twin_large_autocannon_breech_handle_front_end",
+                                                                                               "x":  90,
+                                                                                               "y":  90
+                                                                                           },
+                     "connected_back=true,connected_front=false,facing=north,handle=false":  {
+                                                                                                 "model":  "cbc_firepower_components:block/twin_large_autocannon_breech_front_end",
+                                                                                                 "x":  90
+                                                                                             },
+                     "connected_back=true,connected_front=false,facing=north,handle=true":  {
+                                                                                                "model":  "cbc_firepower_components:block/twin_large_autocannon_breech_handle_front_end",
+                                                                                                "x":  90
+                                                                                            },
+                     "connected_back=true,connected_front=false,facing=south,handle=false":  {
+                                                                                                 "model":  "cbc_firepower_components:block/twin_large_autocannon_breech_front_end",
+                                                                                                 "x":  90,
+                                                                                                 "y":  180
+                                                                                             },
+                     "connected_back=true,connected_front=false,facing=south,handle=true":  {
+                                                                                                "model":  "cbc_firepower_components:block/twin_large_autocannon_breech_handle_front_end",
+                                                                                                "x":  90,
+                                                                                                "y":  180
+                                                                                            },
+                     "connected_back=true,connected_front=false,facing=up,handle=false":  {
+                                                                                              "model":  "cbc_firepower_components:block/twin_large_autocannon_breech_front_end"
+                                                                                          },
+                     "connected_back=true,connected_front=false,facing=up,handle=true":  {
+                                                                                             "model":  "cbc_firepower_components:block/twin_large_autocannon_breech_handle_front_end"
+                                                                                         },
+                     "connected_back=true,connected_front=false,facing=west,handle=false":  {
+                                                                                                "model":  "cbc_firepower_components:block/twin_large_autocannon_breech_front_end",
+                                                                                                "x":  90,
+                                                                                                "y":  270
+                                                                                            },
+                     "connected_back=true,connected_front=false,facing=west,handle=true":  {
+                                                                                               "model":  "cbc_firepower_components:block/twin_large_autocannon_breech_handle_front_end",
+                                                                                               "x":  90,
+                                                                                               "y":  270
+                                                                                           },
+                     "connected_back=true,connected_front=true,facing=down,handle=false":  {
+                                                                                               "model":  "cbc_firepower_components:block/twin_large_autocannon_breech_no_ends",
+                                                                                               "x":  180
+                                                                                           },
+                     "connected_back=true,connected_front=true,facing=down,handle=true":  {
+                                                                                              "model":  "cbc_firepower_components:block/twin_large_autocannon_breech_handle_no_ends",
+                                                                                              "x":  180
+                                                                                          },
+                     "connected_back=true,connected_front=true,facing=east,handle=false":  {
+                                                                                               "model":  "cbc_firepower_components:block/twin_large_autocannon_breech_no_ends",
+                                                                                               "x":  90,
+                                                                                               "y":  90
+                                                                                           },
+                     "connected_back=true,connected_front=true,facing=east,handle=true":  {
+                                                                                              "model":  "cbc_firepower_components:block/twin_large_autocannon_breech_handle_no_ends",
+                                                                                              "x":  90,
+                                                                                              "y":  90
+                                                                                          },
+                     "connected_back=true,connected_front=true,facing=north,handle=false":  {
+                                                                                                "model":  "cbc_firepower_components:block/twin_large_autocannon_breech_no_ends",
+                                                                                                "x":  90
+                                                                                            },
+                     "connected_back=true,connected_front=true,facing=north,handle=true":  {
+                                                                                               "model":  "cbc_firepower_components:block/twin_large_autocannon_breech_handle_no_ends",
+                                                                                               "x":  90
+                                                                                           },
+                     "connected_back=true,connected_front=true,facing=south,handle=false":  {
+                                                                                                "model":  "cbc_firepower_components:block/twin_large_autocannon_breech_no_ends",
+                                                                                                "x":  90,
+                                                                                                "y":  180
+                                                                                            },
+                     "connected_back=true,connected_front=true,facing=south,handle=true":  {
+                                                                                               "model":  "cbc_firepower_components:block/twin_large_autocannon_breech_handle_no_ends",
+                                                                                               "x":  90,
+                                                                                               "y":  180
+                                                                                           },
+                     "connected_back=true,connected_front=true,facing=up,handle=false":  {
+                                                                                             "model":  "cbc_firepower_components:block/twin_large_autocannon_breech_no_ends"
+                                                                                         },
+                     "connected_back=true,connected_front=true,facing=up,handle=true":  {
+                                                                                            "model":  "cbc_firepower_components:block/twin_large_autocannon_breech_handle_no_ends"
+                                                                                        },
+                     "connected_back=true,connected_front=true,facing=west,handle=false":  {
+                                                                                               "model":  "cbc_firepower_components:block/twin_large_autocannon_breech_no_ends",
+                                                                                               "x":  90,
+                                                                                               "y":  270
+                                                                                           },
+                     "connected_back=true,connected_front=true,facing=west,handle=true":  {
+                                                                                              "model":  "cbc_firepower_components:block/twin_large_autocannon_breech_handle_no_ends",
+                                                                                              "x":  90,
+                                                                                              "y":  270
+                                                                                          }
+                 }
+}

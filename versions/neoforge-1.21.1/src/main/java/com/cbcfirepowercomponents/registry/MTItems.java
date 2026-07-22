@@ -4,6 +4,7 @@ import com.cbcfirepowercomponents.FirepowerComponents;
 import com.cbcfirepowercomponents.content.SimpleTooltipBlockItem;
 import com.cbcfirepowercomponents.content.cannon_limiter.CannonLimiterItem;
 import com.cbcfirepowercomponents.content.compact_cannon_mount.CompactCannonMountItem;
+import com.cbcfirepowercomponents.content.large_autocannon_ammo.LargeAutocannonRoundItem;
 import com.cbcfirepowercomponents.content.large_autocannon_ammo_box.LargeAutocannonAmmoBoxItem;
 
 import net.minecraft.world.item.BlockItem;
@@ -11,6 +12,7 @@ import net.minecraft.world.item.Item;
 import net.neoforged.bus.api.IEventBus;
 import net.neoforged.neoforge.registries.DeferredHolder;
 import net.neoforged.neoforge.registries.DeferredRegister;
+import rbasamoyai.createbigcannons.cannons.autocannon.AutocannonBlockItem;
 
 public class MTItems {
 
@@ -29,6 +31,33 @@ public class MTItems {
 
 	public static final DeferredHolder<Item, BlockItem> LARGE_AUTOCANNON_AMMO_BOX = ITEMS.register("large_autocannon_ammo_box",
 		() -> new LargeAutocannonAmmoBoxItem(MTBlocks.LARGE_AUTOCANNON_AMMO_BOX.get(), new Item.Properties()));
+
+	public static final DeferredHolder<Item, BlockItem> LARGE_AUTOCANNON_BREECH = ITEMS.register("large_autocannon_breech",
+		() -> new AutocannonBlockItem<>(MTBlocks.LARGE_AUTOCANNON_BREECH.get(), new Item.Properties()));
+
+	public static final DeferredHolder<Item, BlockItem> STEEL_LARGE_AUTOCANNON_BARREL = ITEMS.register("steel_large_autocannon_barrel",
+		() -> new AutocannonBlockItem<>(MTBlocks.STEEL_LARGE_AUTOCANNON_BARREL.get(), new Item.Properties()));
+
+	public static final DeferredHolder<Item, BlockItem> STEEL_THICK_LARGE_AUTOCANNON_BARREL = ITEMS.register("steel_thick_large_autocannon_barrel",
+		() -> new AutocannonBlockItem<>(MTBlocks.STEEL_THICK_LARGE_AUTOCANNON_BARREL.get(), new Item.Properties()));
+
+	public static final DeferredHolder<Item, BlockItem> STEEL_LARGE_AUTOCANNON_MUZZLE_BRAKE = ITEMS.register("steel_large_autocannon_muzzle_brake",
+		() -> new AutocannonBlockItem<>(MTBlocks.STEEL_LARGE_AUTOCANNON_MUZZLE_BRAKE.get(), new Item.Properties()));
+
+	public static final DeferredHolder<Item, BlockItem> TWIN_LARGE_AUTOCANNON_BREECH = ITEMS.register("twin_large_autocannon_breech",
+		() -> new AutocannonBlockItem<>(MTBlocks.TWIN_LARGE_AUTOCANNON_BREECH.get(), new Item.Properties()));
+
+	public static final DeferredHolder<Item, BlockItem> STEEL_TWIN_LARGE_AUTOCANNON_BARREL = ITEMS.register("steel_twin_large_autocannon_barrel",
+		() -> new AutocannonBlockItem<>(MTBlocks.STEEL_TWIN_LARGE_AUTOCANNON_BARREL.get(), new Item.Properties()));
+
+	public static final DeferredHolder<Item, BlockItem> STEEL_TWIN_LARGE_AUTOCANNON_MUZZLE_BRAKE = ITEMS.register("steel_twin_large_autocannon_muzzle_brake",
+		() -> new AutocannonBlockItem<>(MTBlocks.STEEL_TWIN_LARGE_AUTOCANNON_MUZZLE_BRAKE.get(), new Item.Properties()));
+
+	public static final DeferredHolder<Item, Item> LARGE_AUTOCANNON_ROUND = ITEMS.register("large_autocannon_round",
+		() -> new LargeAutocannonRoundItem(new Item.Properties(), LargeAutocannonRoundItem.Kind.ARMOR_PIERCING));
+
+	public static final DeferredHolder<Item, Item> LARGE_AUTOCANNON_HE_ROUND = ITEMS.register("large_autocannon_he_round",
+		() -> new LargeAutocannonRoundItem(new Item.Properties(), LargeAutocannonRoundItem.Kind.HIGH_EXPLOSIVE));
 
 	public static final DeferredHolder<Item, BlockItem> CANNON_MAGAZINE_LOADER = ITEMS.register("cannon_magazine_loader",
 		() -> new SimpleTooltipBlockItem(MTBlocks.CANNON_MAGAZINE_LOADER.get(), new Item.Properties(),
