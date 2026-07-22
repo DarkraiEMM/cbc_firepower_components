@@ -24,7 +24,7 @@ import net.minecraft.world.phys.shapes.VoxelShape;
 
 public class AutocannonAmmoFeedBlock extends BaseEntityBlock {
 	public static final DirectionProperty FACING = BlockStateProperties.HORIZONTAL_FACING;
-	private static final VoxelShape SHAPE = box(1, 0, 2, 15, 9, 15);
+	private static final VoxelShape SHAPE = box(1, 0, 1, 15, 9, 15);
 
 	public AutocannonAmmoFeedBlock(Properties properties) {
 		super(properties);

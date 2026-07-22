@@ -12,7 +12,7 @@ import rbasamoyai.createbigcannons.munitions.autocannon.ammo_container.Autocanno
 import rbasamoyai.createbigcannons.munitions.autocannon.ammo_container.AutocannonAmmoContainerBlockEntity;
 
 public class LargeAutocannonAmmoBoxBlock extends AutocannonAmmoContainerBlock {
-	private static final VoxelShape SHAPE = box(1, 0, 1, 15, 15, 15);
+	private static final VoxelShape SHAPE = box(1, 0, 2, 15, 16, 14);
 
 	public LargeAutocannonAmmoBoxBlock(Properties properties) {
 		super(properties);
