@@ -6,7 +6,7 @@
     "6": "create:block/elevator_pulley_belt",
     "7": "cbc_firepower_components:block/autocannon_ammo_feed_side",
     "8": "cbc_firepower_components:block/autocannon_ammo_feed_top",
-    "particle": "createbigcannons:item/autocannon_cartridge",
+    "particle": "create:block/industrial_iron_block",
     "iron_top": "create:block/industrial_iron_block"
   },
   "elements": [
