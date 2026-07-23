@@ -1,9 +1,17 @@
-{
-  "replace": false,
-  "values": [
-    "cbc_firepower_components:compact_cannon_mount",
-    "cbc_firepower_components:compact_autocannon_mount",
-    "cbc_firepower_components:autocannon_ammo_feed",
-    "cbc_firepower_components:cannon_magazine_loader"
-  ]
+﻿{
+    "replace":  false,
+    "values":  [
+                   "cbc_firepower_components:compact_cannon_mount",
+                   "cbc_firepower_components:compact_autocannon_mount",
+                   "cbc_firepower_components:autocannon_ammo_feed",
+                   "cbc_firepower_components:large_autocannon_ammo_box",
+                   "cbc_firepower_components:large_autocannon_breech",
+                   "cbc_firepower_components:steel_large_autocannon_barrel",
+                   "cbc_firepower_components:cannon_magazine_loader",
+                   "cbc_firepower_components:steel_thick_large_autocannon_barrel",
+                   "cbc_firepower_components:steel_large_autocannon_muzzle_brake",
+                   "cbc_firepower_components:twin_large_autocannon_breech",
+                   "cbc_firepower_components:steel_twin_large_autocannon_barrel",
+                   "cbc_firepower_components:steel_twin_large_autocannon_muzzle_brake"
+               ]
 }

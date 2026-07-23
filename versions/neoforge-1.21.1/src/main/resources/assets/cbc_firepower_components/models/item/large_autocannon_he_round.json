@@ -1,0 +1,6 @@
+{
+  "parent": "minecraft:item/generated",
+  "textures": {
+    "layer0": "cbc_firepower_components:item/large_autocannon_he_round"
+  }
+}

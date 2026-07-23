@@ -1,0 +1,18 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "ingredients": [
+    {
+      "item": "createbigcannons:ap_autocannon_round"
+    },
+    {
+      "item": "createbigcannons:filled_autocannon_cartridge"
+    },
+    {
+      "item": "createbigcannons:steel_ingot"
+    }
+  ],
+  "result": {
+    "id": "cbc_firepower_components:large_autocannon_round",
+    "count": 2
+  }
+}

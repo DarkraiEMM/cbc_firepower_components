@@ -1,0 +1,123 @@
+{
+    "credit":  "Generated for CBC: Firepower Components",
+    "texture_size":  [
+                         16,
+                         16
+                     ],
+    "textures":  {
+                     "side":  "createbigcannons:block/cannon_barrel/steel_cannon_barrel_side",
+                     "end":  "cbc_firepower_components:block/large_autocannon/steel_large_autocannon_barrel_end_10",
+                     "detail":  "cbc_firepower_components:block/large_autocannon/large_autocannon_breech_groove"
+                 },
+    "elements":  [
+                     {
+                         "from":  [
+                                      5.25,
+                                      0,
+                                      5.25
+                                  ],
+                         "to":  [
+                                    10.75,
+                                    16,
+                                    10.75
+                                ],
+                         "faces":  {
+                                       "north":  {
+                                                     "uv":  [
+                                                                0,
+                                                                0,
+                                                                16,
+                                                                16
+                                                            ],
+                                                     "texture":  "#side"
+                                                 },
+                                       "south":  {
+                                                     "uv":  [
+                                                                0,
+                                                                0,
+                                                                16,
+                                                                16
+                                                            ],
+                                                     "texture":  "#side"
+                                                 },
+                                       "east":  {
+                                                    "uv":  [
+                                                               0,
+                                                               0,
+                                                               16,
+                                                               16
+                                                           ],
+                                                    "texture":  "#side"
+                                                },
+                                       "west":  {
+                                                    "uv":  [
+                                                               0,
+                                                               0,
+                                                               16,
+                                                               16
+                                                           ],
+                                                    "texture":  "#side"
+                                                },
+                                       "up":  {
+                                                  "uv":  [
+                                                             0,
+                                                             0,
+                                                             16,
+                                                             16
+                                                         ],
+                                                  "texture":  "#end"
+                                              }
+                                   }
+                     },
+                     {
+                         "from":  [
+                                      5.2454,
+                                      2,
+                                      5.2454
+                                  ],
+                         "to":  [
+                                    10.7546,
+                                    14,
+                                    10.7546
+                                ],
+                         "faces":  {
+                                       "north":  {
+                                                     "uv":  [
+                                                                2,
+                                                                2,
+                                                                14,
+                                                                14
+                                                            ],
+                                                     "texture":  "#detail"
+                                                 },
+                                       "east":  {
+                                                    "uv":  [
+                                                               2,
+                                                               2,
+                                                               14,
+                                                               14
+                                                           ],
+                                                    "texture":  "#detail"
+                                                },
+                                       "south":  {
+                                                     "uv":  [
+                                                                2,
+                                                                2,
+                                                                14,
+                                                                14
+                                                            ],
+                                                     "texture":  "#detail"
+                                                 },
+                                       "west":  {
+                                                    "uv":  [
+                                                               2,
+                                                               2,
+                                                               14,
+                                                               14
+                                                           ],
+                                                    "texture":  "#detail"
+                                                }
+                                   }
+                     }
+                 ]
+}

@@ -3,6 +3,7 @@ package com.cbcfirepowercomponents;
 import com.cbcfirepowercomponents.registry.MTBlockEntities;
 import com.cbcfirepowercomponents.registry.MTBlocks;
 import com.cbcfirepowercomponents.registry.MTCreativeTabs;
+import com.cbcfirepowercomponents.registry.MTEntityTypes;
 import com.cbcfirepowercomponents.registry.MTItems;
 import com.cbcfirepowercomponents.registry.MTCapabilities;
 import com.cbcfirepowercomponents.registry.MTArmInteractionPointTypes;
@@ -22,6 +23,7 @@ public class FirepowerComponents {
 	public FirepowerComponents(IEventBus modBus) {
 		MTBlocks.register(modBus);
 		MTItems.register(modBus);
+		MTEntityTypes.register(modBus);
 		MTBlockEntities.register(modBus);
 		MTCreativeTabs.register(modBus);
 		MTArmInteractionPointTypes.register(modBus);

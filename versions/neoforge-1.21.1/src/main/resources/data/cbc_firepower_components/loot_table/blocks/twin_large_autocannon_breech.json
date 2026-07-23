@@ -1,0 +1,15 @@
+﻿{
+    "type":  "minecraft:block",
+    "pools":  [
+                  {
+                      "bonus_rolls":  0,
+                      "entries":  [
+                                      {
+                                          "type":  "minecraft:item",
+                                          "name":  "cbc_firepower_components:twin_large_autocannon_breech"
+                                      }
+                                  ],
+                      "rolls":  1
+                  }
+              ]
+}

@@ -4,6 +4,8 @@ import com.cbcfirepowercomponents.FirepowerComponents;
 import com.cbcfirepowercomponents.content.autocannon_ammo_feed.AutocannonAmmoFeedBlockEntity;
 import com.cbcfirepowercomponents.content.cannon_magazine_loader.CannonMagazineLoaderBlockEntity;
 import com.cbcfirepowercomponents.content.compact_cannon_mount.CompactCannonMountBlockEntity;
+import com.cbcfirepowercomponents.content.large_autocannon.LargeAutocannonBlockEntity;
+import com.cbcfirepowercomponents.content.large_autocannon.LargeAutocannonBreechBlockEntity;
 import com.cbcfirepowercomponents.content.large_autocannon_ammo_box.LargeAutocannonAmmoBoxBlockEntity;
 
 import net.minecraft.world.level.block.entity.BlockEntityType;
@@ -25,6 +27,19 @@ public class MTBlockEntities {
 
 	public static final DeferredHolder<BlockEntityType<?>, BlockEntityType<LargeAutocannonAmmoBoxBlockEntity>> LARGE_AUTOCANNON_AMMO_BOX = BLOCK_ENTITIES.register("large_autocannon_ammo_box",
 		() -> BlockEntityType.Builder.of(LargeAutocannonAmmoBoxBlockEntity::new, MTBlocks.LARGE_AUTOCANNON_AMMO_BOX.get()).build(null));
+
+	public static final DeferredHolder<BlockEntityType<?>, BlockEntityType<LargeAutocannonBlockEntity>> LARGE_AUTOCANNON = BLOCK_ENTITIES.register("large_autocannon",
+		() -> BlockEntityType.Builder.of(LargeAutocannonBlockEntity::new,
+			MTBlocks.STEEL_LARGE_AUTOCANNON_BARREL.get(),
+			MTBlocks.STEEL_THICK_LARGE_AUTOCANNON_BARREL.get(),
+			MTBlocks.STEEL_LARGE_AUTOCANNON_MUZZLE_BRAKE.get(),
+			MTBlocks.STEEL_TWIN_LARGE_AUTOCANNON_BARREL.get(),
+			MTBlocks.STEEL_TWIN_LARGE_AUTOCANNON_MUZZLE_BRAKE.get()).build(null));
+
+	public static final DeferredHolder<BlockEntityType<?>, BlockEntityType<LargeAutocannonBreechBlockEntity>> LARGE_AUTOCANNON_BREECH = BLOCK_ENTITIES.register("large_autocannon_breech",
+		() -> BlockEntityType.Builder.of(LargeAutocannonBreechBlockEntity::new,
+			MTBlocks.LARGE_AUTOCANNON_BREECH.get(),
+			MTBlocks.TWIN_LARGE_AUTOCANNON_BREECH.get()).build(null));
 
 	public static final DeferredHolder<BlockEntityType<?>, BlockEntityType<CannonMagazineLoaderBlockEntity>> CANNON_MAGAZINE_LOADER = BLOCK_ENTITIES.register("cannon_magazine_loader",
 		() -> BlockEntityType.Builder.of(CannonMagazineLoaderBlockEntity::new, MTBlocks.CANNON_MAGAZINE_LOADER.get()).build(null));

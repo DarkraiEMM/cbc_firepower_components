@@ -5,6 +5,9 @@ import com.cbcfirepowercomponents.content.autocannon_ammo_feed.AutocannonAmmoFee
 import com.cbcfirepowercomponents.content.cannon_magazine_loader.CannonMagazineLoaderBlock;
 import com.cbcfirepowercomponents.content.compact_cannon_mount.CompactAutocannonMountBlock;
 import com.cbcfirepowercomponents.content.compact_cannon_mount.CompactCannonMountBlock;
+import com.cbcfirepowercomponents.content.large_autocannon.LargeAutocannonBarrelBlock;
+import com.cbcfirepowercomponents.content.large_autocannon.LargeAutocannonBreechBlock;
+import com.cbcfirepowercomponents.content.large_autocannon.LargeAutocannonMuzzleBrakeBlock;
 import com.cbcfirepowercomponents.content.large_autocannon_ammo_box.LargeAutocannonAmmoBoxBlock;
 
 import net.minecraft.world.level.block.Block;
@@ -13,6 +16,7 @@ import net.minecraft.world.level.material.MapColor;
 import net.neoforged.bus.api.IEventBus;
 import net.neoforged.neoforge.registries.DeferredRegister;
 import net.neoforged.neoforge.registries.DeferredHolder;
+import rbasamoyai.createbigcannons.index.CBCAutocannonMaterials;
 
 public class MTBlocks {
 
@@ -46,6 +50,62 @@ public class MTBlocks {
 			.strength(3.0f, 6.0f)
 			.noOcclusion()
 			.isRedstoneConductor((state, level, pos) -> false)));
+
+	public static final DeferredHolder<Block, LargeAutocannonBreechBlock> LARGE_AUTOCANNON_BREECH = BLOCKS.register("large_autocannon_breech",
+		() -> new LargeAutocannonBreechBlock(BlockBehaviour.Properties.of()
+			.mapColor(MapColor.METAL)
+			.requiresCorrectToolForDrops()
+			.strength(3.5f, 6.0f)
+			.noOcclusion()
+			.isRedstoneConductor((state, level, pos) -> false), CBCAutocannonMaterials.STEEL));
+
+	public static final DeferredHolder<Block, LargeAutocannonBarrelBlock> STEEL_LARGE_AUTOCANNON_BARREL = BLOCKS.register("steel_large_autocannon_barrel",
+		() -> new LargeAutocannonBarrelBlock(BlockBehaviour.Properties.of()
+			.mapColor(MapColor.METAL)
+			.requiresCorrectToolForDrops()
+			.strength(3.5f, 6.0f)
+			.noOcclusion()
+			.isRedstoneConductor((state, level, pos) -> false), CBCAutocannonMaterials.STEEL));
+
+	public static final DeferredHolder<Block, LargeAutocannonBarrelBlock> STEEL_THICK_LARGE_AUTOCANNON_BARREL = BLOCKS.register("steel_thick_large_autocannon_barrel",
+		() -> new LargeAutocannonBarrelBlock(BlockBehaviour.Properties.of()
+			.mapColor(MapColor.METAL)
+			.requiresCorrectToolForDrops()
+			.strength(3.5f, 6.0f)
+			.noOcclusion()
+			.isRedstoneConductor((state, level, pos) -> false), CBCAutocannonMaterials.STEEL));
+
+	public static final DeferredHolder<Block, LargeAutocannonMuzzleBrakeBlock> STEEL_LARGE_AUTOCANNON_MUZZLE_BRAKE = BLOCKS.register("steel_large_autocannon_muzzle_brake",
+		() -> new LargeAutocannonMuzzleBrakeBlock(BlockBehaviour.Properties.of()
+			.mapColor(MapColor.METAL)
+			.requiresCorrectToolForDrops()
+			.strength(3.5f, 6.0f)
+			.noOcclusion()
+			.isRedstoneConductor((state, level, pos) -> false), CBCAutocannonMaterials.STEEL));
+
+	public static final DeferredHolder<Block, LargeAutocannonBreechBlock> TWIN_LARGE_AUTOCANNON_BREECH = BLOCKS.register("twin_large_autocannon_breech",
+		() -> new LargeAutocannonBreechBlock(BlockBehaviour.Properties.of()
+			.mapColor(MapColor.METAL)
+			.requiresCorrectToolForDrops()
+			.strength(3.5f, 6.0f)
+			.noOcclusion()
+			.isRedstoneConductor((state, level, pos) -> false), CBCAutocannonMaterials.STEEL));
+
+	public static final DeferredHolder<Block, LargeAutocannonBarrelBlock> STEEL_TWIN_LARGE_AUTOCANNON_BARREL = BLOCKS.register("steel_twin_large_autocannon_barrel",
+		() -> new LargeAutocannonBarrelBlock(BlockBehaviour.Properties.of()
+			.mapColor(MapColor.METAL)
+			.requiresCorrectToolForDrops()
+			.strength(3.5f, 6.0f)
+			.noOcclusion()
+			.isRedstoneConductor((state, level, pos) -> false), CBCAutocannonMaterials.STEEL));
+
+	public static final DeferredHolder<Block, LargeAutocannonMuzzleBrakeBlock> STEEL_TWIN_LARGE_AUTOCANNON_MUZZLE_BRAKE = BLOCKS.register("steel_twin_large_autocannon_muzzle_brake",
+		() -> new LargeAutocannonMuzzleBrakeBlock(BlockBehaviour.Properties.of()
+			.mapColor(MapColor.METAL)
+			.requiresCorrectToolForDrops()
+			.strength(3.5f, 6.0f)
+			.noOcclusion()
+			.isRedstoneConductor((state, level, pos) -> false), CBCAutocannonMaterials.STEEL));
 
 	public static final DeferredHolder<Block, CannonMagazineLoaderBlock> CANNON_MAGAZINE_LOADER = BLOCKS.register("cannon_magazine_loader",
 		() -> new CannonMagazineLoaderBlock(BlockBehaviour.Properties.of()

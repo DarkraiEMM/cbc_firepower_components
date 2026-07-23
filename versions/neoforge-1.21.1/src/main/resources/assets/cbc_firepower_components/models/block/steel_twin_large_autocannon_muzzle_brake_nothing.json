@@ -1,0 +1,251 @@
+{
+    "credit":  "Original twin-muzzle geometry for CBC: Firepower Components",
+    "texture_size":  [
+                         16,
+                         16
+                     ],
+    "textures":  {
+                     "side":  "cbc_firepower_components:block/large_autocannon/steel_large_autocannon_muzzle_brake_side",
+                     "front":  "cbc_firepower_components:block/large_autocannon/steel_large_autocannon_muzzle_brake_front",
+                     "particle":  "cbc_firepower_components:block/large_autocannon/steel_large_autocannon_muzzle_brake_side",
+                     "port":  "cbc_firepower_components:block/large_autocannon/steel_large_autocannon_muzzle_brake_port"
+                 },
+    "elements":  [
+                     {
+                         "from":  [
+                                      1.25,
+                                      0,
+                                      5.25
+                                  ],
+                         "to":  [
+                                    6.75,
+                                    16,
+                                    10.75
+                                ],
+                         "faces":  {
+                                       "north":  {
+                                                     "uv":  [
+                                                                0,
+                                                                0,
+                                                                16,
+                                                                16
+                                                            ],
+                                                     "texture":  "#side"
+                                                 },
+                                       "south":  {
+                                                     "uv":  [
+                                                                0,
+                                                                0,
+                                                                16,
+                                                                16
+                                                            ],
+                                                     "texture":  "#side"
+                                                 },
+                                       "east":  {
+                                                    "uv":  [
+                                                               0,
+                                                               0,
+                                                               16,
+                                                               16
+                                                           ],
+                                                    "texture":  "#side"
+                                                },
+                                       "west":  {
+                                                    "uv":  [
+                                                               0,
+                                                               0,
+                                                               16,
+                                                               16
+                                                           ],
+                                                    "texture":  "#side"
+                                                },
+                                       "down":  {
+                                                    "uv":  [
+                                                               0,
+                                                               0,
+                                                               16,
+                                                               16
+                                                           ],
+                                                    "texture":  "#front"
+                                                },
+                                       "up":  {
+                                                  "uv":  [
+                                                             0,
+                                                             0,
+                                                             16,
+                                                             16
+                                                         ],
+                                                  "texture":  "#front"
+                                              }
+                                   }
+                     },
+                     {
+                         "from":  [
+                                      9.25,
+                                      0,
+                                      5.25
+                                  ],
+                         "to":  [
+                                    14.75,
+                                    16,
+                                    10.75
+                                ],
+                         "faces":  {
+                                       "north":  {
+                                                     "uv":  [
+                                                                0,
+                                                                0,
+                                                                16,
+                                                                16
+                                                            ],
+                                                     "texture":  "#side"
+                                                 },
+                                       "south":  {
+                                                     "uv":  [
+                                                                0,
+                                                                0,
+                                                                16,
+                                                                16
+                                                            ],
+                                                     "texture":  "#side"
+                                                 },
+                                       "east":  {
+                                                    "uv":  [
+                                                               0,
+                                                               0,
+                                                               16,
+                                                               16
+                                                           ],
+                                                    "texture":  "#side"
+                                                },
+                                       "west":  {
+                                                    "uv":  [
+                                                               0,
+                                                               0,
+                                                               16,
+                                                               16
+                                                           ],
+                                                    "texture":  "#side"
+                                                },
+                                       "down":  {
+                                                    "uv":  [
+                                                               0,
+                                                               0,
+                                                               16,
+                                                               16
+                                                           ],
+                                                    "texture":  "#front"
+                                                },
+                                       "up":  {
+                                                  "uv":  [
+                                                             0,
+                                                             0,
+                                                             16,
+                                                             16
+                                                         ],
+                                                  "texture":  "#front"
+                                              }
+                                   }
+                     },
+                     {
+                         "from":  [
+                                      1.2400000000000002,
+                                      2,
+                                      5.24
+                                  ],
+                         "to":  [
+                                    6.76,
+                                    14,
+                                    10.76
+                                ],
+                         "faces":  {
+                                       "north":  {
+                                                     "uv":  [
+                                                                5.25,
+                                                                2,
+                                                                10.75,
+                                                                14
+                                                            ],
+                                                     "texture":  "#port"
+                                                 },
+                                       "east":  {
+                                                    "uv":  [
+                                                               5.25,
+                                                               2,
+                                                               10.75,
+                                                               14
+                                                           ],
+                                                    "texture":  "#port"
+                                                },
+                                       "south":  {
+                                                     "uv":  [
+                                                                5.25,
+                                                                2,
+                                                                10.75,
+                                                                14
+                                                            ],
+                                                     "texture":  "#port"
+                                                 },
+                                       "west":  {
+                                                    "uv":  [
+                                                               5.25,
+                                                               2,
+                                                               10.75,
+                                                               14
+                                                           ],
+                                                    "texture":  "#port"
+                                                }
+                                   }
+                     },
+                     {
+                         "from":  [
+                                      9.24,
+                                      2,
+                                      5.24
+                                  ],
+                         "to":  [
+                                    14.76,
+                                    14,
+                                    10.76
+                                ],
+                         "faces":  {
+                                       "north":  {
+                                                     "uv":  [
+                                                                5.25,
+                                                                2,
+                                                                10.75,
+                                                                14
+                                                            ],
+                                                     "texture":  "#port"
+                                                 },
+                                       "east":  {
+                                                    "uv":  [
+                                                               5.25,
+                                                               2,
+                                                               10.75,
+                                                               14
+                                                           ],
+                                                    "texture":  "#port"
+                                                },
+                                       "south":  {
+                                                     "uv":  [
+                                                                5.25,
+                                                                2,
+                                                                10.75,
+                                                                14
+                                                            ],
+                                                     "texture":  "#port"
+                                                 },
+                                       "west":  {
+                                                    "uv":  [
+                                                               5.25,
+                                                               2,
+                                                               10.75,
+                                                               14
+                                                           ],
+                                                    "texture":  "#port"
+                                                }
+                                   }
+                     }
+                 ]
+}
