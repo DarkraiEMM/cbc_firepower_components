@@ -27,24 +27,26 @@ public class MTClientEvents {
 			return;
 		connectedTextureModelsRegistered = true;
 
-		registerConnectedTextureModel(MTBlocks.STEEL_LARGE_AUTOCANNON_BARREL.get());
-		registerConnectedTextureModel(MTBlocks.STEEL_THICK_LARGE_AUTOCANNON_BARREL.get());
-		registerConnectedTextureModel(MTBlocks.LARGE_AUTOCANNON_BREECH.get());
-		registerConnectedTextureModel(MTBlocks.STEEL_LARGE_AUTOCANNON_MUZZLE_BRAKE.get());
-		registerConnectedTextureModel(MTBlocks.STEEL_TWIN_LARGE_AUTOCANNON_BARREL.get());
-		registerConnectedTextureModel(MTBlocks.TWIN_LARGE_AUTOCANNON_BREECH.get());
-		registerConnectedTextureModel(MTBlocks.STEEL_TWIN_LARGE_AUTOCANNON_MUZZLE_BRAKE.get());
+		registerDynamicConnectedTextureModel(MTBlocks.STEEL_LARGE_AUTOCANNON_BARREL.get());
+		registerDynamicConnectedTextureModel(MTBlocks.STEEL_THICK_LARGE_AUTOCANNON_BARREL.get());
+		registerDynamicConnectedTextureModel(MTBlocks.LARGE_AUTOCANNON_BREECH.get());
+		registerDynamicConnectedTextureModel(MTBlocks.STEEL_LARGE_AUTOCANNON_MUZZLE_BRAKE.get());
+		registerDynamicConnectedTextureModel(MTBlocks.STEEL_TWIN_LARGE_AUTOCANNON_BARREL.get());
+		registerDynamicConnectedTextureModel(MTBlocks.TWIN_LARGE_AUTOCANNON_BREECH.get());
+		registerDynamicConnectedTextureModel(MTBlocks.STEEL_TWIN_LARGE_AUTOCANNON_MUZZLE_BRAKE.get());
 	}
 
-	private static void registerConnectedTextureModel(Block block) {
+	private static void registerDynamicConnectedTextureModel(Block block) {
 		CreateClient.MODEL_SWAPPER.getCustomBlockModels().register(BuiltInRegistries.BLOCK.getKey(block),
-			model -> new CTModel(model, LARGE_AUTOCANNON_CT));
+			model -> new DynamicTwinAutocannonModel(new CTModel(model, LARGE_AUTOCANNON_CT)));
 	}
 
 	@SubscribeEvent
 	public static void registerRenderers(EntityRenderersEvent.RegisterRenderers event) {
 		event.registerBlockEntityRenderer(MTBlockEntities.COMPACT_CANNON_MOUNT.get(), CompactCannonMountLimiterRenderer::new);
 		event.registerBlockEntityRenderer(MTBlockEntities.CANNON_MAGAZINE_LOADER.get(), CannonMagazineLoaderRenderer::new);
+		event.registerBlockEntityRenderer(MTBlockEntities.LARGE_AUTOCANNON.get(), LargeAutocannonBlockRenderer::new);
+		event.registerBlockEntityRenderer(MTBlockEntities.LARGE_AUTOCANNON_BREECH.get(), LargeAutocannonBreechRenderer::new);
 		event.registerEntityRenderer(MTEntityTypes.LARGE_AUTOCANNON_AP_PROJECTILE.get(), AutocannonProjectileRenderer::new);
 		event.registerEntityRenderer(MTEntityTypes.LARGE_AUTOCANNON_HE_PROJECTILE.get(), AutocannonProjectileRenderer::new);
 	}
