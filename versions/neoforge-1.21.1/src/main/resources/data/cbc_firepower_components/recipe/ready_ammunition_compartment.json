@@ -1,0 +1,1 @@
+{"type":"minecraft:crafting_shaped","category":"misc","pattern":["IBI","BCB","IBI"],"key":{"I":{"item":"create:industrial_iron_block"},"B":{"item":"create:brass_sheet"},"C":{"item":"minecraft:chest"}},"result":{"id":"cbc_firepower_components:ready_ammunition_compartment","count":1}}

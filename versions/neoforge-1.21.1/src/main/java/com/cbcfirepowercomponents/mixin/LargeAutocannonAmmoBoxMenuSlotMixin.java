@@ -31,7 +31,7 @@ public abstract class LargeAutocannonAmmoBoxMenuSlotMixin extends Slot {
 
 	@Inject(method = "mayPlace", at = @At("HEAD"), cancellable = true)
 	private void cbcfpc$largeAmmoBoxMayPlace(ItemStack stack, CallbackInfoReturnable<Boolean> cir) {
-		if (!LargeAutocannonAmmoBoxCapacity.isLargeCapacityContainer(this.ammoContainer))
+		if (!LargeAutocannonAmmoBoxCapacity.isManagedContainer(this.ammoContainer))
 			return;
 		cir.setReturnValue(!this.isCreative
 			&& LargeAutocannonAmmoBoxCapacity.canPlace(this.ammoContainer, this.getContainerSlot(), stack));
@@ -39,7 +39,7 @@ public abstract class LargeAutocannonAmmoBoxMenuSlotMixin extends Slot {
 
 	@Inject(method = "getMaxStackSize", at = @At("HEAD"), cancellable = true)
 	private void cbcfpc$largeAmmoBoxMaxStackSize(ItemStack stack, CallbackInfoReturnable<Integer> cir) {
-		if (!LargeAutocannonAmmoBoxCapacity.isLargeCapacityContainer(this.ammoContainer))
+		if (!LargeAutocannonAmmoBoxCapacity.isManagedContainer(this.ammoContainer))
 			return;
 		cir.setReturnValue(this.isCreative ? 1
 			: LargeAutocannonAmmoBoxCapacity.getMaxStackSize(this.ammoContainer, this.getContainerSlot(), stack));

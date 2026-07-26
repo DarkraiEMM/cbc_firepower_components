@@ -17,7 +17,7 @@ public class LargeAutocannonAmmoBoxItem extends AutocannonAmmoContainerItem {
 	private static final String TOOLTIP_KEY = "block.cbc_firepower_components.large_autocannon_ammo_box.tooltip";
 
 	public LargeAutocannonAmmoBoxItem(Block block, Item.Properties properties) {
-		super(block, properties);
+		super(block, properties.stacksTo(1));
 	}
 
 	public static ItemStack sanitizeForCbcMagazine(ItemStack stack) {

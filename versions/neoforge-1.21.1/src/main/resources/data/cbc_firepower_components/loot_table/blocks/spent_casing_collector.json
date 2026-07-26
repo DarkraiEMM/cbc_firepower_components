@@ -1,0 +1,1 @@
+{"type":"minecraft:block","pools":[{"rolls":1,"entries":[{"type":"minecraft:item","name":"cbc_firepower_components:spent_casing_collector"}],"conditions":[{"condition":"minecraft:survives_explosion"}]}]}

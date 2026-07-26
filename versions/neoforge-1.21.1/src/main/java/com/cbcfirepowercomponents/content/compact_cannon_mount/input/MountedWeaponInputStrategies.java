@@ -6,6 +6,7 @@ import java.util.List;
 import javax.annotation.Nullable;
 
 import com.cbcfirepowercomponents.content.large_autocannon_ammo_box.LargeAutocannonAmmoBoxItem;
+import com.mojang.logging.LogUtils;
 
 import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.ItemStack;
@@ -19,8 +20,10 @@ import rbasamoyai.createbigcannons.cannons.big_cannons.breeches.quickfiring_bree
 import rbasamoyai.createbigcannons.munitions.autocannon.AutocannonAmmoItem;
 import rbasamoyai.createbigcannons.munitions.autocannon.ammo_container.AutocannonAmmoContainerItem;
 import rbasamoyai.createbigcannons.munitions.big_cannon.BigCannonMunitionBlock;
+import org.slf4j.Logger;
 
 public final class MountedWeaponInputStrategies {
+	private static final Logger LOGGER = LogUtils.getLogger();
 	private static final List<MountedWeaponInputStrategy> STRATEGIES = List.of(
 		new NormalAutocannonStrategy(),
 		new CBCMoreShellsStrategy(),
@@ -30,6 +33,14 @@ public final class MountedWeaponInputStrategies {
 	);
 
 	private MountedWeaponInputStrategies() {}
+
+	public static boolean usesNativeCannonMountLoading(AbstractMountedCannonContraption cannon) {
+		String className = cannon.getClass().getName();
+		return className.startsWith("com.cainiao1053.cbcmoreshells.cannon_control.contraption.Mounted")
+			|| className.equals("riftyboi.cbcmodernwarfare.cannon_control.contraption.MountedMediumcannonContraption")
+			|| className.equals("com.dsvv.cbcat.cannon.twin_autocannon.contraption.MountedTwinAutocannonContraption")
+			|| className.equals("com.dsvv.cbcat.cannon.heavy_autocannon.contraption.MountedHeavyAutocannonContraption");
+	}
 
 	public static boolean canInsert(MountedWeaponInputContext context, ItemStack stack) {
 		if (stack.isEmpty())
@@ -92,14 +103,20 @@ public final class MountedWeaponInputStrategies {
 			if (oldContainer.getItem() instanceof AutocannonAmmoContainerItem
 				&& AutocannonAmmoContainerItem.getTotalAmmoCount(oldContainer) > 0)
 				return stack;
+			if (!oldContainer.isEmpty() && stack.getCount() > 1)
+				return stack;
+
+			ItemStack remainder = stack.copy();
+			remainder.shrink(1);
 			if (simulate)
-				return ItemStack.EMPTY;
+				return oldContainer.isEmpty() ? remainder : oldContainer.copy();
+
 			ItemStack inserted = stack.copy();
 			inserted.setCount(1);
 			LargeAutocannonAmmoBoxItem.sanitizeForCbcMagazine(inserted);
 			breech.setMagazine(inserted);
 			breech.setChanged();
-			return oldContainer.isEmpty() ? ItemStack.EMPTY : oldContainer.copy();
+			return oldContainer.isEmpty() ? remainder : oldContainer.copy();
 		}
 
 		private static ItemStack insertLooseAutocannonAmmo(AbstractAutocannonBreechBlockEntity breech, ItemStack stack,
@@ -174,6 +191,7 @@ public final class MountedWeaponInputStrategies {
 		@Nullable private Class<?> contraptionClass;
 		@Nullable private Method[] methods;
 		private boolean resolved;
+		private boolean invocationFailureReported;
 
 		private CBCMoreShellsLoader(String contraptionClassName, String mountPointClassName, String... methodNames) {
 			this.contraptionClassName = contraptionClassName;
@@ -185,14 +203,21 @@ public final class MountedWeaponInputStrategies {
 			this.resolve();
 			if (this.contraptionClass == null || this.methods == null || !this.contraptionClass.isInstance(context.cannon()))
 				return stack;
-			try {
-				for (Method method : this.methods) {
+			for (Method method : this.methods) {
+				try {
 					Object result = method.invoke(null, stack, simulate, context.cannon(), context.entity());
 					if (result instanceof ItemStack remainder && !sameStackAndCount(remainder, stack))
 						return remainder;
+				} catch (ReflectiveOperationException | LinkageError exception) {
+					// Some CBCMS cannon variants reject their generic loader but
+					// accept the following customized loader. Do not abandon the
+					// fallback chain after the first reflective failure.
+					if (!this.invocationFailureReported) {
+						this.invocationFailureReported = true;
+						LOGGER.warn("CBCMS ammunition loader {} failed for {}; trying compatible fallbacks",
+							method.getName(), context.cannon().getClass().getName(), exception);
+					}
 				}
-			} catch (ReflectiveOperationException | LinkageError ignored) {
-				// CBCMS is optional; failed compatibility calls leave the stack untouched.
 			}
 			return stack;
 		}

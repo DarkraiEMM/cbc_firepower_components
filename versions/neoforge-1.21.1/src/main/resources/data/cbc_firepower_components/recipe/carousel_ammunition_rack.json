@@ -1,0 +1,1 @@
+{"type":"minecraft:crafting_shaped","category":"misc","pattern":["SBS","BCB","SAS"],"key":{"S":{"item":"create:sturdy_sheet"},"B":{"item":"create:brass_sheet"},"C":{"item":"minecraft:chest"},"A":{"item":"create:andesite_alloy"}},"result":{"id":"cbc_firepower_components:carousel_ammunition_rack","count":1}}

@@ -1,0 +1,1 @@
+{"type":"minecraft:block","pools":[{"rolls":1,"entries":[{"type":"minecraft:item","name":"cbc_firepower_components:carousel_ammunition_rack"}],"conditions":[{"condition":"minecraft:survives_explosion"}]}]}

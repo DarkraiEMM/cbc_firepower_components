@@ -30,5 +30,19 @@
         "maximum_elevation": 45
       }
     }
+  },
+  "cbc_firepower_components:vertical_compact_cannon_mount": {
+    "vertical_direction=down": {
+      "pitch_range": {
+        "maximum_depression": 45,
+        "maximum_elevation": 75
+      }
+    },
+    "vertical_direction=up": {
+      "pitch_range": {
+        "maximum_depression": 75,
+        "maximum_elevation": 45
+      }
+    }
   }
 }

@@ -14,12 +14,18 @@ import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.fml.common.EventBusSubscriber;
 import net.neoforged.neoforge.client.event.EntityRenderersEvent;
 import net.neoforged.neoforge.client.event.ModelEvent;
+import net.neoforged.neoforge.client.event.RegisterKeyMappingsEvent;
 import rbasamoyai.createbigcannons.munitions.autocannon.AutocannonProjectileRenderer;
 
 @EventBusSubscriber(modid = FirepowerComponents.MOD_ID, bus = EventBusSubscriber.Bus.MOD, value = Dist.CLIENT)
 public class MTClientEvents {
 	private static final LargeAutocannonCTBehaviour LARGE_AUTOCANNON_CT = new LargeAutocannonCTBehaviour();
 	private static boolean connectedTextureModelsRegistered;
+
+	@SubscribeEvent
+	public static void registerKeyMappings(RegisterKeyMappingsEvent event) {
+		event.register(MTKeyMappings.MEASURE_DISTANCE);
+	}
 
 	@SubscribeEvent
 	public static void registerConnectedTextureModels(ModelEvent.RegisterAdditional event) {
@@ -47,6 +53,7 @@ public class MTClientEvents {
 		event.registerBlockEntityRenderer(MTBlockEntities.CANNON_MAGAZINE_LOADER.get(), CannonMagazineLoaderRenderer::new);
 		event.registerBlockEntityRenderer(MTBlockEntities.LARGE_AUTOCANNON.get(), LargeAutocannonBlockRenderer::new);
 		event.registerBlockEntityRenderer(MTBlockEntities.LARGE_AUTOCANNON_BREECH.get(), LargeAutocannonBreechRenderer::new);
+		event.registerBlockEntityRenderer(MTBlockEntities.CAROUSEL_AMMUNITION_RACK.get(), CarouselAmmunitionRackRenderer::new);
 		event.registerEntityRenderer(MTEntityTypes.LARGE_AUTOCANNON_AP_PROJECTILE.get(), AutocannonProjectileRenderer::new);
 		event.registerEntityRenderer(MTEntityTypes.LARGE_AUTOCANNON_HE_PROJECTILE.get(), AutocannonProjectileRenderer::new);
 	}

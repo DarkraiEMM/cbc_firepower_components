@@ -1,0 +1,12 @@
+{
+  "multipart": [
+    {"when":{"facing":"north"},"apply":{"model":"cbc_firepower_components:block/ready_ammunition_compartment"}},
+    {"when":{"facing":"south"},"apply":{"model":"cbc_firepower_components:block/ready_ammunition_compartment","y":180}},
+    {"when":{"facing":"west"},"apply":{"model":"cbc_firepower_components:block/ready_ammunition_compartment","y":270}},
+    {"when":{"facing":"east"},"apply":{"model":"cbc_firepower_components:block/ready_ammunition_compartment","y":90}},
+    {"when":{"facing":"north","occupied":"true"},"apply":{"model":"cbc_firepower_components:block/ready_ammunition_compartment_ammunition"}},
+    {"when":{"facing":"south","occupied":"true"},"apply":{"model":"cbc_firepower_components:block/ready_ammunition_compartment_ammunition","y":180}},
+    {"when":{"facing":"west","occupied":"true"},"apply":{"model":"cbc_firepower_components:block/ready_ammunition_compartment_ammunition","y":270}},
+    {"when":{"facing":"east","occupied":"true"},"apply":{"model":"cbc_firepower_components:block/ready_ammunition_compartment_ammunition","y":90}}
+  ]
+}

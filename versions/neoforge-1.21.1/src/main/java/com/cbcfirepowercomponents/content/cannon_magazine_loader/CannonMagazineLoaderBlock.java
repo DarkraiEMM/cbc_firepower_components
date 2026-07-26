@@ -72,7 +72,8 @@ public class CannonMagazineLoaderBlock extends BaseEntityBlock {
 
 	private Direction findLinkedMount(LevelAccessor level, BlockPos pos) {
 		for (Direction direction : Direction.Plane.HORIZONTAL) {
-			if (level.getBlockState(pos.relative(direction)).is(MTBlocks.COMPACT_CANNON_MOUNT.get()))
+			if (level.getBlockState(pos.relative(direction)).is(MTBlocks.COMPACT_CANNON_MOUNT.get())
+				|| level.getBlockState(pos.relative(direction)).is(MTBlocks.VERTICAL_COMPACT_CANNON_MOUNT.get()))
 				return direction;
 		}
 		return null;

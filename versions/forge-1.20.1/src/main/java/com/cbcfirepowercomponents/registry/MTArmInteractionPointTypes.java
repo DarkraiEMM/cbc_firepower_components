@@ -172,16 +172,20 @@ public class MTArmInteractionPointTypes {
 			if (breech == null)
 				return stack;
 			ItemStack oldContainer = breech.getMagazine();
-			if (oldContainer.getItem() instanceof AutocannonAmmoContainerItem
-				&& AutocannonAmmoContainerItem.getTotalAmmoCount(oldContainer) > 0)
+			// An arm insertion has only one returned stack. Never swap a magazine
+			// here, otherwise a legacy stacked source could consume or overwrite
+			// more than the single container being transferred.
+			if (!oldContainer.isEmpty())
 				return stack;
+			ItemStack remainder = stack.copy();
+			remainder.shrink(1);
 			if (simulate)
-				return ItemStack.EMPTY;
+				return remainder;
 			ItemStack inserted = stack.copy();
 			inserted.setCount(1);
 			breech.setMagazine(inserted);
 			breech.setChanged();
-			return oldContainer.isEmpty() ? ItemStack.EMPTY : oldContainer.copy();
+			return remainder;
 		}
 
 		@Nullable
