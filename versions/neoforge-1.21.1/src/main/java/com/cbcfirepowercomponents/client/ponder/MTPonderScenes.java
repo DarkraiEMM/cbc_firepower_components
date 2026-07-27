@@ -15,8 +15,10 @@ public final class MTPonderScenes {
 	public static void register(PonderSceneRegistrationHelper<ResourceLocation> registration) {
 		PonderSceneRegistrationHelper<Item> helper = registration.withKeyFunction(BuiltInRegistries.ITEM::getKey);
 
-		helper.forComponents(MTItems.COMPACT_CANNON_MOUNT.get(), MTItems.COMPACT_AUTOCANNON_MOUNT.get())
+		helper.forComponents(MTItems.COMPACT_CANNON_MOUNT.get())
 			.addStoryBoard("mounts/compact", CannonMountScenes::compact);
+		helper.forComponents(MTItems.COMPACT_AUTOCANNON_MOUNT.get())
+			.addStoryBoard("mounts/compact", CannonMountScenes::compactAutocannon);
 		helper.forComponents(MTItems.VERTICAL_COMPACT_CANNON_MOUNT.get())
 			.addStoryBoard("mounts/vertical", CannonMountScenes::vertical);
 

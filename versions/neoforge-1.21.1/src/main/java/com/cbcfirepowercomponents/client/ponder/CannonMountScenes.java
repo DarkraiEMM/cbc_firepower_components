@@ -4,6 +4,7 @@ import com.cbcfirepowercomponents.content.compact_cannon_mount.CompactCannonMoun
 import com.cbcfirepowercomponents.registry.MTBlocks;
 import com.cbcfirepowercomponents.registry.MTItems;
 import com.simibubi.create.AllBlocks;
+import com.simibubi.create.AllItems;
 
 import net.createmod.catnip.math.Pointing;
 import net.createmod.ponder.api.PonderPalette;
@@ -16,102 +17,189 @@ import net.minecraft.core.Direction;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.DirectionalBlock;
+import net.minecraft.world.level.block.RotatedPillarBlock;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.Vec3;
+import rbasamoyai.createbigcannons.index.CBCBlocks;
+import rbasamoyai.createbigcannons.index.CBCItems;
 
 public final class CannonMountScenes {
 	private CannonMountScenes() {
 	}
 
 	public static void compact(SceneBuilder scene, SceneBuildingUtil util) {
-		SceneSupport.begin(scene, util, "compact_mounts", "Using Compact Cannon Mounts");
-		BlockPos mount = util.grid().at(4, 1, 4);
+		SceneSupport.begin(scene, util, "compact_mounts", "Using a Compact Cannon Mount");
+		BlockPos mount = util.grid().at(5, 2, 4);
+		BlockState mountState = MTBlocks.COMPACT_CANNON_MOUNT.get().defaultBlockState()
+			.setValue(CompactCannonMountBlock.HORIZONTAL_FACING, Direction.NORTH);
+		SceneSupport.place(scene, util, mount, mountState);
 
-		SceneSupport.place(scene, util, mount, MTBlocks.COMPACT_CANNON_MOUNT.get().defaultBlockState());
-		scene.overlay().showText(55)
-			.text("Compact mounts hold a cannon while occupying less room than a standard mounting")
-			.pointAt(util.vector().topOf(mount))
+		BlockPos cannonMountPoint = mount.west();
+		BlockPos breech = cannonMountPoint.south();
+		BlockPos chamber = cannonMountPoint;
+		BlockPos barrel = cannonMountPoint.north();
+		scene.overlay().showOutline(PonderPalette.GREEN, "cannon_side", util.select().position(cannonMountPoint), 45);
+		scene.overlay().showText(40)
+			.text("Build the cannon from this side of the mount")
+			.pointAt(util.vector().centerOf(cannonMountPoint))
 			.placeNearTarget();
-		scene.idle(65);
+		scene.idle(50);
 
-		BlockPos cannon = mount.above();
-		SceneSupport.place(scene, util, cannon, facing(MTBlocks.LARGE_AUTOCANNON_BREECH.get().defaultBlockState(), Direction.UP));
-		scene.overlay().showText(50)
-			.text("Place the supported cannon on the mounting side")
-			.pointAt(util.vector().centerOf(cannon))
+		SceneSupport.place(scene, util, breech,
+			facing(CBCBlocks.STEEL_QUICKFIRING_BREECH.getDefaultState(), Direction.NORTH));
+		SceneSupport.place(scene, util, chamber,
+			facing(CBCBlocks.STEEL_CANNON_CHAMBER.getDefaultState(), Direction.NORTH));
+		SceneSupport.place(scene, util, barrel,
+			facing(CBCBlocks.STEEL_CANNON_BARREL.getDefaultState(), Direction.NORTH));
+		scene.overlay().showText(45)
+			.text("Keep the breech and barrel on the same axis")
+			.pointAt(util.vector().centerOf(chamber))
 			.placeNearTarget();
-		scene.idle(60);
+		scene.idle(55);
 
-		BlockPos shaft = mount.west();
-		SceneSupport.place(scene, util, shaft, AllBlocks.SHAFT.getDefaultState());
-		scene.overlay().showText(55)
-			.text("Supply rotational force through a shaft face to aim the cannon")
-			.pointAt(util.vector().centerOf(shaft))
-			.placeNearTarget();
-		scene.idle(65);
-
-		BlockPos assemblyInput = mount.north();
-		BlockPos fireInput = mount.south();
+		BlockPos assemblyInput = mount.south();
+		BlockPos fireInput = mount.north();
 		SceneSupport.place(scene, util, assemblyInput, Blocks.LEVER.defaultBlockState());
 		SceneSupport.place(scene, util, fireInput, Blocks.LEVER.defaultBlockState());
-		scene.overlay().showOutline(PonderPalette.GREEN, "assembly", util.select().position(assemblyInput), 65);
-		scene.overlay().showOutline(PonderPalette.RED, "fire", util.select().position(fireInput), 65);
-		scene.overlay().showText(65)
-			.text("The opposite signal faces assemble the cannon and fire it")
-			.pointAt(util.vector().centerOf(mount))
-			.placeNearTarget();
-		scene.idle(75);
-
-		scene.world().setBlock(mount, MTBlocks.COMPACT_AUTOCANNON_MOUNT.get().defaultBlockState(), false);
-		scene.overlay().showControls(util.vector().topOf(mount), Pointing.DOWN, 30)
-			.withItem(new ItemStack(MTItems.COMPACT_AUTOCANNON_MOUNT.get()));
+		scene.overlay().showOutline(PonderPalette.GREEN, "assembly", util.select().position(assemblyInput), 45);
+		scene.world().toggleRedstonePower(util.select().position(assemblyInput));
+		scene.effects().indicateRedstone(assemblyInput);
 		scene.overlay().showText(45)
-			.text("The autocannon variant follows the same layout but only accepts autocannons")
-			.pointAt(util.vector().topOf(mount))
+			.text("Power this face to assemble the cannon")
+			.pointAt(util.vector().centerOf(assemblyInput))
+			.placeNearTarget();
+		scene.idle(55);
+
+		BlockPos yawShaft = mount.below();
+		BlockPos pitchShaft = mount.east();
+		SceneSupport.place(scene, util, yawShaft,
+			AllBlocks.SHAFT.getDefaultState().setValue(RotatedPillarBlock.AXIS, Direction.Axis.Y));
+		scene.overlay().showText(45)
+			.text("Drive the lower shaft to turn the mount horizontally")
+			.pointAt(util.vector().centerOf(yawShaft))
+			.placeNearTarget();
+		scene.idle(55);
+
+		SceneSupport.place(scene, util, pitchShaft,
+			AllBlocks.SHAFT.getDefaultState().setValue(RotatedPillarBlock.AXIS, Direction.Axis.X));
+		scene.overlay().showText(45)
+			.text("Drive the side shaft to raise or lower the cannon")
+			.pointAt(util.vector().centerOf(pitchShaft))
+			.placeNearTarget();
+		scene.idle(55);
+
+		scene.overlay().showOutline(PonderPalette.RED, "fire", util.select().position(fireInput), 45);
+		scene.world().toggleRedstonePower(util.select().position(fireInput));
+		scene.effects().indicateRedstone(fireInput);
+		scene.effects().emitParticles(util.vector().blockSurface(barrel, Direction.NORTH),
+			scene.effects().simpleParticleEmitter(net.minecraft.core.particles.ParticleTypes.FLAME,
+				util.vector().of(0, 0, -0.12)), 1, 8);
+		scene.overlay().showText(45)
+			.text("Power the opposite face to fire the loaded cannon")
+			.pointAt(util.vector().centerOf(fireInput))
 			.placeNearTarget();
 		scene.idle(55);
 		SceneSupport.finish(scene);
 	}
 
+	public static void compactAutocannon(SceneBuilder scene, SceneBuildingUtil util) {
+		SceneSupport.begin(scene, util, "compact_autocannon_mount", "Using a Compact Autocannon Mount");
+		BlockPos mount = util.grid().at(4, 1, 4);
+		SceneSupport.place(scene, util, mount, MTBlocks.COMPACT_AUTOCANNON_MOUNT.get().defaultBlockState());
+
+		BlockPos cannonMountPoint = mount.above();
+		BlockPos breech = cannonMountPoint.south();
+		BlockPos recoilSpring = cannonMountPoint;
+		BlockPos barrel = cannonMountPoint.north();
+		scene.overlay().showText(40)
+			.text("Build a CBC autocannon above the mount")
+			.pointAt(util.vector().centerOf(breech))
+			.placeNearTarget();
+		scene.idle(50);
+
+		SceneSupport.place(scene, util, breech,
+			facing(CBCBlocks.STEEL_AUTOCANNON_BREECH.getDefaultState(), Direction.NORTH));
+		SceneSupport.place(scene, util, recoilSpring,
+			facing(CBCBlocks.STEEL_AUTOCANNON_RECOIL_SPRING.getDefaultState(), Direction.NORTH));
+		SceneSupport.place(scene, util, barrel,
+			facing(CBCBlocks.STEEL_AUTOCANNON_BARREL.getDefaultState(), Direction.NORTH));
+		scene.overlay().showText(45)
+			.text("Align the breech, recoil spring and barrel")
+			.pointAt(util.vector().centerOf(recoilSpring))
+			.placeNearTarget();
+		scene.idle(55);
+
+		scene.overlay().showControls(util.vector().topOf(breech), Pointing.DOWN, 35)
+			.withItem(filledAutocannonCartridge());
+		scene.overlay().showText(45)
+			.text("Load CBC autocannon cartridges into the breech")
+			.pointAt(util.vector().centerOf(breech))
+			.placeNearTarget();
+		scene.idle(55);
+
+		scene.effects().emitParticles(util.vector().blockSurface(barrel, Direction.NORTH),
+			scene.effects().simpleParticleEmitter(net.minecraft.core.particles.ParticleTypes.FLAME,
+				util.vector().of(0, 0, -0.12)), 1, 8);
+		scene.overlay().showText(40)
+			.text("Assemble, aim and fire it like the cannon mount")
+			.pointAt(util.vector().centerOf(mount))
+			.placeNearTarget();
+		scene.idle(50);
+		SceneSupport.finish(scene);
+	}
+
 	public static void vertical(SceneBuilder scene, SceneBuildingUtil util) {
-		SceneSupport.begin(scene, util, "vertical_compact_mount", "Mounting Cannons Vertically");
-		BlockPos mount = util.grid().at(4, 2, 4);
+		SceneSupport.begin(scene, util, "vertical_compact_mount", "Using a Vertical Compact Cannon Mount");
+		BlockPos mount = util.grid().at(3, 2, 4);
 
 		SceneSupport.place(scene, util, mount, MTBlocks.VERTICAL_COMPACT_CANNON_MOUNT.get().defaultBlockState());
-		scene.overlay().showText(55)
-			.text("This two-support mounting places the cannon directly above or below its base")
-			.pointAt(util.vector().centerOf(mount))
-			.placeNearTarget();
-		scene.idle(65);
-
 		scene.overlay().showLine(PonderPalette.GREEN, util.vector().of(2.7, 2.5, 4.5),
-			util.vector().of(5.3, 2.5, 4.5), 55);
-		scene.overlay().showText(50)
-			.text("The connecting trunnion remains horizontal between the supports")
+			util.vector().of(4.3, 2.5, 4.5), 45);
+		scene.overlay().showText(40)
+			.text("Keep the trunnion horizontal between the supports")
 			.pointAt(util.vector().centerOf(mount))
 			.placeNearTarget();
-		scene.idle(60);
+		scene.idle(50);
 
 		BlockPos upperCannon = mount.above();
+		SceneSupport.place(scene, util, upperCannon.south(),
+			facing(CBCBlocks.STEEL_QUICKFIRING_BREECH.getDefaultState(), Direction.NORTH));
 		SceneSupport.place(scene, util, upperCannon,
-			facing(MTBlocks.LARGE_AUTOCANNON_BREECH.get().defaultBlockState(), Direction.UP));
+			facing(CBCBlocks.STEEL_CANNON_CHAMBER.getDefaultState(), Direction.NORTH));
+		SceneSupport.place(scene, util, upperCannon.north(),
+			facing(CBCBlocks.STEEL_CANNON_BARREL.getDefaultState(), Direction.NORTH));
 		scene.overlay().showText(45)
-			.text("In its default orientation, the cannon is installed above the mount")
+			.text("Build the cannon above the mount and align it with the trunnion")
 			.pointAt(util.vector().centerOf(upperCannon))
 			.placeNearTarget();
 		scene.idle(55);
 
+		scene.overlay().showControls(util.vector().topOf(mount), Pointing.DOWN, 30)
+			.withItem(new ItemStack(AllItems.WRENCH.get()))
+			.rightClick();
+		scene.overlay().showText(40)
+			.text("Use a wrench to switch the mounting side")
+			.pointAt(util.vector().centerOf(mount))
+			.placeNearTarget();
+		scene.idle(50);
+
+		scene.world().destroyBlock(upperCannon.south());
 		scene.world().destroyBlock(upperCannon);
+		scene.world().destroyBlock(upperCannon.north());
 		scene.world().modifyBlock(mount,
 			state -> state.setValue(CompactCannonMountBlock.VERTICAL_DIRECTION, Direction.UP), false);
 		BlockPos lowerCannon = mount.below();
+		SceneSupport.place(scene, util, lowerCannon.south(),
+			facing(CBCBlocks.STEEL_QUICKFIRING_BREECH.getDefaultState(), Direction.NORTH));
 		SceneSupport.place(scene, util, lowerCannon,
-			facing(MTBlocks.LARGE_AUTOCANNON_BREECH.get().defaultBlockState(), Direction.DOWN));
-		scene.overlay().showText(55)
-			.text("Rotate the mount vertically when the cannon must hang below it")
+			facing(CBCBlocks.STEEL_CANNON_CHAMBER.getDefaultState(), Direction.NORTH));
+		SceneSupport.place(scene, util, lowerCannon.north(),
+			facing(CBCBlocks.STEEL_CANNON_BARREL.getDefaultState(), Direction.NORTH));
+		scene.overlay().showText(45)
+			.text("The cannon can also be assembled below the mount")
 			.pointAt(util.vector().centerOf(lowerCannon))
 			.placeNearTarget();
-		scene.idle(65);
+		scene.idle(55);
 		SceneSupport.finish(scene);
 	}
 
@@ -219,5 +307,12 @@ public final class CannonMountScenes {
 		return state
 			.setValue(com.cbcfirepowercomponents.content.large_autocannon.LargeAutocannonBarrelBlock.CONNECTED_FRONT, front)
 			.setValue(com.cbcfirepowercomponents.content.large_autocannon.LargeAutocannonBarrelBlock.CONNECTED_BACK, back);
+	}
+
+	private static ItemStack filledAutocannonCartridge() {
+		ItemStack cartridge = new ItemStack(CBCItems.AUTOCANNON_CARTRIDGE.get());
+		rbasamoyai.createbigcannons.munitions.autocannon.AutocannonCartridgeItem.writeProjectile(
+			cartridge, new ItemStack(CBCItems.AP_AUTOCANNON_ROUND.get()));
+		return cartridge;
 	}
 }
