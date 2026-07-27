@@ -159,6 +159,8 @@ public final class AmmunitionScenes {
 		SceneSupport.begin(scene, util, "carousel_ammunition_rack", "Using the Carousel Ammunition Rack");
 		BlockPos carousel = util.grid().at(4, 1, 4);
 		SceneSupport.place(scene, util, carousel, MTBlocks.CAROUSEL_AMMUNITION_RACK.get().defaultBlockState());
+		scene.world().showSection(util.select().fromTo(3, 1, 3, 5, 1, 5), Direction.DOWN);
+		scene.idle(12);
 
 		scene.overlay().showOutline(PonderPalette.GREEN, "footprint",
 			util.select().fromTo(3, 1, 3, 5, 1, 5), 60);
@@ -187,7 +189,7 @@ public final class AmmunitionScenes {
 
 		scene.rotateCameraY(45);
 		ElementLink<WorldSectionElement> rotatingRing =
-			scene.world().makeSectionIndependent(util.select().position(carousel));
+			scene.world().makeSectionIndependent(util.select().fromTo(3, 1, 3, 5, 1, 5));
 		scene.world().configureCenterOfRotation(rotatingRing, util.vector().centerOf(carousel));
 		scene.world().rotateSection(rotatingRing, 0, 45, 0, 20);
 		scene.idle(22);

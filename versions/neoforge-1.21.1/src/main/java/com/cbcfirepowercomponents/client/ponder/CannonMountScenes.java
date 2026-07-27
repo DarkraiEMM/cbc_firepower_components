@@ -15,6 +15,8 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.block.Blocks;
+import net.minecraft.world.level.block.DirectionalBlock;
+import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.Vec3;
 
 public final class CannonMountScenes {
@@ -33,7 +35,7 @@ public final class CannonMountScenes {
 		scene.idle(65);
 
 		BlockPos cannon = mount.above();
-		SceneSupport.place(scene, util, cannon, MTBlocks.LARGE_AUTOCANNON_BREECH.get().defaultBlockState());
+		SceneSupport.place(scene, util, cannon, facing(MTBlocks.LARGE_AUTOCANNON_BREECH.get().defaultBlockState(), Direction.UP));
 		scene.overlay().showText(50)
 			.text("Place the supported cannon on the mounting side")
 			.pointAt(util.vector().centerOf(cannon))
@@ -91,7 +93,8 @@ public final class CannonMountScenes {
 		scene.idle(60);
 
 		BlockPos upperCannon = mount.above();
-		SceneSupport.place(scene, util, upperCannon, MTBlocks.LARGE_AUTOCANNON_BREECH.get().defaultBlockState());
+		SceneSupport.place(scene, util, upperCannon,
+			facing(MTBlocks.LARGE_AUTOCANNON_BREECH.get().defaultBlockState(), Direction.UP));
 		scene.overlay().showText(45)
 			.text("In its default orientation, the cannon is installed above the mount")
 			.pointAt(util.vector().centerOf(upperCannon))
@@ -102,7 +105,8 @@ public final class CannonMountScenes {
 		scene.world().modifyBlock(mount,
 			state -> state.setValue(CompactCannonMountBlock.VERTICAL_DIRECTION, Direction.UP), false);
 		BlockPos lowerCannon = mount.below();
-		SceneSupport.place(scene, util, lowerCannon, MTBlocks.LARGE_AUTOCANNON_BREECH.get().defaultBlockState());
+		SceneSupport.place(scene, util, lowerCannon,
+			facing(MTBlocks.LARGE_AUTOCANNON_BREECH.get().defaultBlockState(), Direction.DOWN));
 		scene.overlay().showText(55)
 			.text("Rotate the mount vertically when the cannon must hang below it")
 			.pointAt(util.vector().centerOf(lowerCannon))
@@ -118,22 +122,26 @@ public final class CannonMountScenes {
 		BlockPos thickBarrel = barrel.east();
 		BlockPos muzzleBrake = thickBarrel.east();
 
-		SceneSupport.place(scene, util, breech, MTBlocks.LARGE_AUTOCANNON_BREECH.get().defaultBlockState());
+		SceneSupport.place(scene, util, breech, connected(
+			facing(MTBlocks.LARGE_AUTOCANNON_BREECH.get().defaultBlockState(), Direction.EAST), true, false));
 		scene.overlay().showText(40)
 			.text("Begin with the large autocannon breech")
 			.pointAt(util.vector().centerOf(breech))
 			.placeNearTarget();
 		scene.idle(50);
 
-		SceneSupport.place(scene, util, barrel, MTBlocks.STEEL_LARGE_AUTOCANNON_BARREL.get().defaultBlockState());
-		SceneSupport.place(scene, util, thickBarrel, MTBlocks.STEEL_THICK_LARGE_AUTOCANNON_BARREL.get().defaultBlockState());
+		SceneSupport.place(scene, util, barrel, connected(
+			facing(MTBlocks.STEEL_LARGE_AUTOCANNON_BARREL.get().defaultBlockState(), Direction.EAST), true, true));
+		SceneSupport.place(scene, util, thickBarrel, connected(
+			facing(MTBlocks.STEEL_THICK_LARGE_AUTOCANNON_BARREL.get().defaultBlockState(), Direction.EAST), true, true));
 		scene.overlay().showText(55)
 			.text("Continue the connected barrel in one straight line")
 			.pointAt(util.vector().centerOf(thickBarrel))
 			.placeNearTarget();
 		scene.idle(65);
 
-		SceneSupport.place(scene, util, muzzleBrake, MTBlocks.STEEL_LARGE_AUTOCANNON_MUZZLE_BRAKE.get().defaultBlockState());
+		SceneSupport.place(scene, util, muzzleBrake, connected(
+			facing(MTBlocks.STEEL_LARGE_AUTOCANNON_MUZZLE_BRAKE.get().defaultBlockState(), Direction.EAST), false, true));
 		scene.overlay().showText(55)
 			.text("A muzzle brake reduces recoil and shortens the visible rearward travel")
 			.pointAt(util.vector().centerOf(muzzleBrake))
@@ -170,9 +178,12 @@ public final class CannonMountScenes {
 		BlockPos barrel = breech.east();
 		BlockPos muzzleBrake = barrel.east();
 
-		SceneSupport.place(scene, util, breech, MTBlocks.TWIN_LARGE_AUTOCANNON_BREECH.get().defaultBlockState());
-		SceneSupport.place(scene, util, barrel, MTBlocks.STEEL_TWIN_LARGE_AUTOCANNON_BARREL.get().defaultBlockState());
-		SceneSupport.place(scene, util, muzzleBrake, MTBlocks.STEEL_TWIN_LARGE_AUTOCANNON_MUZZLE_BRAKE.get().defaultBlockState());
+		SceneSupport.place(scene, util, breech, connected(
+			facing(MTBlocks.TWIN_LARGE_AUTOCANNON_BREECH.get().defaultBlockState(), Direction.EAST), true, false));
+		SceneSupport.place(scene, util, barrel, connected(
+			facing(MTBlocks.STEEL_TWIN_LARGE_AUTOCANNON_BARREL.get().defaultBlockState(), Direction.EAST), true, true));
+		SceneSupport.place(scene, util, muzzleBrake, connected(
+			facing(MTBlocks.STEEL_TWIN_LARGE_AUTOCANNON_MUZZLE_BRAKE.get().defaultBlockState(), Direction.EAST), false, true));
 		scene.overlay().showText(55)
 			.text("Twin components form two parallel firing channels")
 			.pointAt(util.vector().centerOf(barrel))
@@ -198,5 +209,15 @@ public final class CannonMountScenes {
 			.placeNearTarget();
 		scene.idle(65);
 		SceneSupport.finish(scene);
+	}
+
+	private static BlockState facing(BlockState state, Direction direction) {
+		return state.setValue(DirectionalBlock.FACING, direction);
+	}
+
+	private static BlockState connected(BlockState state, boolean front, boolean back) {
+		return state
+			.setValue(com.cbcfirepowercomponents.content.large_autocannon.LargeAutocannonBarrelBlock.CONNECTED_FRONT, front)
+			.setValue(com.cbcfirepowercomponents.content.large_autocannon.LargeAutocannonBarrelBlock.CONNECTED_BACK, back);
 	}
 }
