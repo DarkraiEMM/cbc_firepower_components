@@ -1,11 +1,11 @@
 package com.cbcfirepowercomponents.mixin.radar;
 
 import com.cbcfirepowercomponents.compat.radar.RadarCompactMountCompat;
-import com.cbcfirepowercomponents.content.compact_cannon_mount.CompactCannonMountBlock;
+import com.cbcfirepowercomponents.content.compact_cannon_mount.CompactCannonMountBlockEntity;
 
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.item.context.UseOnContext;
-import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.block.entity.BlockEntity;
 
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
@@ -20,9 +20,9 @@ public abstract class DataLinkBlockItemMixin {
 			cir.setReturnValue(InteractionResult.SUCCESS);
 	}
 
-	@Inject(method = "isMount", at = @At("HEAD"), cancellable = true, remap = false)
-	private static void cbcfpc$isCompactMount(BlockState state, CallbackInfoReturnable<Boolean> cir) {
-		if (state.getBlock() instanceof CompactCannonMountBlock)
+	@Inject(method = "isCannonMountBE", at = @At("HEAD"), cancellable = true, remap = false)
+	private static void cbcfpc$isCompactMount(BlockEntity blockEntity, CallbackInfoReturnable<Boolean> cir) {
+		if (blockEntity instanceof CompactCannonMountBlockEntity)
 			cir.setReturnValue(true);
 	}
 }
