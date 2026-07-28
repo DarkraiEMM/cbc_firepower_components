@@ -6,9 +6,11 @@
   "mixins": [
     "AutocannonAmmoContainerItemContainerAccessor",
     "AutocannonAmmoContainerWrapperAccessor",
+    "CannonMountPointAmmoCompatMixin",
     "ControlPitchContraptionCompatMixin",
     "LargeAutocannonAmmoBoxContainerWrapperMixin",
     "LargeAutocannonAmmoBoxMenuSlotMixin",
+    "MountedAutocannonContraptionTwinFireMixin",
     "radar.AutoPitchControllerAccessor",
     "radar.AutoPitchControllerBlockEntityMixin",
     "radar.AutoYawControllerAccessor",

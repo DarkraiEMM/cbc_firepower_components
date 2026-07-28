@@ -1,5 +1,6 @@
 package com.cbcfirepowercomponents.content.compact_cannon_mount.input;
 
+import java.lang.reflect.Method;
 import java.util.List;
 
 import javax.annotation.Nullable;
@@ -22,6 +23,7 @@ import rbasamoyai.createbigcannons.munitions.big_cannon.BigCannonMunitionBlock;
 public final class MountedWeaponInputStrategies {
 	private static final List<MountedWeaponInputStrategy> STRATEGIES = List.of(
 		new NormalAutocannonStrategy(),
+		new CBCMoreShellsStrategy(),
 		new ItemCannonStrategy(),
 		new BigCannonStrategy(),
 		new MountedItemHandlerStrategy()
@@ -126,6 +128,90 @@ public final class MountedWeaponInputStrategies {
 		public ItemStack insert(MountedWeaponInputContext context, ItemStack stack, boolean simulate) {
 			ItemCannon itemCannon = context.itemCannon();
 			return itemCannon == null ? stack : itemCannon.insertItemIntoCannon(stack, simulate);
+		}
+	}
+
+	/**
+	 * CBC Military Supplement uses its own mounted-cannon classes and arm-loading
+	 * entry points. Reflection keeps that optional dependency out of the base mod.
+	 */
+	private static final class CBCMoreShellsStrategy implements MountedWeaponInputStrategy {
+		private static final List<CBCMoreShellsLoader> LOADERS = List.of(
+			new CBCMoreShellsLoader(
+				"com.cainiao1053.cbcmoreshells.cannon_control.contraption.MountedDualCannonContraption",
+				"com.cainiao1053.cbcmoreshells.cannons.dual_cannon.breeches.quick_firing_breech.DualCannonMountPoint",
+				"dualCannonInsert", "dualCannonInsertCustomized"),
+			new CBCMoreShellsLoader(
+				"com.cainiao1053.cbcmoreshells.cannon_control.contraption.MountedProjectileRackContraption",
+				"com.cainiao1053.cbcmoreshells.cannons.projectile_rack.breeches.quick_firing_breech.ProjectileRackCannonMountPoint",
+				"projectileRackInsert"),
+			new CBCMoreShellsLoader(
+				"com.cainiao1053.cbcmoreshells.cannon_control.contraption.MountedTorpedoTubeContraption",
+				"com.cainiao1053.cbcmoreshells.cannons.torpedo_tube.breeches.quick_firing_breech.TorpedoCannonMountPoint",
+				"torpedoTubeInsert", "torpedoTubeInsertCustom")
+		);
+
+		@Override
+		public boolean canInsert(MountedWeaponInputContext context, ItemStack stack) {
+			return !sameStackAndCount(this.insert(context, stack, true), stack);
+		}
+
+		@Override
+		public ItemStack insert(MountedWeaponInputContext context, ItemStack stack, boolean simulate) {
+			for (CBCMoreShellsLoader loader : LOADERS) {
+				ItemStack result = loader.insert(context, stack, simulate);
+				if (!sameStackAndCount(result, stack))
+					return result;
+			}
+			return stack;
+		}
+	}
+
+	private static final class CBCMoreShellsLoader {
+		private final String contraptionClassName;
+		private final String mountPointClassName;
+		private final String[] methodNames;
+		@Nullable private Class<?> contraptionClass;
+		@Nullable private Method[] methods;
+		private boolean resolved;
+
+		private CBCMoreShellsLoader(String contraptionClassName, String mountPointClassName, String... methodNames) {
+			this.contraptionClassName = contraptionClassName;
+			this.mountPointClassName = mountPointClassName;
+			this.methodNames = methodNames;
+		}
+
+		private ItemStack insert(MountedWeaponInputContext context, ItemStack stack, boolean simulate) {
+			this.resolve();
+			if (this.contraptionClass == null || this.methods == null || !this.contraptionClass.isInstance(context.cannon()))
+				return stack;
+			try {
+				for (Method method : this.methods) {
+					Object result = method.invoke(null, stack, simulate, context.cannon(), context.entity());
+					if (result instanceof ItemStack remainder && !sameStackAndCount(remainder, stack))
+						return remainder;
+				}
+			} catch (ReflectiveOperationException | LinkageError ignored) {
+				// CBCMS is optional; failed compatibility calls leave the stack untouched.
+			}
+			return stack;
+		}
+
+		private void resolve() {
+			if (this.resolved)
+				return;
+			this.resolved = true;
+			try {
+				this.contraptionClass = Class.forName(this.contraptionClassName);
+				Class<?> mountPointClass = Class.forName(this.mountPointClassName);
+				this.methods = new Method[this.methodNames.length];
+				for (int i = 0; i < this.methodNames.length; ++i)
+					this.methods[i] = mountPointClass.getMethod(this.methodNames[i], ItemStack.class, boolean.class,
+						this.contraptionClass, rbasamoyai.createbigcannons.cannon_control.contraption.PitchOrientedContraptionEntity.class);
+			} catch (ReflectiveOperationException | LinkageError ignored) {
+				this.contraptionClass = null;
+				this.methods = null;
+			}
 		}
 	}
 
