@@ -745,17 +745,20 @@ public class CompactCannonMountBlockEntity extends SmartBlockEntity implements I
 		if (breech == null)
 			return stack;
 		ItemStack oldContainer = breech.getMagazine();
-		if (oldContainer.getItem() instanceof AutocannonAmmoContainerItem
-			&& AutocannonAmmoContainerItem.getTotalAmmoCount(oldContainer) > 0)
+		// IItemHandler can return only one remainder stack. Refuse a swap so an
+		// existing magazine and a legacy stacked source can never be merged or lost.
+		if (!oldContainer.isEmpty())
 			return stack;
+		ItemStack remainder = stack.copy();
+		remainder.shrink(1);
 		if (simulate)
-			return ItemStack.EMPTY;
+			return remainder;
 		ItemStack inserted = stack.copy();
 		inserted.setCount(1);
 		LargeAutocannonAmmoBoxItem.sanitizeForCbcMagazine(inserted);
 		breech.setMagazine(inserted);
 		breech.setChanged();
-		return oldContainer.isEmpty() ? ItemStack.EMPTY : oldContainer.copy();
+		return remainder;
 	}
 
 	private ItemStack insertLooseAutocannonAmmo(ItemStack stack, boolean simulate) {

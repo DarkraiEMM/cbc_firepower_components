@@ -5,6 +5,7 @@ import com.cbcfirepowercomponents.registry.MTEntityTypes;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
+import rbasamoyai.createbigcannons.index.CBCDataComponents;
 import rbasamoyai.createbigcannons.index.CBCItems;
 import rbasamoyai.createbigcannons.munitions.autocannon.AbstractAutocannonProjectile;
 import rbasamoyai.createbigcannons.munitions.autocannon.AutocannonAmmoItem;
@@ -51,7 +52,7 @@ public class LargeAutocannonRoundItem extends APAutocannonRoundItem implements A
 
 	@Override
 	public boolean isTracer(ItemStack stack) {
-		return false;
+		return stack.getOrDefault(CBCDataComponents.AUTOCANNON_TRACER, false);
 	}
 
 	public boolean isIncendiary(ItemStack stack) {
@@ -60,6 +61,10 @@ public class LargeAutocannonRoundItem extends APAutocannonRoundItem implements A
 
 	@Override
 	public void setTracer(ItemStack stack, boolean tracer) {
+		if (tracer)
+			stack.set(CBCDataComponents.AUTOCANNON_TRACER, true);
+		else
+			stack.remove(CBCDataComponents.AUTOCANNON_TRACER);
 	}
 
 	@Override

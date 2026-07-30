@@ -1,9 +1,8 @@
 package com.cbcfirepowercomponents.content.cannon_magazine_loader;
 
-import java.util.List;
-
 import javax.annotation.Nullable;
 
+import com.cbcfirepowercomponents.content.CannonAmmunitionHelper;
 import com.cbcfirepowercomponents.content.compact_cannon_mount.CompactCannonMountBlockEntity;
 import com.cbcfirepowercomponents.registry.MTBlockEntities;
 import com.simibubi.create.content.contraptions.AbstractContraptionEntity;
@@ -18,7 +17,6 @@ import net.minecraft.network.protocol.game.ClientGamePacketListener;
 import net.minecraft.network.protocol.game.ClientboundBlockEntityDataPacket;
 import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.component.ItemContainerContents;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.entity.BlockEntity;
@@ -32,15 +30,12 @@ import rbasamoyai.createbigcannons.cannons.big_cannons.BigCannonBehavior;
 import rbasamoyai.createbigcannons.cannons.big_cannons.BigCannonBlock;
 import rbasamoyai.createbigcannons.cannons.big_cannons.IBigCannonBlockEntity;
 import rbasamoyai.createbigcannons.cannons.big_cannons.breeches.quickfiring_breech.CannonMountPoint;
-import rbasamoyai.createbigcannons.index.CBCDataComponents;
 import rbasamoyai.createbigcannons.munitions.big_cannon.BigCannonMunitionBlock;
-import rbasamoyai.createbigcannons.munitions.big_cannon.FuzedProjectileBlock;
 import rbasamoyai.createbigcannons.munitions.big_cannon.ProjectileBlock;
-import rbasamoyai.createbigcannons.munitions.big_cannon.ProjectileBlockItem;
-import rbasamoyai.createbigcannons.munitions.big_cannon.propellant.BigCannonPropellantBlock;
 import rbasamoyai.createbigcannons.munitions.big_cannon.propellant.BigCartridgeBlock;
 import rbasamoyai.createbigcannons.munitions.big_cannon.propellant.BigCartridgeBlockItem;
-import rbasamoyai.createbigcannons.munitions.fuzes.FuzeItem;
+
+import static com.cbcfirepowercomponents.content.CannonAmmunitionHelper.*;
 
 public class CannonMagazineLoaderBlockEntity extends BlockEntity {
 	public static final int GROUP_COUNT = 3;
@@ -536,49 +531,12 @@ public class CannonMagazineLoaderBlockEntity extends BlockEntity {
 			|| isCartridgeSlot(slot) && isPropellant(stack);
 	}
 
-	private static boolean isProjectile(ItemStack stack) {
-		return stack.getItem() instanceof ProjectileBlockItem
-			|| stack.getItem() instanceof BlockItem blockItem && blockItem.getBlock() instanceof ProjectileBlock;
-	}
-
-	private static boolean isLoadReadyProjectile(ItemStack stack) {
-		return isProjectile(stack) && !canApplyFuze(stack);
-	}
-
-	private static boolean isPropellant(ItemStack stack) {
-		if (!(stack.getItem() instanceof BlockItem blockItem))
-			return false;
-		Block block = blockItem.getBlock();
-		if (block instanceof BigCartridgeBlock)
-			return stack.getItem() instanceof BigCartridgeBlockItem && BigCartridgeBlockItem.getPower(stack) > 0;
-		return block instanceof BigCannonPropellantBlock;
-	}
-
-	private static boolean isFuze(ItemStack stack) {
-		return stack.getItem() instanceof FuzeItem;
-	}
-
-	private static boolean canApplyFuze(ItemStack projectile) {
-		return projectile.getItem() instanceof BlockItem blockItem
-			&& blockItem.getBlock() instanceof FuzedProjectileBlock
-			&& FuzedProjectileBlock.getFuzeFromItemStack(projectile).isEmpty();
-	}
-
-	private static void applyFuze(ItemStack projectile, ItemStack fuze) {
-		projectile.set(CBCDataComponents.FUZE, ItemContainerContents.fromItems(List.of(fuze.copyWithCount(1))));
-	}
-
-	private static boolean wasAccepted(ItemStack original, ItemStack remainder) {
-		return !ItemStack.matches(remainder, original) || remainder.getCount() != original.getCount();
-	}
-
 	private static boolean isEmptyCartridge(ItemStack stack) {
-		return stack.getItem() instanceof BigCartridgeBlockItem
-			&& BigCartridgeBlockItem.getPower(stack) <= 0;
+		return CannonAmmunitionHelper.isEmptyBigCartridge(stack);
 	}
 
 	private static ItemStack emptyBigCartridge() {
-		return BigCartridgeBlockItem.getWithPower(0);
+		return CannonAmmunitionHelper.emptyBigCartridge();
 	}
 
 	private ItemStack extractEmptyCartridge(boolean simulate) {
@@ -592,6 +550,10 @@ public class CannonMagazineLoaderBlockEntity extends BlockEntity {
 			this.setChangedAndSync();
 		}
 		return extracted;
+	}
+
+	public ItemStack extractSpentCartridgeForCollector(boolean simulate) {
+		return this.extractEmptyCartridge(simulate);
 	}
 
 	private class AutomationItemHandler implements IItemHandler {

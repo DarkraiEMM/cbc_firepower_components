@@ -1,0 +1,8 @@
+{
+  "parent":"minecraft:block/block",
+  "ambientocclusion":false,
+  "textures":{"body":"create:block/chute","edge":"create:block/industrial_iron_block","inside":"create:block/industrial_iron_block","particle":"create:block/chute"},
+  "elements":[
+    {"name":"closed_collection_bottom","from":[2,0,2],"to":[14,2,14],"faces":{"north":{"texture":"#body"},"south":{"texture":"#body"},"east":{"texture":"#body"},"west":{"texture":"#body"},"up":{"texture":"#inside"},"down":{"texture":"#edge"}}}
+  ]
+}

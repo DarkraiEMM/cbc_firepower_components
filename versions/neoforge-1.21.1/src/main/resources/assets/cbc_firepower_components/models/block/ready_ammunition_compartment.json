@@ -1,0 +1,24 @@
+{
+  "parent": "minecraft:block/block",
+  "ambientocclusion": false,
+  "textures": {
+    "armour": "cbc_firepower_components:block/large_autocannon_ammo_box_side",
+    "armour_top": "cbc_firepower_components:block/large_autocannon_ammo_box_top",
+    "metal": "createbigcannons:block/cannon_mount/cannon_mount_side_shaft",
+    "cartridge": "createbigcannons:block/big_cartridge_side",
+    "cartridge_end": "createbigcannons:block/big_cartridge_bottom",
+    "shell": "createbigcannons:block/projectile/ap_shell",
+    "shell_top": "createbigcannons:block/projectile/ap_shell_top",
+    "shell_bottom": "createbigcannons:block/projectile/ap_shell_bottom",
+    "particle": "cbc_firepower_components:block/large_autocannon_ammo_box_side"
+  },
+  "elements": [
+    {"name":"armoured_base","from":[0,0,1],"to":[16,4,16],"faces":{"north":{"texture":"#armour"},"south":{"texture":"#armour"},"east":{"texture":"#armour"},"west":{"texture":"#armour"},"up":{"texture":"#armour_top"},"down":{"texture":"#metal"}}},
+    {"name":"backplate","from":[0,4,14],"to":[16,16,16],"faces":{"north":{"texture":"#armour"},"south":{"texture":"#armour"},"east":{"texture":"#metal"},"west":{"texture":"#metal"},"up":{"texture":"#armour_top"},"down":{"texture":"#metal"}}},
+    {"name":"left_cheek","from":[0,4,2],"to":[2,16,14],"faces":{"north":{"texture":"#armour"},"south":{"texture":"#metal"},"east":{"texture":"#armour"},"west":{"texture":"#armour"},"up":{"texture":"#armour_top"},"down":{"texture":"#metal"}}},
+    {"name":"right_cheek","from":[14,4,2],"to":[16,16,14],"faces":{"north":{"texture":"#armour"},"south":{"texture":"#metal"},"east":{"texture":"#armour"},"west":{"texture":"#armour"},"up":{"texture":"#armour_top"},"down":{"texture":"#metal"}}},
+
+    {"name":"lower_retaining_rail","from":[1.5,5.5,5.5],"to":[14.5,7,7],"faces":{"north":{"texture":"#metal"},"south":{"texture":"#metal"},"east":{"texture":"#metal"},"west":{"texture":"#metal"},"up":{"texture":"#metal"},"down":{"texture":"#metal"}}},
+    {"name":"upper_retaining_rail","from":[1.5,12,5.5],"to":[14.5,13.5,7],"faces":{"north":{"texture":"#metal"},"south":{"texture":"#metal"},"east":{"texture":"#metal"},"west":{"texture":"#metal"},"up":{"texture":"#metal"},"down":{"texture":"#metal"}}}
+  ]
+}

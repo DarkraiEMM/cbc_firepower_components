@@ -14,6 +14,12 @@ public class MTCapabilities {
 			(blockEntity, side) -> blockEntity.getItemHandler(side));
 		event.registerBlockEntity(Capabilities.ItemHandler.BLOCK, MTBlockEntities.CANNON_MAGAZINE_LOADER.get(),
 			(blockEntity, side) -> blockEntity.getItemHandler(side));
+		event.registerBlockEntity(Capabilities.ItemHandler.BLOCK, MTBlockEntities.READY_AMMUNITION_COMPARTMENT.get(),
+			(blockEntity, side) -> blockEntity.getItemHandler(side));
+		event.registerBlockEntity(Capabilities.ItemHandler.BLOCK, MTBlockEntities.SPENT_CASING_COLLECTOR.get(),
+			(blockEntity, side) -> blockEntity.getItemHandler(side));
+		event.registerBlockEntity(Capabilities.ItemHandler.BLOCK, MTBlockEntities.CAROUSEL_AMMUNITION_RACK.get(),
+			(blockEntity, side) -> blockEntity.getItemHandler(side));
 	}
 
 }

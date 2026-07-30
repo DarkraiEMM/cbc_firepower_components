@@ -1,0 +1,24 @@
+{
+  "parent": "minecraft:block/block",
+  "ambientocclusion": false,
+  "textures": {
+    "cartridge": "createbigcannons:block/big_cartridge_side",
+    "cartridge_end": "createbigcannons:block/big_cartridge_bottom",
+    "shell": "createbigcannons:block/projectile/ap_shell",
+    "shell_top": "createbigcannons:block/projectile/ap_shell_top",
+    "shell_bottom": "createbigcannons:block/projectile/ap_shell_bottom",
+    "particle": "createbigcannons:block/big_cartridge_side"
+  },
+  "elements": [
+    {"name":"round_1_cartridge","from":[2.5,4,7],"to":[4.5,10,12],"faces":{"north":{"texture":"#cartridge"},"south":{"texture":"#cartridge"},"east":{"texture":"#cartridge"},"west":{"texture":"#cartridge"},"up":{"texture":"#cartridge_end"},"down":{"texture":"#cartridge_end"}}},
+    {"name":"round_1_projectile","from":[2.5,10,7],"to":[4.5,15,12],"faces":{"north":{"texture":"#shell"},"south":{"texture":"#shell"},"east":{"texture":"#shell"},"west":{"texture":"#shell"},"up":{"texture":"#shell_top"},"down":{"texture":"#shell_bottom"}}},
+    {"name":"round_2_cartridge","from":[4.75,4,7],"to":[6.75,10,12],"faces":{"north":{"texture":"#cartridge"},"south":{"texture":"#cartridge"},"east":{"texture":"#cartridge"},"west":{"texture":"#cartridge"},"up":{"texture":"#cartridge_end"},"down":{"texture":"#cartridge_end"}}},
+    {"name":"round_2_projectile","from":[4.75,10,7],"to":[6.75,15,12],"faces":{"north":{"texture":"#shell"},"south":{"texture":"#shell"},"east":{"texture":"#shell"},"west":{"texture":"#shell"},"up":{"texture":"#shell_top"},"down":{"texture":"#shell_bottom"}}},
+    {"name":"round_3_cartridge","from":[7,4,7],"to":[9,10,12],"faces":{"north":{"texture":"#cartridge"},"south":{"texture":"#cartridge"},"east":{"texture":"#cartridge"},"west":{"texture":"#cartridge"},"up":{"texture":"#cartridge_end"},"down":{"texture":"#cartridge_end"}}},
+    {"name":"round_3_projectile","from":[7,10,7],"to":[9,15,12],"faces":{"north":{"texture":"#shell"},"south":{"texture":"#shell"},"east":{"texture":"#shell"},"west":{"texture":"#shell"},"up":{"texture":"#shell_top"},"down":{"texture":"#shell_bottom"}}},
+    {"name":"round_4_cartridge","from":[9.25,4,7],"to":[11.25,10,12],"faces":{"north":{"texture":"#cartridge"},"south":{"texture":"#cartridge"},"east":{"texture":"#cartridge"},"west":{"texture":"#cartridge"},"up":{"texture":"#cartridge_end"},"down":{"texture":"#cartridge_end"}}},
+    {"name":"round_4_projectile","from":[9.25,10,7],"to":[11.25,15,12],"faces":{"north":{"texture":"#shell"},"south":{"texture":"#shell"},"east":{"texture":"#shell"},"west":{"texture":"#shell"},"up":{"texture":"#shell_top"},"down":{"texture":"#shell_bottom"}}},
+    {"name":"round_5_cartridge","from":[11.5,4,7],"to":[13.5,10,12],"faces":{"north":{"texture":"#cartridge"},"south":{"texture":"#cartridge"},"east":{"texture":"#cartridge"},"west":{"texture":"#cartridge"},"up":{"texture":"#cartridge_end"},"down":{"texture":"#cartridge_end"}}},
+    {"name":"round_5_projectile","from":[11.5,10,7],"to":[13.5,15,12],"faces":{"north":{"texture":"#shell"},"south":{"texture":"#shell"},"east":{"texture":"#shell"},"west":{"texture":"#shell"},"up":{"texture":"#shell_top"},"down":{"texture":"#shell_bottom"}}}
+  ]
+}

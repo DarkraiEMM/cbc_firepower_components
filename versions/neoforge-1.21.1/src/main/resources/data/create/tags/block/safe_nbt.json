@@ -3,6 +3,8 @@
   "values": [
     "cbc_firepower_components:compact_cannon_mount",
     "cbc_firepower_components:compact_autocannon_mount",
-    "cbc_firepower_components:cannon_magazine_loader"
+    "cbc_firepower_components:vertical_compact_cannon_mount",
+    "cbc_firepower_components:cannon_magazine_loader",
+    "cbc_firepower_components:carousel_ammunition_rack"
   ]
 }

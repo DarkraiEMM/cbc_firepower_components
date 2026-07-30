@@ -1,0 +1,10 @@
+{
+  "parent":"minecraft:block/block",
+  "textures":{"green":"minecraft:block/green_terracotta","dark":"minecraft:block/deepslate_tiles","steel":"minecraft:block/iron_block","marker":"minecraft:block/orange_concrete","particle":"minecraft:block/green_terracotta"},
+  "elements":[
+    {"from":[0,0,0],"to":[16,6,16],"faces":{"down":{"texture":"#dark","cullface":"down"},"up":{"texture":"#green"},"north":{"texture":"#dark"},"south":{"texture":"#dark"},"west":{"texture":"#dark"},"east":{"texture":"#dark"}}},
+    {"from":[3,6,3],"to":[13,8,13],"faces":{"down":{"texture":"#dark"},"up":{"texture":"#green"},"north":{"texture":"#steel"},"south":{"texture":"#steel"},"west":{"texture":"#steel"},"east":{"texture":"#steel"}}},
+    {"from":[6,8,6],"to":[10,10,10],"faces":{"down":{"texture":"#dark"},"up":{"texture":"#dark"},"north":{"texture":"#steel"},"south":{"texture":"#steel"},"west":{"texture":"#steel"},"east":{"texture":"#steel"}}},
+    {"from":[5,7,0],"to":[11,9,3],"faces":{"down":{"texture":"#dark"},"up":{"texture":"#marker"},"north":{"texture":"#marker"},"south":{"texture":"#steel"},"west":{"texture":"#dark"},"east":{"texture":"#dark"}}}
+  ]
+}
