@@ -1,0 +1,31 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "pattern": [
+    "PSP",
+    "CBC",
+    "GSG"
+  ],
+  "key": {
+    "B": {
+      "item": "create:brass_casing"
+    },
+    "C": {
+      "item": "create:large_cogwheel"
+    },
+    "G": {
+      "tag": "createbigcannons:gunpowder"
+    },
+    "P": {
+      "tag": "c:plates/iron"
+    },
+    "S": {
+      "item": "create:shaft"
+    }
+  },
+  "result": {
+    "id": "cbc_firepower_components:vertical_compact_cannon_mount",
+    "count": 1
+  },
+  "show_notification": true
+}

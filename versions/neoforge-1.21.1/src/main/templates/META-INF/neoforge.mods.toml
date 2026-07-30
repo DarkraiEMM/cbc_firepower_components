@@ -53,3 +53,24 @@ type = "optional"
 versionRange = "[0,)"
 ordering = "AFTER"
 side = "BOTH"
+
+[[dependencies.${mod_id}]]
+modId = "cbc_enhanced_shells"
+type = "optional"
+versionRange = "[1.2.2,1.3.0)"
+ordering = "AFTER"
+side = "BOTH"
+
+[[dependencies.${mod_id}]]
+modId = "cbcmodernwarfare"
+type = "optional"
+versionRange = "[0,)"
+ordering = "AFTER"
+side = "BOTH"
+
+[[dependencies.${mod_id}]]
+modId = "drivebywire"
+type = "optional"
+versionRange = "[0.2.9,)"
+ordering = "AFTER"
+side = "BOTH"

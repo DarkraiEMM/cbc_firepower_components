@@ -2,7 +2,6 @@ package com.cbcfirepowercomponents.content.large_autocannon_ammo_box;
 
 import net.minecraft.world.item.ItemStack;
 import net.neoforged.neoforge.items.IItemHandler;
-import rbasamoyai.createbigcannons.munitions.autocannon.AutocannonAmmoType;
 
 class LargeAutocannonAmmoBoxItemHandler implements IItemHandler {
 	private final LargeAutocannonAmmoBoxBlockEntity be;
@@ -51,13 +50,7 @@ class LargeAutocannonAmmoBoxItemHandler implements IItemHandler {
 
 	@Override
 	public boolean isItemValid(int slot, ItemStack stack) {
-		if (!this.isValidSlot(slot) || stack.isEmpty())
-			return false;
-		AutocannonAmmoType incomingType = AutocannonAmmoType.of(stack);
-		if (incomingType == AutocannonAmmoType.NONE)
-			return false;
-		AutocannonAmmoType storedType = this.be.getAmmoType();
-		return storedType == AutocannonAmmoType.NONE || incomingType == storedType;
+		return this.isValidSlot(slot) && LargeAutocannonAmmoBoxCapacity.canPlace(this.be, slot, stack);
 	}
 
 	private boolean isValidSlot(int slot) {

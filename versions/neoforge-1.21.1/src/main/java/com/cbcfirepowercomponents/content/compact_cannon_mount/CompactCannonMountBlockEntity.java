@@ -87,6 +87,12 @@ public class CompactCannonMountBlockEntity extends SmartBlockEntity implements I
 	private float prevPitch;
 	private float clientYawDiff;
 	private float clientPitchDiff;
+	private boolean physicalFirePowered;
+	private int physicalFirePower;
+	private boolean automaticFirePowered;
+	private int automaticFirePower;
+	private boolean effectiveFirePowered;
+	private int effectiveFirePower;
 
 	protected final CompactCannonMountInterfaceBlockEntity pitchInterface;
 	protected final CompactCannonMountInterfaceBlockEntity yawInterface;
@@ -230,12 +236,50 @@ public class CompactCannonMountBlockEntity extends SmartBlockEntity implements I
 				this.sendData();
 			}
 		}
-		if (firePowered != prevFirePowered)
-			this.getLevel().setBlock(this.worldPosition, this.getBlockState().setValue(CompactCannonMountBlock.FIRE_POWERED, firePowered), 3);
+		this.physicalFirePowered = firePowered;
+		this.physicalFirePower = firePowered ? Math.max(0, Math.min(15, firePower)) : 0;
+		this.applyEffectiveFireSignal();
+	}
+
+	public void setAutomaticFirePowered(boolean powered, int firePower) {
+		int clampedPower = powered ? Math.max(1, Math.min(15, firePower)) : 0;
+		if (this.automaticFirePowered == powered && this.automaticFirePower == clampedPower)
+			return;
+		this.automaticFirePowered = powered;
+		this.automaticFirePower = clampedPower;
+		this.applyEffectiveFireSignal();
+	}
+
+	private void applyEffectiveFireSignal() {
+		boolean powered = this.physicalFirePowered || this.automaticFirePowered;
+		int firePower = Math.max(this.physicalFirePower, this.automaticFirePower);
+		boolean powerChanged = powered != this.effectiveFirePowered;
+		this.effectiveFirePowered = powered;
+		this.effectiveFirePower = firePower;
+
+		BlockState state = this.getBlockState();
+		if (state.hasProperty(CompactCannonMountBlock.FIRE_POWERED)
+			&& state.getValue(CompactCannonMountBlock.FIRE_POWERED) != powered)
+			this.getLevel().setBlock(this.worldPosition,
+				state.setValue(CompactCannonMountBlock.FIRE_POWERED, powered), 3);
 
 		if (this.running && this.mountedContraption != null && this.getLevel() instanceof ServerLevel serverLevel
-			&& this.mountedContraption.getContraption() instanceof AbstractMountedCannonContraption cannon) {
-			cannon.onRedstoneUpdate(serverLevel, this.mountedContraption, firePowered != prevFirePowered, firePower, this);
+			&& this.mountedContraption.getContraption() instanceof AbstractMountedCannonContraption cannon)
+			cannon.onRedstoneUpdate(serverLevel, this.mountedContraption, powerChanged, firePower, this);
+	}
+
+	public int getAutomaticFireIntervalTicks() {
+		if (this.mountedContraption == null
+			|| !(this.mountedContraption.getContraption() instanceof AbstractMountedCannonContraption cannon))
+			return 0;
+		AbstractAutocannonBreechBlockEntity breech = this.findAutocannonBreech(cannon);
+		if (breech != null)
+			return Math.max(0, breech.getActualFireRate());
+		try {
+			Object result = cannon.getClass().getMethod("getReferencedFireRate").invoke(cannon);
+			return result instanceof Number number ? Math.max(0, number.intValue()) : 0;
+		} catch (ReflectiveOperationException | SecurityException ignored) {
+			return 0;
 		}
 	}
 
@@ -516,11 +560,14 @@ public class CompactCannonMountBlockEntity extends SmartBlockEntity implements I
 
 	private boolean hasAutocannonTypeName(AbstractMountedCannonContraption cannon) {
 		String className = cannon.getClass().getName().toLowerCase();
-		if (className.contains("autocannon"))
+		if (className.contains("autocannon") || className.contains("rotarycannon"))
 			return true;
 		try {
 			ResourceLocation id = cannon.getCannonType().getId();
-			return id != null && id.toString().toLowerCase().contains("autocannon");
+			if (id == null)
+				return false;
+			String typeName = id.toString().toLowerCase();
+			return typeName.contains("autocannon") || typeName.contains("rotarycannon");
 		} catch (RuntimeException ignored) {
 			return false;
 		}
@@ -772,10 +819,19 @@ public class CompactCannonMountBlockEntity extends SmartBlockEntity implements I
 		@Override
 		public ItemStack extractItem(int slot, int amount, boolean simulate) {
 			ItemCannon itemCannon = CompactCannonMountBlockEntity.this.getMountedItemCannon();
-			if (itemCannon != null)
-				return itemCannon.extractItemFromCannon(simulate);
+			if (itemCannon != null) {
+				ItemStack candidate = itemCannon.extractItemFromCannon(true);
+				if (!com.cbcfirepowercomponents.content.CannonAmmunitionHelper.isSpentCasing(candidate))
+					return ItemStack.EMPTY;
+				return simulate ? candidate : itemCannon.extractItemFromCannon(false);
+			}
 			IItemHandler mountedHandler = CompactCannonMountBlockEntity.this.getMountedItemHandler();
-			return mountedHandler == null ? ItemStack.EMPTY : mountedHandler.extractItem(slot, amount, simulate);
+			if (mountedHandler == null || slot < 0 || slot >= mountedHandler.getSlots())
+				return ItemStack.EMPTY;
+			ItemStack candidate = mountedHandler.extractItem(slot, amount, true);
+			if (!com.cbcfirepowercomponents.content.CannonAmmunitionHelper.isSpentCasing(candidate))
+				return ItemStack.EMPTY;
+			return simulate ? candidate : mountedHandler.extractItem(slot, amount, false);
 		}
 
 		@Override

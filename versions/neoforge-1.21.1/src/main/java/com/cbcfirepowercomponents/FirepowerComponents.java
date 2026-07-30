@@ -8,10 +8,12 @@ import com.cbcfirepowercomponents.registry.MTItems;
 import com.cbcfirepowercomponents.registry.MTCapabilities;
 import com.cbcfirepowercomponents.registry.MTArmInteractionPointTypes;
 import com.cbcfirepowercomponents.network.MTNetwork;
+import com.cbcfirepowercomponents.event.MTCommonEvents;
 
 import net.neoforged.bus.api.IEventBus;
 import net.neoforged.fml.common.Mod;
 import net.neoforged.fml.event.lifecycle.FMLCommonSetupEvent;
+import net.neoforged.neoforge.common.NeoForge;
 import rbasamoyai.createbigcannons.cannon_control.config.CannonMountPropertiesHandler;
 import rbasamoyai.createbigcannons.cannon_control.config.SimpleBlockMountProperties;
 
@@ -30,6 +32,7 @@ public class FirepowerComponents {
 		modBus.addListener(MTCapabilities::register);
 		modBus.addListener(MTNetwork::register);
 		modBus.addListener(this::commonSetup);
+		NeoForge.EVENT_BUS.addListener(MTCommonEvents::onTooltip);
 	}
 
 	private void commonSetup(FMLCommonSetupEvent event) {

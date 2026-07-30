@@ -1,0 +1,14 @@
+{
+  "multipart": [
+    {"apply":{"model":"create:block/chute/block"}},
+    {"apply":{"model":"cbc_firepower_components:block/spent_casing_collector"}},
+    {"when":{"fill":"1","facing":"north"},"apply":{"model":"cbc_firepower_components:block/spent_casing_collector_half"}},
+    {"when":{"fill":"1","facing":"east"},"apply":{"model":"cbc_firepower_components:block/spent_casing_collector_half","y":90}},
+    {"when":{"fill":"1","facing":"south"},"apply":{"model":"cbc_firepower_components:block/spent_casing_collector_half","y":180}},
+    {"when":{"fill":"1","facing":"west"},"apply":{"model":"cbc_firepower_components:block/spent_casing_collector_half","y":270}},
+    {"when":{"fill":"2","facing":"north"},"apply":{"model":"cbc_firepower_components:block/spent_casing_collector_full"}},
+    {"when":{"fill":"2","facing":"east"},"apply":{"model":"cbc_firepower_components:block/spent_casing_collector_full","y":90}},
+    {"when":{"fill":"2","facing":"south"},"apply":{"model":"cbc_firepower_components:block/spent_casing_collector_full","y":180}},
+    {"when":{"fill":"2","facing":"west"},"apply":{"model":"cbc_firepower_components:block/spent_casing_collector_full","y":270}}
+  ]
+}

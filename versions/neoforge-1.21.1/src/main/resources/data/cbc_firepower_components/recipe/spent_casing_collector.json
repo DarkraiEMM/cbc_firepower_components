@@ -1,0 +1,1 @@
+{"type":"minecraft:crafting_shaped","category":"misc","pattern":["B B","IHI","III"],"key":{"I":{"item":"create:industrial_iron_block"},"B":{"item":"create:brass_sheet"},"H":{"item":"minecraft:hopper"}},"result":{"id":"cbc_firepower_components:spent_casing_collector","count":1}}

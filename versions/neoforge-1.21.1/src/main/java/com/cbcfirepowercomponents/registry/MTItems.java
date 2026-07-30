@@ -25,6 +25,10 @@ public class MTItems {
 		() -> new CompactCannonMountItem(MTBlocks.COMPACT_AUTOCANNON_MOUNT.get(), new Item.Properties(),
 			"block.cbc_firepower_components.compact_autocannon_mount.tooltip"));
 
+	public static final DeferredHolder<Item, BlockItem> VERTICAL_COMPACT_CANNON_MOUNT = ITEMS.register("vertical_compact_cannon_mount",
+		() -> new CompactCannonMountItem(MTBlocks.VERTICAL_COMPACT_CANNON_MOUNT.get(), new Item.Properties(),
+			"block.cbc_firepower_components.vertical_compact_cannon_mount.tooltip"));
+
 	public static final DeferredHolder<Item, BlockItem> AUTOCANNON_AMMO_FEED = ITEMS.register("autocannon_ammo_feed",
 		() -> new SimpleTooltipBlockItem(MTBlocks.AUTOCANNON_AMMO_FEED.get(), new Item.Properties(),
 			"block.cbc_firepower_components.autocannon_ammo_feed.tooltip", 2));
@@ -65,6 +69,22 @@ public class MTItems {
 
 	public static final DeferredHolder<Item, Item> CANNON_LIMITER = ITEMS.register("cannon_limiter",
 		() -> new CannonLimiterItem(new Item.Properties().stacksTo(1)));
+
+	public static final DeferredHolder<Item, BlockItem> READY_AMMUNITION_COMPARTMENT = ITEMS.register("ready_ammunition_compartment",
+		() -> new SimpleTooltipBlockItem(MTBlocks.READY_AMMUNITION_COMPARTMENT.get(), new Item.Properties(),
+			"block.cbc_firepower_components.ready_ammunition_compartment.tooltip", 4));
+
+	public static final DeferredHolder<Item, BlockItem> SPENT_CASING_COLLECTOR = ITEMS.register("spent_casing_collector",
+		() -> new SimpleTooltipBlockItem(MTBlocks.SPENT_CASING_COLLECTOR.get(), new Item.Properties(),
+			"block.cbc_firepower_components.spent_casing_collector.tooltip", 3));
+
+	public static final DeferredHolder<Item, BlockItem> AUTOMATIC_CANNON_CONTROLLER = ITEMS.register("automatic_cannon_controller",
+		() -> new SimpleTooltipBlockItem(MTBlocks.AUTOMATIC_CANNON_CONTROLLER.get(), new Item.Properties(),
+			"block.cbc_firepower_components.automatic_cannon_controller.tooltip", 4));
+
+	public static final DeferredHolder<Item, BlockItem> CAROUSEL_AMMUNITION_RACK = ITEMS.register("carousel_ammunition_rack",
+		() -> new SimpleTooltipBlockItem(MTBlocks.CAROUSEL_AMMUNITION_RACK.get(), new Item.Properties(),
+			"block.cbc_firepower_components.carousel_ammunition_rack.tooltip", 4));
 
 	public static void register(IEventBus bus) {
 		ITEMS.register(bus);

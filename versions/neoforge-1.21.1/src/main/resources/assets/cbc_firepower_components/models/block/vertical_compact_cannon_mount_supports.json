@@ -1,0 +1,55 @@
+{
+  "parent": "minecraft:block/block",
+  "textures": {
+    "side": "createbigcannons:block/cannon_mount/rotating_mount_side",
+    "inner": "createbigcannons:block/cannon_mount/rotating_mount_side1",
+    "edge": "createbigcannons:block/cannon_mount/rotating_mount_side_top",
+    "particle": "createbigcannons:block/cannon_mount/rotating_mount_side"
+  },
+  "elements": [
+    {
+      "from": [-2, 0, 0], "to": [0, 8, 16],
+      "faces": {
+        "north": {"texture": "#edge"}, "south": {"texture": "#edge"},
+        "east": {"texture": "#side"}, "west": {"texture": "#side"},
+        "up": {"texture": "#edge"}, "down": {"texture": "#edge"}
+      }
+    },
+    {
+      "from": [16, 0, 0], "to": [18, 8, 16],
+      "faces": {
+        "north": {"texture": "#edge"}, "south": {"texture": "#edge"},
+        "east": {"texture": "#side"}, "west": {"texture": "#side"},
+        "up": {"texture": "#edge"}, "down": {"texture": "#edge"}
+      }
+    },
+    {
+      "from": [-2, 8, 1], "to": [0, 13, 15],
+      "faces": {
+        "north": {"texture": "#edge"}, "south": {"texture": "#edge"},
+        "east": {"texture": "#side"}, "west": {"texture": "#side"}, "up": {"texture": "#edge"}
+      }
+    },
+    {
+      "from": [16, 8, 1], "to": [18, 13, 15],
+      "faces": {
+        "north": {"texture": "#edge"}, "south": {"texture": "#edge"},
+        "east": {"texture": "#side"}, "west": {"texture": "#side"}, "up": {"texture": "#edge"}
+      }
+    },
+    {
+      "from": [-2, 13, 3], "to": [0, 29, 13],
+      "faces": {
+        "north": {"texture": "#edge"}, "south": {"texture": "#edge"},
+        "east": {"texture": "#inner"}, "west": {"texture": "#inner"}, "up": {"texture": "#edge"}
+      }
+    },
+    {
+      "from": [16, 13, 3], "to": [18, 29, 13],
+      "faces": {
+        "north": {"texture": "#edge"}, "south": {"texture": "#edge"},
+        "east": {"texture": "#inner"}, "west": {"texture": "#inner"}, "up": {"texture": "#edge"}
+      }
+    }
+  ]
+}

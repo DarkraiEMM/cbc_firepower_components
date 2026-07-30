@@ -3,6 +3,7 @@ package com.cbcfirepowercomponents.content;
 import java.util.List;
 
 import net.minecraft.ChatFormatting;
+import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.core.component.DataComponents;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.item.BlockItem;
@@ -32,7 +33,13 @@ public class SimpleTooltipBlockItem extends BlockItem {
 	public void appendHoverText(ItemStack stack, Item.TooltipContext context, List<Component> tooltip, TooltipFlag flag) {
 		super.appendHoverText(stack, context, tooltip, flag);
 		tooltip.add(Component.translatable(this.tooltipKey + ".summary").withStyle(ChatFormatting.GRAY));
-		for (int i = 1; i <= this.detailLines; ++i)
-			tooltip.add(Component.translatable(this.tooltipKey + ".detail" + i).withStyle(ChatFormatting.AQUA));
+		if (Screen.hasShiftDown()) {
+			for (int i = 1; i <= this.detailLines; ++i)
+				tooltip.add(Component.translatable(this.tooltipKey + ".detail" + i).withStyle(ChatFormatting.AQUA));
+		} else {
+			tooltip.add(Component.translatable("tooltip.cbc_firepower_components.hold_shift",
+				Component.literal("Shift").withStyle(ChatFormatting.YELLOW))
+				.withStyle(ChatFormatting.DARK_GRAY));
+		}
 	}
 }

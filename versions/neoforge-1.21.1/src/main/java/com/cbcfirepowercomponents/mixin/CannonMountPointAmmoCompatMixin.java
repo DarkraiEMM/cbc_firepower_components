@@ -24,6 +24,8 @@ public abstract class CannonMountPointAmmoCompatMixin {
 		ItemStack originalResult = cir.getReturnValue();
 		if (!ItemStack.matches(originalResult, stack) || originalResult.getCount() != stack.getCount())
 			return;
+		if (MountedWeaponInputStrategies.usesNativeCannonMountLoading(cannon))
+			return;
 
 		ItemStack result = MountedWeaponInputStrategies.insert(new MountedWeaponInputContext(entity, cannon), stack, simulate);
 		if (!ItemStack.matches(result, stack) || result.getCount() != stack.getCount())

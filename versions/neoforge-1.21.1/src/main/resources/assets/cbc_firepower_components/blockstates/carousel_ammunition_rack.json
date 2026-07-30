@@ -1,0 +1,12 @@
+{
+  "variants": {
+    "facing=north,indexing=false": {"model":"cbc_firepower_components:block/carousel_ammunition_rack"},
+    "facing=east,indexing=false": {"model":"cbc_firepower_components:block/carousel_ammunition_rack","y":90},
+    "facing=south,indexing=false": {"model":"cbc_firepower_components:block/carousel_ammunition_rack","y":180},
+    "facing=west,indexing=false": {"model":"cbc_firepower_components:block/carousel_ammunition_rack","y":270},
+    "facing=north,indexing=true": {"model":"cbc_firepower_components:block/carousel_ammunition_rack_indexing"},
+    "facing=east,indexing=true": {"model":"cbc_firepower_components:block/carousel_ammunition_rack_indexing","y":90},
+    "facing=south,indexing=true": {"model":"cbc_firepower_components:block/carousel_ammunition_rack_indexing","y":180},
+    "facing=west,indexing=true": {"model":"cbc_firepower_components:block/carousel_ammunition_rack_indexing","y":270}
+  }
+}
