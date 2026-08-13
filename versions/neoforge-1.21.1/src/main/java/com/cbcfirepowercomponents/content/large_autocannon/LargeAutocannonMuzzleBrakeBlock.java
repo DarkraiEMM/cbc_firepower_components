@@ -10,6 +10,10 @@ public class LargeAutocannonMuzzleBrakeBlock extends LargeAutocannonBarrelBlock 
 		super(properties, material);
 	}
 
+	public LargeAutocannonMuzzleBrakeBlock(Properties properties, AutocannonMaterial material, boolean twin) {
+		super(properties, material, twin);
+	}
+
 	@Override
 	public BlockState getStateForPlacement(BlockPlaceContext context) {
 		BlockState state = super.getStateForPlacement(context);

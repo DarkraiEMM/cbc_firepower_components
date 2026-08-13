@@ -111,7 +111,7 @@ public class MTBlocks {
 			.strength(3.5f, 6.0f)
 			.sound(SoundType.NETHERITE_BLOCK)
 			.noOcclusion()
-			.isRedstoneConductor((state, level, pos) -> false), CBCAutocannonMaterials.STEEL));
+			.isRedstoneConductor((state, level, pos) -> false), CBCAutocannonMaterials.STEEL, true));
 
 	public static final DeferredHolder<Block, LargeAutocannonBarrelBlock> STEEL_TWIN_LARGE_AUTOCANNON_BARREL = BLOCKS.register("steel_twin_large_autocannon_barrel",
 		() -> new LargeAutocannonBarrelBlock(BlockBehaviour.Properties.of()
@@ -120,7 +120,7 @@ public class MTBlocks {
 			.strength(3.5f, 6.0f)
 			.sound(SoundType.NETHERITE_BLOCK)
 			.noOcclusion()
-			.isRedstoneConductor((state, level, pos) -> false), CBCAutocannonMaterials.STEEL));
+			.isRedstoneConductor((state, level, pos) -> false), CBCAutocannonMaterials.STEEL, true));
 
 	public static final DeferredHolder<Block, LargeAutocannonMuzzleBrakeBlock> STEEL_TWIN_LARGE_AUTOCANNON_MUZZLE_BRAKE = BLOCKS.register("steel_twin_large_autocannon_muzzle_brake",
 		() -> new LargeAutocannonMuzzleBrakeBlock(BlockBehaviour.Properties.of()
@@ -129,7 +129,7 @@ public class MTBlocks {
 			.strength(3.5f, 6.0f)
 			.sound(SoundType.NETHERITE_BLOCK)
 			.noOcclusion()
-			.isRedstoneConductor((state, level, pos) -> false), CBCAutocannonMaterials.STEEL));
+			.isRedstoneConductor((state, level, pos) -> false), CBCAutocannonMaterials.STEEL, true));
 
 	public static final DeferredHolder<Block, CannonMagazineLoaderBlock> CANNON_MAGAZINE_LOADER = BLOCKS.register("cannon_magazine_loader",
 		() -> new CannonMagazineLoaderBlock(BlockBehaviour.Properties.of()

@@ -9,17 +9,27 @@ import net.minecraft.util.RandomSource;
 import net.minecraft.world.item.context.BlockPlaceContext;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.LevelAccessor;
+import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateDefinition;
+import net.minecraft.world.phys.shapes.CollisionContext;
+import net.minecraft.world.phys.shapes.VoxelShape;
 import rbasamoyai.createbigcannons.cannons.autocannon.breech.AbstractAutocannonBreechBlockEntity;
 import rbasamoyai.createbigcannons.cannons.autocannon.breech.AutocannonBreechBlock;
 import rbasamoyai.createbigcannons.cannons.autocannon.material.AutocannonMaterial;
 
 public class LargeAutocannonBreechBlock extends AutocannonBreechBlock {
+	private final boolean twin;
+
 	public LargeAutocannonBreechBlock(Properties properties, AutocannonMaterial material) {
+		this(properties, material, false);
+	}
+
+	public LargeAutocannonBreechBlock(Properties properties, AutocannonMaterial material, boolean twin) {
 		super(properties, material);
+		this.twin = twin;
 		this.registerDefaultState(this.defaultBlockState()
 			.setValue(LargeAutocannonBarrelBlock.CONNECTED_FRONT, false)
 			.setValue(LargeAutocannonBarrelBlock.CONNECTED_BACK, false));
@@ -65,6 +75,18 @@ public class LargeAutocannonBreechBlock extends AutocannonBreechBlock {
 	public void tick(BlockState state, ServerLevel level, BlockPos pos, RandomSource random) {
 		super.tick(state, level, pos, random);
 		LargeAutocannonBarrelBlock.refreshConnectionState(level, pos, true);
+	}
+
+	@Override
+	public VoxelShape getShape(BlockState state, BlockGetter level, BlockPos pos, CollisionContext context) {
+		return this.twin ? LargeAutocannonBarrelBlock.twinShape(this.getFacing(state).getAxis())
+			: super.getShape(state, level, pos, context);
+	}
+
+	@Override
+	protected VoxelShape getCollisionShape(BlockState state, BlockGetter level, BlockPos pos, CollisionContext context) {
+		return this.twin ? LargeAutocannonBarrelBlock.twinShape(this.getFacing(state).getAxis())
+			: super.getCollisionShape(state, level, pos, context);
 	}
 	private BlockState updateConnections(BlockState state, LevelAccessor level, BlockPos pos) {
 		Direction facing = this.getFacing(state);

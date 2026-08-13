@@ -10,12 +10,16 @@ import net.minecraft.util.RandomSource;
 import net.minecraft.world.item.context.BlockPlaceContext;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.LevelAccessor;
+import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateDefinition;
 import net.minecraft.world.level.block.state.properties.BooleanProperty;
+import net.minecraft.world.phys.shapes.CollisionContext;
+import net.minecraft.world.phys.shapes.Shapes;
+import net.minecraft.world.phys.shapes.VoxelShape;
 import rbasamoyai.createbigcannons.cannons.ItemCannonBehavior;
 import rbasamoyai.createbigcannons.cannons.autocannon.AutocannonBarrelBlock;
 import rbasamoyai.createbigcannons.cannons.autocannon.AutocannonBlock;
@@ -29,9 +33,24 @@ import java.util.List;
 public class LargeAutocannonBarrelBlock extends AutocannonBarrelBlock {
 	public static final BooleanProperty CONNECTED_FRONT = BooleanProperty.create("connected_front");
 	public static final BooleanProperty CONNECTED_BACK = BooleanProperty.create("connected_back");
+	private static final VoxelShape TWIN_SHAPE_Y = Shapes.or(
+		Block.box(0, 0, 4.5, 6.5, 16, 11.5),
+		Block.box(9.5, 0, 4.5, 16, 16, 11.5));
+	private static final VoxelShape TWIN_SHAPE_Z = Shapes.or(
+		Block.box(0, 4.5, 0, 6.5, 11.5, 16),
+		Block.box(9.5, 4.5, 0, 16, 11.5, 16));
+	private static final VoxelShape TWIN_SHAPE_X = Shapes.or(
+		Block.box(0, 4.5, 0, 16, 11.5, 6.5),
+		Block.box(0, 4.5, 9.5, 16, 11.5, 16));
+	private final boolean twin;
 
 	public LargeAutocannonBarrelBlock(Properties properties, AutocannonMaterial material) {
+		this(properties, material, false);
+	}
+
+	public LargeAutocannonBarrelBlock(Properties properties, AutocannonMaterial material, boolean twin) {
 		super(properties, material);
+		this.twin = twin;
 		this.registerDefaultState(this.defaultBlockState()
 			.setValue(CONNECTED_FRONT, false)
 			.setValue(CONNECTED_BACK, false));
@@ -97,6 +116,24 @@ public class LargeAutocannonBarrelBlock extends AutocannonBarrelBlock {
 
 	protected boolean connectsVisuallyTo(BlockState state, Direction direction, BlockState neighborState) {
 		return canConnectLargeAutocannonVisually(state, direction, neighborState);
+	}
+
+	@Override
+	public VoxelShape getShape(BlockState state, BlockGetter level, BlockPos pos, CollisionContext context) {
+		return this.twin ? twinShape(this.getFacing(state).getAxis()) : super.getShape(state, level, pos, context);
+	}
+
+	@Override
+	protected VoxelShape getCollisionShape(BlockState state, BlockGetter level, BlockPos pos, CollisionContext context) {
+		return this.twin ? twinShape(this.getFacing(state).getAxis()) : super.getCollisionShape(state, level, pos, context);
+	}
+
+	static VoxelShape twinShape(Direction.Axis axis) {
+		return switch (axis) {
+			case X -> TWIN_SHAPE_X;
+			case Y -> TWIN_SHAPE_Y;
+			case Z -> TWIN_SHAPE_Z;
+		};
 	}
 
 	@Override
