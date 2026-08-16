@@ -1,6 +1,6 @@
 # Changelog
 
-## 0.3.5
+## 0.3.6
 
 - Added the Vertical Compact Cannon Mount for cannons assembled above or below the mount.
 - Added the Ready Ammunition Compartment, an ordered ammunition container that supplies complete projectile-and-charge sets directly to cannon mounts and supports Mechanical Arm input and output.
