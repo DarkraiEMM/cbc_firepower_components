@@ -1,5 +1,19 @@
 # Changelog
 
+## 0.3.5
+
+- Added the Vertical Compact Cannon Mount for cannons assembled above or below the mount.
+- Added the Ready Ammunition Compartment, an ordered ammunition container that supplies complete projectile-and-charge sets directly to cannon mounts and supports Mechanical Arm input and output.
+- Added the 24-station Carousel Ready Rack with rotational indexing, configurable ammunition order, adaptive outlet direction, and Mechanical Arm interaction.
+- Added the Spent Casing Collector with area collection, visible empty/partial/full fill states, and automated casing extraction.
+- Added the Automatic Cannon Controller with single, three-round burst, and continuous fire; polling and salvo dispatch; rising-edge redstone activation; ammunition selection; and signal-strength fire-rate control.
+- Added optional Drive By Wire remote control without replacing normal local redstone control.
+- Added spyglass rangefinding that reports straight-line distance and resolves physical-space coordinates for supported Sable/Aeronautics environments.
+- Added bilingual Ponder tutorials for mounts, ammunition equipment, fire control, cannon limiters, and rangefinding.
+- Expanded ammunition and mount compatibility for CBC Military Supplement, CBC Neo/Modern Warfare, CBC Advanced Technologies, and CBC Enhanced Shells integrations.
+- Updated the NeoForge target to Create Big Cannons 5.11.7 and retained the supported Create 6.0.x line.
+- Refined large autocannon models and textures, separated twin muzzle brakes, reduced breech thickness, and gave twin parts independent oriented selection and collision shapes.
+
 ## 0.3.1
 
 - Added the Large Autocannon Ammo Box with CBC-style ammo container behavior.

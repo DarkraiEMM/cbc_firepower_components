@@ -9,6 +9,12 @@ Small Create Big Cannons addon focused on compact cannon mounts and cleaner ammo
 - **Autocannon Ammo Feed** - feeds loose autocannon rounds into adjacent assembled compact mounts.
 - **Cannon Magazine Loader** - a three-round external magazine for big cannon mounts.
 - **Cannon Limiter** - a configurable item that installs pitch and yaw limits onto compact mounts.
+- **Vertical Compact Cannon Mount** - supports cannon assemblies above or below the mount.
+- **Ready Ammunition Compartment** - stores ordered complete rounds and supplies cannon mounts directly.
+- **Carousel Ready Rack** - a powered 24-position ammunition carousel with a configurable firing order.
+- **Spent Casing Collector** - gathers ejected casings in an area for later automated extraction.
+- **Automatic Cannon Controller** - coordinates firing modes, mount dispatch, ammunition selection, and compatible autocannon fire rates.
+- **Spyglass Rangefinding** - measures straight-line distance without identifying or locking targets.
 
 The magazine loader takes projectile + powered cartridge pairs, waits until it has three complete rounds, then feeds the mounted cannon. Fuzes can be inserted after a fuzed projectile is stored; the loader writes the fuze onto the cached projectile before loading it. Spent empty big cartridges can be pulled from the sides, back, or bottom with normal item automation.
 
@@ -21,7 +27,7 @@ The Cannon Limiter stores pitch lower, pitch upper, left yaw, and right yaw sett
 | 1.21.1 | NeoForge 21.1.x | NeoForge release line |
 | 1.20.1 | Forge 47.x | Forge release line |
 
-The 1.21.1 build expects Create 6.0.x, Create Big Cannons 5.11.6, and Ritchie's Projectile Library 2.1.2.
+The 1.21.1 build expects Create 6.0.x, Create Big Cannons 5.11.7, and Ritchie's Projectile Library 2.1.2.
 
 The 1.20.1 Forge build expects Create 6.0.8, Create Big Cannons 5.11.4, and Ritchie's Projectile Library 2.1.1.
 
