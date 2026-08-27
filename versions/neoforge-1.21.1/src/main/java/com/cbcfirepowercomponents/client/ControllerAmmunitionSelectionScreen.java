@@ -29,7 +29,7 @@ public class ControllerAmmunitionSelectionScreen extends AbstractSimiScreen {
 
 	@Override protected void init() {
 		this.rows = Math.max(1, (this.options.size() + COLUMNS - 1) / COLUMNS);
-		this.setWindowSize(COLUMNS * CELL + 24, this.rows * CELL + 46);
+		this.setWindowSize(COLUMNS * CELL + 28, this.rows * CELL + 62);
 		super.init();
 	}
 
@@ -48,7 +48,7 @@ public class ControllerAmmunitionSelectionScreen extends AbstractSimiScreen {
 	}
 
 	private int optionAt(double mouseX, double mouseY) {
-		int left = this.guiLeft + 12, top = this.guiTop + 28;
+		int left = this.guiLeft + 14, top = this.guiTop + 32;
 		if (mouseX < left || mouseY < top) return -1;
 		int column = (int) ((mouseX - left) / CELL);
 		int row = (int) ((mouseY - top) / CELL);
@@ -59,7 +59,11 @@ public class ControllerAmmunitionSelectionScreen extends AbstractSimiScreen {
 
 	@Override protected void renderWindow(GuiGraphics graphics, int mouseX, int mouseY, float partialTick) {
 		CreateGuiHelper.panel(graphics, this.guiLeft, this.guiTop, this.windowWidth, this.windowHeight);
-		graphics.drawString(this.font, this.title, this.guiLeft + 12, this.guiTop + 9, CreateGuiHelper.TEXT, false);
+		graphics.drawString(this.font, this.title, this.guiLeft + 16, this.guiTop + 9, CreateGuiHelper.TEXT, false);
+		CreateGuiHelper.lamp(graphics, this.guiLeft + this.windowWidth - 19, this.guiTop + 9,
+			CreateGuiHelper.AMBER);
+		CreateGuiHelper.section(graphics, this.guiLeft + 10, this.guiTop + 28,
+			this.windowWidth - 20, this.rows * CELL + 8);
 		for (int i = 0; i < this.options.size(); ++i) this.renderOption(graphics, i);
 		int hovered = this.optionAt(mouseX, mouseY);
 		if (hovered >= 0) {
@@ -70,11 +74,11 @@ public class ControllerAmmunitionSelectionScreen extends AbstractSimiScreen {
 
 	private void renderOption(GuiGraphics graphics, int index) {
 		var option = this.options.get(index);
-		int x = this.guiLeft + 12 + index % COLUMNS * CELL;
-		int y = this.guiTop + 28 + index / COLUMNS * CELL;
+		int x = this.guiLeft + 14 + index % COLUMNS * CELL;
+		int y = this.guiTop + 32 + index / COLUMNS * CELL;
 		CreateGuiHelper.slot(graphics, x + 8, y + 4, option.selected());
 		if (option.selected())
-			CreateGuiHelper.coloredBorder(graphics, x + 8, y + 4, 18, 18, 0xFF55C060);
+			CreateGuiHelper.coloredBorder(graphics, x + 8, y + 4, 18, 18, CreateGuiHelper.GREEN);
 		graphics.renderItem(option.projectile(), x + 9, y + 5);
 		if (!option.propellant().isEmpty()) {
 			graphics.pose().pushPose();

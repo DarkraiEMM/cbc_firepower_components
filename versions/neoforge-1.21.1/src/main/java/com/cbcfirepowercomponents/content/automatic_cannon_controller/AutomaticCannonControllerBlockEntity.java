@@ -19,6 +19,7 @@ import com.cbcfirepowercomponents.registry.MTBlockEntities;
 import com.simibubi.create.api.equipment.goggles.IHaveGoggleInformation;
 import com.simibubi.create.foundation.blockEntity.SmartBlockEntity;
 import com.simibubi.create.foundation.blockEntity.behaviour.BlockEntityBehaviour;
+import com.simibubi.create.foundation.utility.CreateLang;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
@@ -408,14 +409,19 @@ public class AutomaticCannonControllerBlockEntity extends SmartBlockEntity imple
 
 	@Override
 	public boolean addToGoggleTooltip(List<Component> tooltip, boolean isPlayerSneaking) {
-		tooltip.add(this.getModeMessage());
-		tooltip.add(this.getCoordinationModeMessage());
-		tooltip.add(Component.translatable("block.cbc_firepower_components.automatic_cannon_controller.status.targets",
-			this.countControlledMounts(), this.countControlledCompartments()));
-		tooltip.add(Component.translatable("block.cbc_firepower_components.automatic_cannon_controller.status.input",
-			Component.translatable(this.commandPowered ? "gui.cbc_firepower_components.on" : "gui.cbc_firepower_components.off")));
+		CreateLang.builder().add(Component.translatable(
+			"block.cbc_firepower_components.automatic_cannon_controller.status.compact_modes",
+			Component.translatable("screen.cbc_firepower_components.automatic_cannon_controller.mode." + this.mode.translation),
+			Component.translatable("screen.cbc_firepower_components.automatic_cannon_controller.coordination."
+				+ this.coordinationMode.translation))).forGoggles(tooltip);
+		CreateLang.builder().add(Component.translatable(
+			"block.cbc_firepower_components.automatic_cannon_controller.status.compact_system",
+			this.countControlledMounts(), this.countControlledCompartments(),
+			Component.translatable(this.commandPowered ? "gui.cbc_firepower_components.on" : "gui.cbc_firepower_components.off")))
+			.forGoggles(tooltip);
 		if (isPlayerSneaking)
-			tooltip.add(Component.translatable("block.cbc_firepower_components.automatic_cannon_controller.input_help"));
+			CreateLang.builder().add(Component.translatable(
+				"block.cbc_firepower_components.automatic_cannon_controller.input_help")).forGoggles(tooltip);
 		return true;
 	}
 

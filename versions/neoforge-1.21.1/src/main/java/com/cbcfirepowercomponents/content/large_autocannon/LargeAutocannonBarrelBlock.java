@@ -33,15 +33,18 @@ import java.util.List;
 public class LargeAutocannonBarrelBlock extends AutocannonBarrelBlock {
 	public static final BooleanProperty CONNECTED_FRONT = BooleanProperty.create("connected_front");
 	public static final BooleanProperty CONNECTED_BACK = BooleanProperty.create("connected_back");
+	private static final VoxelShape SINGLE_SHAPE_Y = Block.box(5, 0, 5, 11, 16, 11);
+	private static final VoxelShape SINGLE_SHAPE_Z = Block.box(5, 5, 0, 11, 11, 16);
+	private static final VoxelShape SINGLE_SHAPE_X = Block.box(0, 5, 5, 16, 11, 11);
 	private static final VoxelShape TWIN_SHAPE_Y = Shapes.or(
-		Block.box(0, 0, 4.5, 6.5, 16, 11.5),
-		Block.box(9.5, 0, 4.5, 16, 16, 11.5));
+		Block.box(0, 0, 5, 6, 16, 11),
+		Block.box(10, 0, 5, 16, 16, 11));
 	private static final VoxelShape TWIN_SHAPE_Z = Shapes.or(
-		Block.box(0, 4.5, 0, 6.5, 11.5, 16),
-		Block.box(9.5, 4.5, 0, 16, 11.5, 16));
+		Block.box(0, 5, 0, 6, 11, 16),
+		Block.box(10, 5, 0, 16, 11, 16));
 	private static final VoxelShape TWIN_SHAPE_X = Shapes.or(
-		Block.box(0, 4.5, 0, 16, 11.5, 6.5),
-		Block.box(0, 4.5, 9.5, 16, 11.5, 16));
+		Block.box(0, 5, 0, 16, 11, 6),
+		Block.box(0, 5, 10, 16, 11, 16));
 	private final boolean twin;
 
 	public LargeAutocannonBarrelBlock(Properties properties, AutocannonMaterial material) {
@@ -120,15 +123,22 @@ public class LargeAutocannonBarrelBlock extends AutocannonBarrelBlock {
 
 	@Override
 	public VoxelShape getShape(BlockState state, BlockGetter level, BlockPos pos, CollisionContext context) {
-		return this.twin ? twinShape(this.getFacing(state).getAxis()) : super.getShape(state, level, pos, context);
+		return barrelShape(this.getFacing(state).getAxis(), this.twin);
 	}
 
 	@Override
 	protected VoxelShape getCollisionShape(BlockState state, BlockGetter level, BlockPos pos, CollisionContext context) {
-		return this.twin ? twinShape(this.getFacing(state).getAxis()) : super.getCollisionShape(state, level, pos, context);
+		return barrelShape(this.getFacing(state).getAxis(), this.twin);
 	}
 
-	static VoxelShape twinShape(Direction.Axis axis) {
+	static VoxelShape barrelShape(Direction.Axis axis, boolean twin) {
+		if (!twin) {
+			return switch (axis) {
+				case X -> SINGLE_SHAPE_X;
+				case Y -> SINGLE_SHAPE_Y;
+				case Z -> SINGLE_SHAPE_Z;
+			};
+		}
 		return switch (axis) {
 			case X -> TWIN_SHAPE_X;
 			case Y -> TWIN_SHAPE_Y;

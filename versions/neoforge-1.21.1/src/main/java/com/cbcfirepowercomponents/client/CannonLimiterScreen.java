@@ -24,21 +24,14 @@ import net.minecraft.world.InteractionHand;
 import net.minecraft.world.item.ItemStack;
 
 public class CannonLimiterScreen extends Screen {
-	private static final ResourceLocation FILTERS = ResourceLocation.fromNamespaceAndPath("create", "textures/gui/filters.png");
-	private static final ResourceLocation VALUE_SETTINGS = ResourceLocation.fromNamespaceAndPath("create",
-		"textures/gui/value_settings.png");
-	private static final ResourceLocation WIDGETS = ResourceLocation.fromNamespaceAndPath("create", "textures/gui/widgets.png");
 	private static final ResourceLocation ICONS = ResourceLocation.fromNamespaceAndPath("create", "textures/gui/icons.png");
-	private static final int PANEL_MAIN_WIDTH = 190;
-	private static final int PANEL_WIDTH = 198;
-	private static final int PANEL_HEIGHT = 126;
-	private static final int HEADER_HEIGHT = 15;
-	private static final int FOOTER_HEIGHT = 30;
-	private static final int ROW_GAP = 18;
+	private static final int PANEL_MAIN_WIDTH = 244;
+	private static final int PANEL_HEIGHT = 170;
+	private static final int ROW_GAP = 24;
 	private static final int TOGGLE_SIZE = 18;
-	private static final int SLIDER_WIDTH = 94;
+	private static final int SLIDER_WIDTH = 126;
 	private static final int SLIDER_HEIGHT = 18;
-	private static final int INPUT_WIDTH = 28;
+	private static final int INPUT_WIDTH = 34;
 	private static final float HANDLE_TEXT_SCALE = 0.58f;
 	private static final float INPUT_TEXT_SCALE = 0.68f;
 
@@ -62,8 +55,8 @@ public class CannonLimiterScreen extends Screen {
 		this.panelLeft = this.width / 2 - PANEL_MAIN_WIDTH / 2;
 		this.panelTop = this.height / 2 - PANEL_HEIGHT / 2;
 
-		int rowLeft = this.panelLeft + 23;
-		int y = this.panelTop + 20;
+		int rowLeft = this.panelLeft + 16;
+		int y = this.panelTop + 35;
 		this.rows.add(new Row("pitch_min", rowLeft, y, CannonLimiterSettings.MAX_PITCH, true,
 			this.settings.hasPitchMin, this.settings.pitchMin));
 		this.rows.add(new Row("pitch_max", rowLeft, y + ROW_GAP, CannonLimiterSettings.MAX_PITCH, false,
@@ -75,7 +68,7 @@ public class CannonLimiterScreen extends Screen {
 		for (Row row : this.rows)
 			row.addWidgets();
 
-		int buttonY = this.panelTop + PANEL_HEIGHT - 22;
+		int buttonY = this.panelTop + PANEL_HEIGHT - 24;
 		this.addRenderableWidget(new PanelButton(this.panelLeft + PANEL_MAIN_WIDTH - 54, buttonY, PanelButton.Icon.TRASH,
 			Component.translatable("selectWorld.delete"), this::clearSettings));
 		this.addRenderableWidget(new PanelButton(this.panelLeft + PANEL_MAIN_WIDTH - 30, buttonY, PanelButton.Icon.CHECK,
@@ -113,11 +106,14 @@ public class CannonLimiterScreen extends Screen {
 	@Override
 	public void render(GuiGraphics graphics, int mouseX, int mouseY, float partialTick) {
 		graphics.fill(0, 0, this.width, this.height, 0x66000000);
-		this.renderCreatePanel(graphics);
+		this.renderFireControlPanel(graphics);
 		super.render(graphics, mouseX, mouseY, partialTick);
-		graphics.renderItem(this.stack, this.panelLeft + 13, this.panelTop - 1);
+		graphics.renderItem(this.stack, this.panelLeft + 13, this.panelTop + 4);
 		graphics.drawString(this.font, this.title,
-			this.panelLeft + PANEL_MAIN_WIDTH / 2 - this.font.width(this.title) / 2, this.panelTop + 4, 0xFF3A2118, false);
+			this.panelLeft + PANEL_MAIN_WIDTH / 2 - this.font.width(this.title) / 2, this.panelTop + 9,
+			CreateGuiHelper.TEXT, false);
+		CreateGuiHelper.lamp(graphics, this.panelLeft + PANEL_MAIN_WIDTH - 19, this.panelTop + 9,
+			CreateGuiHelper.AMBER);
 		for (Row row : this.rows) {
 			if (row.toggle != null && row.toggle.isHovered()) {
 				graphics.renderTooltip(this.font, row.toggle.tooltip(), mouseX, mouseY);
@@ -126,37 +122,13 @@ public class CannonLimiterScreen extends Screen {
 		}
 	}
 
-	private void renderCreatePanel(GuiGraphics graphics) {
-		int bodyTop = this.panelTop + HEADER_HEIGHT;
-		int footerTop = this.panelTop + PANEL_HEIGHT - FOOTER_HEIGHT;
-		int bodyHeight = footerTop - bodyTop;
-		renderChecker(graphics, this.panelLeft + 1, bodyTop, PANEL_MAIN_WIDTH - 2, bodyHeight);
-		renderHeader(graphics);
-		renderFooter(graphics, footerTop);
-	}
-
-	private void renderHeader(GuiGraphics graphics) {
-		graphics.blit(FILTERS, this.panelLeft, this.panelTop, 0, 0, 3, HEADER_HEIGHT);
-		for (int x = 3; x < PANEL_MAIN_WIDTH - 3; x++)
-			graphics.blit(FILTERS, this.panelLeft + x, this.panelTop, 20, 0, 1, HEADER_HEIGHT);
-		graphics.blit(FILTERS, this.panelLeft + PANEL_MAIN_WIDTH - 3, this.panelTop, 203, 0, 3,
-			HEADER_HEIGHT);
-	}
-
-	private void renderFooter(GuiGraphics graphics, int footerTop) {
-		graphics.blit(FILTERS, this.panelLeft, footerTop, 0, 69, 3, FOOTER_HEIGHT);
-		for (int x = 3; x < PANEL_MAIN_WIDTH - 2; x++)
-			graphics.blit(FILTERS, this.panelLeft + x, footerTop, 20, 69, 1, FOOTER_HEIGHT);
-		graphics.blit(FILTERS, this.panelLeft + PANEL_MAIN_WIDTH - 2, footerTop, 204, 69,
-			PANEL_WIDTH - PANEL_MAIN_WIDTH + 2, FOOTER_HEIGHT);
-	}
-
-	private static void renderChecker(GuiGraphics graphics, int x, int y, int width, int height) {
-		for (int yy = 0; yy < height; yy += 8) {
-			for (int xx = 0; xx < width; xx += 8) {
-				int color = ((xx + yy) / 8 & 1) == 0 ? 0xFFD8D0C2 : 0xFFCFC6B6;
-				graphics.fill(x + xx, y + yy, x + Math.min(xx + 8, width), y + Math.min(yy + 8, height), color);
-			}
+	private void renderFireControlPanel(GuiGraphics graphics) {
+		CreateGuiHelper.panel(graphics, this.panelLeft, this.panelTop, PANEL_MAIN_WIDTH, PANEL_HEIGHT);
+		CreateGuiHelper.section(graphics, this.panelLeft + 12, this.panelTop + 29, PANEL_MAIN_WIDTH - 24, 104);
+		for (int i = 1; i < 4; ++i) {
+			int y = this.panelTop + 29 + i * ROW_GAP;
+			graphics.fill(this.panelLeft + 14, y, this.panelLeft + PANEL_MAIN_WIDTH - 14, y + 1,
+				0xFF303834);
 		}
 	}
 
@@ -295,12 +267,15 @@ public class CannonLimiterScreen extends Screen {
 			int trackTop = y + 5;
 			boolean active = this.active;
 
-			graphics.blit(VALUE_SETTINGS, trackLeft, trackTop, 7, 0, trackRight - trackLeft, 8);
+			graphics.fill(trackLeft, trackTop, trackRight, trackTop + 8, CreateGuiHelper.BORDER);
+			graphics.fill(trackLeft + 1, trackTop + 1, trackRight - 1, trackTop + 7,
+				active ? CreateGuiHelper.FIELD : CreateGuiHelper.DISABLED);
 			if (active) {
 				int fillRight = trackLeft + (int) ((trackRight - trackLeft) * this.value);
-				graphics.fill(trackLeft + 2, trackTop + 2, fillRight, trackTop + 6, 0xFF2FA06A);
+				graphics.fill(trackLeft + 2, trackTop + 2, fillRight, trackTop + 6, CreateGuiHelper.GREEN);
 			} else {
-				graphics.fill(trackLeft, trackTop, trackRight, trackTop + 8, 0x88706B63);
+				graphics.fill(trackLeft + 1, trackTop + 1, trackRight - 1, trackTop + 7,
+					CreateGuiHelper.DISABLED);
 			}
 
 			Font font = Minecraft.getInstance().font;
@@ -309,17 +284,14 @@ public class CannonLimiterScreen extends Screen {
 			int handleWidth = 22;
 			int handleX = Mth.clamp(trackLeft + (int) ((trackRight - trackLeft) * this.value) - handleWidth / 2,
 				x + 3, x + this.getWidth() - handleWidth - 3);
-			graphics.blit(VALUE_SETTINGS, handleX, y + 2, 0, 9, 3, 14);
-			graphics.blit(VALUE_SETTINGS, handleX + 3, y + 2, 4, 9, handleWidth - 6, 14);
-			graphics.blit(VALUE_SETTINGS, handleX + handleWidth - 3, y + 2, 61, 9, 3, 14);
-			if (!active)
-				graphics.fill(handleX, y + 2, handleX + handleWidth, y + 16, 0x66706B63);
+			CreateGuiHelper.control(graphics, handleX, y + 2, handleWidth, 14,
+				this.isHovered(), active);
 			int textX = handleX + handleWidth / 2 - textWidth / 2;
 			int textY = y + 6;
 			graphics.pose().pushPose();
 			graphics.pose().translate(textX, textY, 0);
 			graphics.pose().scale(HANDLE_TEXT_SCALE, HANDLE_TEXT_SCALE, 1.0f);
-			graphics.drawString(font, text, 0, 0, active ? 0xFF3A2118 : 0xFF555555, false);
+			graphics.drawString(font, text, 0, 0, active ? CreateGuiHelper.TEXT : 0xFFB0B3AE, false);
 			graphics.pose().popPose();
 		}
 
@@ -347,7 +319,8 @@ public class CannonLimiterScreen extends Screen {
 
 		@Override
 		public void renderWidget(GuiGraphics graphics, int mouseX, int mouseY, float partialTick) {
-			graphics.blit(WIDGETS, this.getX(), this.getY(), this.enabledLook ? 72 : 0, 0, 18, 18);
+			CreateGuiHelper.control(graphics, this.getX(), this.getY(), this.getWidth(), this.getHeight(),
+				this.isHovered(), this.enabledLook);
 			int[] icon = iconForKey(this.key);
 			graphics.blit(ICONS, this.getX() + 1, this.getY() + 1, icon[0], icon[1], 16, 16);
 		}
@@ -387,7 +360,8 @@ public class CannonLimiterScreen extends Screen {
 
 		@Override
 		public void renderWidget(GuiGraphics graphics, int mouseX, int mouseY, float partialTick) {
-			graphics.blit(WIDGETS, this.getX(), this.getY(), 0, 0, 18, 18);
+			CreateGuiHelper.control(graphics, this.getX(), this.getY(), this.getWidth(), this.getHeight(),
+				this.isHovered(), true);
 			int iconX = this.icon == Icon.CHECK ? 0 : 16;
 			int iconY = this.icon == Icon.CHECK ? 16 : 0;
 			graphics.blit(ICONS, this.getX() + 1, this.getY() + 1, iconX, iconY, 16, 16);
@@ -411,11 +385,11 @@ public class CannonLimiterScreen extends Screen {
 
 		@Override
 		public void renderWidget(GuiGraphics graphics, int mouseX, int mouseY, float partialTick) {
-			fillFrame(graphics, this.getX() - 1, this.getY() - 2, this.getWidth() + 2, this.getHeight() + 4,
-				0xFF222222, this.active ? 0xFFE7E2D5 : 0xFFAAA69C);
+			CreateGuiHelper.field(graphics, this.getX() - 1, this.getY() - 2,
+				this.getWidth() + 2, this.getHeight() + 4, this.active);
 			Font font = CannonLimiterScreen.this.font;
 			String text = this.getValue();
-			int color = this.active ? 0xFF222222 : 0xFF555555;
+			int color = this.active ? CreateGuiHelper.TEXT : 0xFFB0B3AE;
 			int textWidth = Mth.ceil(font.width(text) * INPUT_TEXT_SCALE);
 			int textHeight = Mth.ceil(font.lineHeight * INPUT_TEXT_SCALE);
 			int textX = this.getX() + this.getWidth() / 2 - textWidth / 2;

@@ -14,6 +14,7 @@ import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateDefinition;
+import net.minecraft.world.phys.shapes.Shapes;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.VoxelShape;
 import rbasamoyai.createbigcannons.cannons.autocannon.breech.AbstractAutocannonBreechBlockEntity;
@@ -21,6 +22,18 @@ import rbasamoyai.createbigcannons.cannons.autocannon.breech.AutocannonBreechBlo
 import rbasamoyai.createbigcannons.cannons.autocannon.material.AutocannonMaterial;
 
 public class LargeAutocannonBreechBlock extends AutocannonBreechBlock {
+	private static final VoxelShape SINGLE_SHAPE_Y = Block.box(3, 0, 3, 13, 16, 13);
+	private static final VoxelShape SINGLE_SHAPE_Z = Block.box(3, 3, 0, 13, 13, 16);
+	private static final VoxelShape SINGLE_SHAPE_X = Block.box(0, 3, 3, 16, 13, 13);
+	private static final VoxelShape TWIN_SHAPE_Y = Shapes.or(
+		Block.box(-2, 0, 3, 8, 16, 13),
+		Block.box(8, 0, 3, 18, 16, 13));
+	private static final VoxelShape TWIN_SHAPE_Z = Shapes.or(
+		Block.box(-2, 3, 0, 8, 13, 16),
+		Block.box(8, 3, 0, 18, 13, 16));
+	private static final VoxelShape TWIN_SHAPE_X = Shapes.or(
+		Block.box(0, 3, -2, 16, 13, 8),
+		Block.box(0, 3, 8, 16, 13, 18));
 	private final boolean twin;
 
 	public LargeAutocannonBreechBlock(Properties properties, AutocannonMaterial material) {
@@ -79,14 +92,27 @@ public class LargeAutocannonBreechBlock extends AutocannonBreechBlock {
 
 	@Override
 	public VoxelShape getShape(BlockState state, BlockGetter level, BlockPos pos, CollisionContext context) {
-		return this.twin ? LargeAutocannonBarrelBlock.twinShape(this.getFacing(state).getAxis())
-			: super.getShape(state, level, pos, context);
+		return breechShape(this.getFacing(state).getAxis());
 	}
 
 	@Override
 	protected VoxelShape getCollisionShape(BlockState state, BlockGetter level, BlockPos pos, CollisionContext context) {
-		return this.twin ? LargeAutocannonBarrelBlock.twinShape(this.getFacing(state).getAxis())
-			: super.getCollisionShape(state, level, pos, context);
+		return breechShape(this.getFacing(state).getAxis());
+	}
+
+	private VoxelShape breechShape(Direction.Axis axis) {
+		if (!this.twin) {
+			return switch (axis) {
+				case X -> SINGLE_SHAPE_X;
+				case Y -> SINGLE_SHAPE_Y;
+				case Z -> SINGLE_SHAPE_Z;
+			};
+		}
+		return switch (axis) {
+			case X -> TWIN_SHAPE_X;
+			case Y -> TWIN_SHAPE_Y;
+			case Z -> TWIN_SHAPE_Z;
+		};
 	}
 	private BlockState updateConnections(BlockState state, LevelAccessor level, BlockPos pos) {
 		Direction facing = this.getFacing(state);

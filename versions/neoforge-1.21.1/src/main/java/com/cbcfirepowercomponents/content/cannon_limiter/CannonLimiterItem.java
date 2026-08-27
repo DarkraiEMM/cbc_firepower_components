@@ -2,8 +2,6 @@ package com.cbcfirepowercomponents.content.cannon_limiter;
 
 import java.util.List;
 
-import com.cbcfirepowercomponents.content.compact_cannon_mount.CompactCannonMountBlockEntity;
-
 import net.minecraft.ChatFormatting;
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.chat.Component;
@@ -37,7 +35,7 @@ public class CannonLimiterItem extends Item {
 		Player player = context.getPlayer();
 		BlockPos pos = context.getClickedPos();
 		BlockEntity blockEntity = level.getBlockEntity(pos);
-		if (!(blockEntity instanceof CompactCannonMountBlockEntity mount)) {
+		if (!(blockEntity instanceof CannonLimiterMount mount)) {
 			if (player != null && !level.isClientSide)
 				show(player, Component.translatable("item.cbc_firepower_components.cannon_limiter.message.invalid"));
 			return InteractionResult.sidedSuccess(level.isClientSide);

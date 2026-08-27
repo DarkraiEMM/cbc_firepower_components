@@ -1,5 +1,6 @@
 package com.cbcfirepowercomponents;
 
+import com.cbcfirepowercomponents.compat.radar.RadarApiCompat;
 import com.cbcfirepowercomponents.registry.MTBlockEntities;
 import com.cbcfirepowercomponents.registry.MTBlocks;
 import com.cbcfirepowercomponents.registry.MTCreativeTabs;
@@ -38,6 +39,7 @@ public class FirepowerComponents {
 	private void commonSetup(FMLCommonSetupEvent event) {
 		CannonMountPropertiesHandler.registerBlockMountSerializer(MTBlockEntities.COMPACT_CANNON_MOUNT.get(),
 			new SimpleBlockMountProperties.Serializer());
+		event.enqueueWork(RadarApiCompat::register);
 	}
 
 }

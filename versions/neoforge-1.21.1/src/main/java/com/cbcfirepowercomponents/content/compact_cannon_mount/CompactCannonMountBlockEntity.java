@@ -10,6 +10,7 @@ import javax.annotation.Nullable;
 
 import com.cbcfirepowercomponents.FirepowerComponents;
 import com.cbcfirepowercomponents.content.cannon_limiter.CannonLimiterSettings;
+import com.cbcfirepowercomponents.content.cannon_limiter.CannonLimiterMount;
 import com.cbcfirepowercomponents.content.compact_cannon_mount.input.MountedWeaponInputContext;
 import com.cbcfirepowercomponents.content.compact_cannon_mount.input.MountedWeaponInputStrategies;
 import com.cbcfirepowercomponents.registry.MTBlockEntities;
@@ -58,7 +59,7 @@ import rbasamoyai.createbigcannons.cannons.big_cannons.breeches.quickfiring_bree
 import rbasamoyai.createbigcannons.cannons.CannonContraptionProviderBlock;
 
 public class CompactCannonMountBlockEntity extends SmartBlockEntity implements IDisplayAssemblyExceptions,
-	ControlPitchContraption.Block, HasMultipleKineticInterfaces, IHaveGoggleInformation {
+	ControlPitchContraption.Block, HasMultipleKineticInterfaces, IHaveGoggleInformation, CannonLimiterMount {
 
 	public enum LimitType {
 		PITCH_MIN,
@@ -344,6 +345,10 @@ public class CompactCannonMountBlockEntity extends SmartBlockEntity implements I
 
 	public float getCannonYaw() {
 		return this.cannonYaw;
+	}
+
+	public boolean isRunning() {
+		return this.running;
 	}
 
 	public boolean hasLimiter() {
@@ -735,13 +740,33 @@ public class CompactCannonMountBlockEntity extends SmartBlockEntity implements I
 
 	@Override public BlockPos getControllerBlockPos() { return this.worldPosition; }
 
+	@Override
 	public void markForReassembly() {
 		this.reassemble = true;
 	}
 
 	@Override
 	public Vec3 getDismountPositionForContraption(PitchOrientedContraptionEntity poce) {
-		return Vec3.atBottomCenterOf(this.worldPosition.relative(this.getCannonSide().getOpposite()));
+		Direction preferred = this.getCannonSide().getOpposite();
+		Direction[] directions = { preferred, preferred.getClockWise(), preferred.getCounterClockWise(), preferred.getOpposite() };
+		if (this.level != null) {
+			for (int distance = 1; distance <= 2; ++distance) {
+				for (int yOffset : new int[] { 0, 1, -1 }) {
+					for (Direction direction : directions) {
+						BlockPos candidate = this.worldPosition.relative(direction, distance).offset(0, yOffset, 0);
+						if (this.isSafeDismountPosition(candidate))
+							return Vec3.atBottomCenterOf(candidate);
+					}
+				}
+			}
+		}
+		return Vec3.atBottomCenterOf(this.worldPosition.relative(preferred));
+	}
+
+	private boolean isSafeDismountPosition(BlockPos pos) {
+		return this.level.getBlockState(pos).getCollisionShape(this.level, pos).isEmpty()
+			&& this.level.getBlockState(pos.above()).getCollisionShape(this.level, pos.above()).isEmpty()
+			&& !this.level.getBlockState(pos.below()).getCollisionShape(this.level, pos.below()).isEmpty();
 	}
 
 	@Override public AssemblyException getLastAssemblyException() { return this.lastException; }

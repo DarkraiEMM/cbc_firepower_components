@@ -19,7 +19,7 @@ import net.minecraft.world.item.ItemStack;
 public class ReadyAmmunitionRackScreen extends AbstractSimiScreen {
 	private static final int COLUMNS = 8;
 	private static final int ROWS = 5;
-	private static final int SLOT_SIZE = 18;
+	private static final int SLOT_SIZE = 20;
 	private final BlockPos rackPos;
 	private final List<ReadyAmmunitionCompartmentBlockEntity.RoundPair> slots;
 	private int selectedSlot = -1;
@@ -34,9 +34,9 @@ public class ReadyAmmunitionRackScreen extends AbstractSimiScreen {
 	}
 
 	@Override protected void init() {
-		this.setWindowSize(184, 154);
+		this.setWindowSize(204, 182);
 		super.init();
-		IconButton confirm = new IconButton(this.guiLeft + 156, this.guiTop + 128, AllIcons.I_CONFIRM);
+		IconButton confirm = new IconButton(this.guiLeft + 176, this.guiTop + 156, AllIcons.I_CONFIRM);
 		confirm.withCallback(this::onClose);
 		confirm.setToolTip(Component.translatable("gui.done"));
 		this.addRenderableWidget(confirm);
@@ -60,7 +60,7 @@ public class ReadyAmmunitionRackScreen extends AbstractSimiScreen {
 	}
 
 	private int slotAt(double mouseX, double mouseY) {
-		int left = this.guiLeft + 20, top = this.guiTop + 29;
+		int left = this.guiLeft + 22, top = this.guiTop + 34;
 		if (mouseX < left || mouseY < top) return -1;
 		int column = (int) ((mouseX - left) / SLOT_SIZE);
 		int row = (int) ((mouseY - top) / SLOT_SIZE);
@@ -70,11 +70,14 @@ public class ReadyAmmunitionRackScreen extends AbstractSimiScreen {
 
 	@Override protected void renderWindow(GuiGraphics graphics, int mouseX, int mouseY, float partialTick) {
 		CreateGuiHelper.panel(graphics, this.guiLeft, this.guiTop, this.windowWidth, this.windowHeight);
-		graphics.drawString(this.font, this.title, this.guiLeft + 12, this.guiTop + 9, CreateGuiHelper.TEXT, false);
+		graphics.drawString(this.font, this.title, this.guiLeft + 16, this.guiTop + 9, CreateGuiHelper.TEXT, false);
+		CreateGuiHelper.lamp(graphics, this.guiLeft + this.windowWidth - 19, this.guiTop + 9,
+			CreateGuiHelper.GREEN);
+		CreateGuiHelper.section(graphics, this.guiLeft + 14, this.guiTop + 29, 176, 110);
 		for (int i = 0; i < ReadyAmmunitionCompartmentBlockEntity.CAPACITY; ++i) this.renderSlot(graphics, i);
 		graphics.drawString(this.font,
 			Component.translatable("screen.cbc_firepower_components.ready_ammunition_compartment.help"),
-			this.guiLeft + 12, this.guiTop + 123, CreateGuiHelper.HINT, false);
+			this.guiLeft + 14, this.guiTop + 145, CreateGuiHelper.HINT, false);
 		int hovered = this.slotAt(mouseX, mouseY);
 		if (hovered >= 0) {
 			var pair = this.slots.get(hovered);
@@ -84,18 +87,18 @@ public class ReadyAmmunitionRackScreen extends AbstractSimiScreen {
 	}
 
 	private void renderSlot(GuiGraphics graphics, int slot) {
-		int x = this.guiLeft + 20 + slot % COLUMNS * SLOT_SIZE;
-		int y = this.guiTop + 29 + slot / COLUMNS * SLOT_SIZE;
-		CreateGuiHelper.slot(graphics, x, y, false);
+		int x = this.guiLeft + 22 + slot % COLUMNS * SLOT_SIZE;
+		int y = this.guiTop + 34 + slot / COLUMNS * SLOT_SIZE;
+		CreateGuiHelper.slot(graphics, x, y, SLOT_SIZE, false);
 		if (slot == this.selectedSlot)
-			CreateGuiHelper.coloredBorder(graphics, x, y, SLOT_SIZE, SLOT_SIZE, 0xFFFFC040);
+			CreateGuiHelper.coloredBorder(graphics, x, y, SLOT_SIZE, SLOT_SIZE, CreateGuiHelper.AMBER);
 		else if (slot == 0)
-			CreateGuiHelper.coloredBorder(graphics, x, y, SLOT_SIZE, SLOT_SIZE, 0xFF55C060);
+			CreateGuiHelper.coloredBorder(graphics, x, y, SLOT_SIZE, SLOT_SIZE, CreateGuiHelper.GREEN);
 		var pair = this.slots.get(slot);
-		if (!pair.projectile().isEmpty()) graphics.renderItem(pair.projectile(), x + 1, y + 1);
+		if (!pair.projectile().isEmpty()) graphics.renderItem(pair.projectile(), x + 2, y + 2);
 		if (!pair.propellant().isEmpty()) {
 			graphics.pose().pushPose();
-			graphics.pose().translate(x + 10, y + 10, 200);
+			graphics.pose().translate(x + 12, y + 12, 200);
 			graphics.pose().scale(0.5f, 0.5f, 0.5f);
 			graphics.renderItem(pair.propellant(), 0, 0);
 			graphics.pose().popPose();

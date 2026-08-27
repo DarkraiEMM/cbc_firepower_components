@@ -10,6 +10,9 @@ import org.spongepowered.asm.mixin.extensibility.IMixinInfo;
 import net.neoforged.fml.loading.FMLLoader;
 
 public class OptionalCompatMixinPlugin implements IMixinConfigPlugin {
+	private static final String RADAR_API_REGISTRY =
+		"com/happysg/radar/api/mount/RadarMountRegistry.class";
+
 	@Override
 	public void onLoad(String mixinPackage) {
 	}
@@ -21,8 +24,14 @@ public class OptionalCompatMixinPlugin implements IMixinConfigPlugin {
 
 	@Override
 	public boolean shouldApplyMixin(String targetClassName, String mixinClassName) {
-		if (mixinClassName.startsWith("com.cbcfirepowercomponents.mixin.radar."))
-			return FMLLoader.getLoadingModList().getModFileById("create_radar") != null;
+		if (mixinClassName.startsWith("com.cbcfirepowercomponents.mixin.radar.")) {
+			boolean radarLoaded = FMLLoader.getLoadingModList().getModFileById("create_radar") != null;
+			boolean publicApiAvailable = OptionalCompatMixinPlugin.class.getClassLoader()
+				.getResource(RADAR_API_REGISTRY) != null;
+			return radarLoaded && !publicApiAvailable;
+		}
+		if (mixinClassName.startsWith("com.cbcfirepowercomponents.mixin.vestalihy."))
+			return FMLLoader.getLoadingModList().getModFileById("vestalihy") != null;
 		return true;
 	}
 

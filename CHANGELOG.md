@@ -1,5 +1,17 @@
 # Changelog
 
+## 0.4.0
+
+- Rebuilt the controller, cannon limiter, carousel ready rack, and ready ammunition compartment screens around one compact Create-inspired military interface, including corrected scaling and non-overlapping goggle text.
+- Made the Automatic Cannon Controller open its configuration screen reliably with either an empty hand or a held item, and moved manual firing into the controller screen.
+- Reworked the Carousel Ready Rack, Ready Ammunition Compartment, Spent Casing Collector, Vertical Compact Cannon Mount, and large-autocannon models, item displays, textures, UV layout, and collision/selection shapes.
+- Extended the Cannon Limiter to normal CBC cannon mounts while retaining compact-mount installation, persistence, and relative yaw limits.
+- Added safer compact-mount dismount placement with nearby collision and floor checks.
+- Added Cannon Magazine Loader support for CBC fixed mounts and fixed automation stalls caused by complete and incomplete ammunition groups being present together.
+- Added optional Vestalihy recognition for this mod's compact cannon mount and retained the standard CBC ammunition bridge used by compatible addon ammunition.
+- Retained the CBC 5.11.7 / Create 6.0.x NeoForge target and verified startup with the current compatibility stack.
+- Published the Forge 1.20.1 compatibility line as 0.3.2 for Create 6.0.8 and CBC 5.11.4; this line does not contain all NeoForge 0.4.0 features.
+
 ## 0.3.6
 
 - Added the Vertical Compact Cannon Mount for cannons assembled above or below the mount.

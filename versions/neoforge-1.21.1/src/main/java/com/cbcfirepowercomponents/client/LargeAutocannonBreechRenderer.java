@@ -27,7 +27,8 @@ import rbasamoyai.createbigcannons.munitions.autocannon.ammo_container.Autocanno
 import rbasamoyai.createbigcannons.munitions.autocannon.ammo_container.AutocannonAmmoContainerItem;
 
 public class LargeAutocannonBreechRenderer extends AutocannonBreechRenderer {
-	private static final float TWIN_BARREL_OFFSET = 0.25f;
+	private static final float TWIN_BARREL_OFFSET = 0.3125f;
+	private static final float EJECTOR_SURFACE_SEPARATION = 1.0f / 256.0f;
 
 	public LargeAutocannonBreechRenderer(BlockEntityRendererProvider.Context context) {
 		super(context);
@@ -37,20 +38,20 @@ public class LargeAutocannonBreechRenderer extends AutocannonBreechRenderer {
 	protected void renderSafe(AbstractAutocannonBreechBlockEntity blockEntity, float partialTicks, PoseStack poseStack,
 							  MultiBufferSource bufferSource, int packedLight, int packedOverlay) {
 		BlockState state = blockEntity.getBlockState();
-		if (blockEntity instanceof LargeAutocannonBreechBlockEntity largeBreech) {
-			TwinLargeAutocannonModelRenderer.render(largeBreech, largeBreech, partialTicks,
-				poseStack, bufferSource, packedLight, packedOverlay);
-		}
 		if (!(blockEntity instanceof LargeAutocannonBreechBlockEntity largeBreech)
-			|| !state.is(MTBlocks.TWIN_LARGE_AUTOCANNON_BREECH.get())
-			|| state.getValue(AutocannonBreechBlock.HANDLE)) {
+			|| !state.is(MTBlocks.TWIN_LARGE_AUTOCANNON_BREECH.get())) {
 			super.renderSafe(blockEntity, partialTicks, poseStack, bufferSource, packedLight, packedOverlay);
 			return;
 		}
 
+		TwinLargeAutocannonModelRenderer.render(largeBreech, largeBreech, partialTicks,
+			poseStack, bufferSource, packedLight, packedOverlay);
+
 		Direction facing = state.getValue(AutocannonBreechBlock.FACING);
-		this.renderTwinEjector(largeBreech, false, facing, partialTicks, poseStack, bufferSource, packedLight);
-		this.renderTwinEjector(largeBreech, true, facing, partialTicks, poseStack, bufferSource, packedLight);
+		if (!state.getValue(AutocannonBreechBlock.HANDLE)) {
+			this.renderTwinEjector(largeBreech, false, facing, partialTicks, poseStack, bufferSource, packedLight);
+			this.renderTwinEjector(largeBreech, true, facing, partialTicks, poseStack, bufferSource, packedLight);
+		}
 		this.renderMagazine(blockEntity, facing, poseStack, bufferSource, packedLight);
 	}
 
@@ -61,7 +62,8 @@ public class LargeAutocannonBreechRenderer extends AutocannonBreechRenderer {
 
 		Direction right = facing.getAxis().isVertical() ? Direction.EAST : facing.getClockWise();
 		float sideOffset = rightBarrel ? TWIN_BARREL_OFFSET : -TWIN_BARREL_OFFSET;
-		float recoilOffset = breech.getTwinAnimateOffset(rightBarrel, partialTicks) * -0.5f;
+		float recoilOffset = breech.getTwinAnimateOffset(rightBarrel, partialTicks) * -0.5f
+			- EJECTOR_SURFACE_SEPARATION;
 		Vector3f translation = new Vector3f(
 			right.getStepX() * sideOffset + facing.getStepX() * recoilOffset,
 			right.getStepY() * sideOffset + facing.getStepY() * recoilOffset,

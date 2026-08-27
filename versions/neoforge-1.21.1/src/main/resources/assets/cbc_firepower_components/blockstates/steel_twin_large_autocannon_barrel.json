@@ -1,4 +1,4 @@
-﻿{
+{
     "variants":  {
                      "assembled=false,connected_back=false,connected_front=false,end=flanged,facing=down":  {
                                                                                                                 "model":  "cbc_firepower_components:block/steel_twin_large_autocannon_barrel_flanged",
@@ -105,28 +105,28 @@
                                                                                                                "y":  270
                                                                                                            },
                      "assembled=false,connected_back=true,connected_front=false,end=flanged,facing=down":  {
-                                                                                                               "model":  "cbc_firepower_components:block/steel_twin_large_autocannon_barrel_front_end",
+                                                                                                               "model":  "cbc_firepower_components:block/steel_twin_large_autocannon_barrel_flanged",
                                                                                                                "x":  180
                                                                                                            },
                      "assembled=false,connected_back=true,connected_front=false,end=flanged,facing=east":  {
-                                                                                                               "model":  "cbc_firepower_components:block/steel_twin_large_autocannon_barrel_front_end",
+                                                                                                               "model":  "cbc_firepower_components:block/steel_twin_large_autocannon_barrel_flanged",
                                                                                                                "x":  90,
                                                                                                                "y":  90
                                                                                                            },
                      "assembled=false,connected_back=true,connected_front=false,end=flanged,facing=north":  {
-                                                                                                                "model":  "cbc_firepower_components:block/steel_twin_large_autocannon_barrel_front_end",
+                                                                                                                "model":  "cbc_firepower_components:block/steel_twin_large_autocannon_barrel_flanged",
                                                                                                                 "x":  90
                                                                                                             },
                      "assembled=false,connected_back=true,connected_front=false,end=flanged,facing=south":  {
-                                                                                                                "model":  "cbc_firepower_components:block/steel_twin_large_autocannon_barrel_front_end",
+                                                                                                                "model":  "cbc_firepower_components:block/steel_twin_large_autocannon_barrel_flanged",
                                                                                                                 "x":  90,
                                                                                                                 "y":  180
                                                                                                             },
                      "assembled=false,connected_back=true,connected_front=false,end=flanged,facing=up":  {
-                                                                                                             "model":  "cbc_firepower_components:block/steel_twin_large_autocannon_barrel_front_end"
+                                                                                                             "model":  "cbc_firepower_components:block/steel_twin_large_autocannon_barrel_flanged"
                                                                                                          },
                      "assembled=false,connected_back=true,connected_front=false,end=flanged,facing=west":  {
-                                                                                                               "model":  "cbc_firepower_components:block/steel_twin_large_autocannon_barrel_front_end",
+                                                                                                               "model":  "cbc_firepower_components:block/steel_twin_large_autocannon_barrel_flanged",
                                                                                                                "x":  90,
                                                                                                                "y":  270
                                                                                                            },
@@ -313,28 +313,28 @@
                                                                                                               "y":  270
                                                                                                           },
                      "assembled=true,connected_back=true,connected_front=false,end=flanged,facing=down":  {
-                                                                                                              "model":  "cbc_firepower_components:block/steel_twin_large_autocannon_barrel_front_end",
+                                                                                                              "model":  "cbc_firepower_components:block/steel_twin_large_autocannon_barrel_flanged",
                                                                                                               "x":  180
                                                                                                           },
                      "assembled=true,connected_back=true,connected_front=false,end=flanged,facing=east":  {
-                                                                                                              "model":  "cbc_firepower_components:block/steel_twin_large_autocannon_barrel_front_end",
+                                                                                                              "model":  "cbc_firepower_components:block/steel_twin_large_autocannon_barrel_flanged",
                                                                                                               "x":  90,
                                                                                                               "y":  90
                                                                                                           },
                      "assembled=true,connected_back=true,connected_front=false,end=flanged,facing=north":  {
-                                                                                                               "model":  "cbc_firepower_components:block/steel_twin_large_autocannon_barrel_front_end",
+                                                                                                               "model":  "cbc_firepower_components:block/steel_twin_large_autocannon_barrel_flanged",
                                                                                                                "x":  90
                                                                                                            },
                      "assembled=true,connected_back=true,connected_front=false,end=flanged,facing=south":  {
-                                                                                                               "model":  "cbc_firepower_components:block/steel_twin_large_autocannon_barrel_front_end",
+                                                                                                               "model":  "cbc_firepower_components:block/steel_twin_large_autocannon_barrel_flanged",
                                                                                                                "x":  90,
                                                                                                                "y":  180
                                                                                                            },
                      "assembled=true,connected_back=true,connected_front=false,end=flanged,facing=up":  {
-                                                                                                            "model":  "cbc_firepower_components:block/steel_twin_large_autocannon_barrel_front_end"
+                                                                                                            "model":  "cbc_firepower_components:block/steel_twin_large_autocannon_barrel_flanged"
                                                                                                         },
                      "assembled=true,connected_back=true,connected_front=false,end=flanged,facing=west":  {
-                                                                                                              "model":  "cbc_firepower_components:block/steel_twin_large_autocannon_barrel_front_end",
+                                                                                                              "model":  "cbc_firepower_components:block/steel_twin_large_autocannon_barrel_flanged",
                                                                                                               "x":  90,
                                                                                                               "y":  270
                                                                                                           },

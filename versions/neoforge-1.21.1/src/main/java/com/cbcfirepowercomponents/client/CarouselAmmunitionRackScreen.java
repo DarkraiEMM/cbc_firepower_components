@@ -19,8 +19,8 @@ import net.minecraft.network.chat.Component;
 import net.minecraft.world.item.ItemStack;
 
 public class CarouselAmmunitionRackScreen extends AbstractSimiScreen {
-	private static final int SLOT_SIZE = 22;
-	private static final int RADIUS = 92;
+	private static final int SLOT_SIZE = 18;
+	private static final int RADIUS = 76;
 	private final BlockPos rackPos;
 	private int currentIndex;
 	private int targetIndex;
@@ -42,11 +42,11 @@ public class CarouselAmmunitionRackScreen extends AbstractSimiScreen {
 	}
 
 	@Override protected void init() {
-		this.setWindowSize(260, 270);
+		this.setWindowSize(224, 236);
 		super.init();
 		this.centerX = this.guiLeft + this.windowWidth / 2;
-		this.centerY = this.guiTop + 139;
-		IconButton confirm = new IconButton(this.guiLeft + 232, this.guiTop + 244, AllIcons.I_CONFIRM);
+		this.centerY = this.guiTop + 116;
+		IconButton confirm = new IconButton(this.guiLeft + 196, this.guiTop + 210, AllIcons.I_CONFIRM);
 		confirm.withCallback(this::onClose);
 		confirm.setToolTip(Component.translatable("gui.done"));
 		this.addRenderableWidget(confirm);
@@ -92,14 +92,18 @@ public class CarouselAmmunitionRackScreen extends AbstractSimiScreen {
 	@Override protected void renderWindow(GuiGraphics graphics, int mouseX, int mouseY, float partialTick) {
 		this.refreshFromWorld();
 		CreateGuiHelper.panel(graphics, this.guiLeft, this.guiTop, this.windowWidth, this.windowHeight);
-		graphics.drawString(this.font, this.title, this.guiLeft + 12, this.guiTop + 9, CreateGuiHelper.TEXT, false);
+		graphics.drawString(this.font, this.title, this.guiLeft + 16, this.guiTop + 9, CreateGuiHelper.TEXT, false);
+		CreateGuiHelper.lamp(graphics, this.guiLeft + this.windowWidth - 19, this.guiTop + 9,
+			CreateGuiHelper.GREEN);
+		CreateGuiHelper.section(graphics, this.guiLeft + 12, this.guiTop + 28, 200, 174);
+		CreateGuiHelper.section(graphics, this.centerX - 40, this.centerY - 20, 80, 40);
 		graphics.drawCenteredString(this.font,
 			Component.translatable("screen.cbc_firepower_components.carousel_ammunition_rack.output"),
-			this.centerX, this.guiTop + 29, 0xFFE7A557);
+			this.centerX, this.centerY - 12, CreateGuiHelper.AMBER);
 		for (int i = 0; i < CarouselAmmunitionRackBlockEntity.CAPACITY; ++i) this.renderSlot(graphics, i);
 		graphics.drawCenteredString(this.font,
 			Component.translatable("screen.cbc_firepower_components.carousel_ammunition_rack.help"),
-			this.centerX, this.centerY - 4, CreateGuiHelper.HINT);
+			this.centerX, this.centerY + 3, CreateGuiHelper.HINT);
 		int hovered = this.slotAt(mouseX, mouseY);
 		if (hovered >= 0) {
 			var pair = this.slots.get(hovered);
@@ -123,18 +127,18 @@ public class CarouselAmmunitionRackScreen extends AbstractSimiScreen {
 
 	private void renderSlot(GuiGraphics graphics, int slot) {
 		int x = this.slotX(slot), y = this.slotY(slot);
-		CreateGuiHelper.slot(graphics, x, y, false);
+		CreateGuiHelper.slot(graphics, x, y, SLOT_SIZE, false);
 		if (slot == this.selectedSlot)
-			CreateGuiHelper.coloredBorder(graphics, x, y, SLOT_SIZE, SLOT_SIZE, 0xFF70C8E8);
+			CreateGuiHelper.coloredBorder(graphics, x, y, SLOT_SIZE, SLOT_SIZE, CreateGuiHelper.CYAN);
 		else if (slot == this.currentIndex)
-			CreateGuiHelper.coloredBorder(graphics, x, y, SLOT_SIZE, SLOT_SIZE, 0xFF55C060);
+			CreateGuiHelper.coloredBorder(graphics, x, y, SLOT_SIZE, SLOT_SIZE, CreateGuiHelper.GREEN);
 		else if (slot == this.targetIndex)
-			CreateGuiHelper.coloredBorder(graphics, x, y, SLOT_SIZE, SLOT_SIZE, 0xFFFFC040);
+			CreateGuiHelper.coloredBorder(graphics, x, y, SLOT_SIZE, SLOT_SIZE, CreateGuiHelper.AMBER);
 		var pair = this.slots.get(slot);
-		if (!pair.projectile().isEmpty()) graphics.renderItem(pair.projectile(), x + 3, y + 3);
+		if (!pair.projectile().isEmpty()) graphics.renderItem(pair.projectile(), x + 1, y + 1);
 		if (!pair.propellant().isEmpty()) {
 			graphics.pose().pushPose();
-			graphics.pose().translate(x + 13, y + 13, 200);
+			graphics.pose().translate(x + 10, y + 10, 200);
 			graphics.pose().scale(0.5f, 0.5f, 0.5f);
 			graphics.renderItem(pair.propellant(), 0, 0);
 			graphics.pose().popPose();

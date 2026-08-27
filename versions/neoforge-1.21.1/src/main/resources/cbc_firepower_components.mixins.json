@@ -6,11 +6,13 @@
   "mixins": [
     "AutocannonAmmoContainerItemContainerAccessor",
     "AutocannonAmmoContainerWrapperAccessor",
+    "CannonMountLimiterMixin",
     "CannonMountPointAmmoCompatMixin",
     "ControlPitchContraptionCompatMixin",
     "LargeAutocannonAmmoBoxContainerWrapperMixin",
     "LargeAutocannonAmmoBoxMenuSlotMixin",
     "MountedAutocannonContraptionTwinFireMixin",
+    "vestalihy.CBCHelperMixin",
     "radar.AutoPitchControllerAccessor",
     "radar.AutoPitchControllerBlockEntityMixin",
     "radar.AutoYawControllerAccessor",

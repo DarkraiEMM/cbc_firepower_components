@@ -24,6 +24,7 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.levelgen.structure.templatesystem.StructureTemplate;
 import net.neoforged.neoforge.items.IItemHandler;
 import rbasamoyai.createbigcannons.cannon_control.cannon_mount.ExtendsCannonMount;
+import rbasamoyai.createbigcannons.cannon_control.fixed_cannon_mount.FixedCannonMountBlockEntity;
 import rbasamoyai.createbigcannons.cannon_control.contraption.MountedBigCannonContraption;
 import rbasamoyai.createbigcannons.cannon_control.contraption.PitchOrientedContraptionEntity;
 import rbasamoyai.createbigcannons.cannons.big_cannons.BigCannonBehavior;
@@ -141,22 +142,24 @@ public class CannonMagazineLoaderBlockEntity extends BlockEntity {
 				this.setChangedAndSync();
 			return;
 		}
-		if (this.automationFillStarted && !this.automaticLocked && !this.isFullyLoaded()) {
-			return;
-		}
-		if (!this.automaticLocked) {
-			if (this.isFullyLoaded()) {
-				this.automaticLocked = true;
-				this.setChangedAndSync();
-			}
-		}
 		if (this.pendingCartridgeGroup != NO_PENDING_GROUP) {
 			this.tryLoadPendingCartridge();
 			return;
 		}
 		int group = this.findCompleteGroup();
-		if (group != NO_PENDING_GROUP)
+		if (group != NO_PENDING_GROUP) {
+			if (!this.automaticLocked) {
+				this.automaticLocked = true;
+				this.setChangedAndSync();
+			}
 			this.tryLoadProjectile(group);
+			return;
+		}
+		if (this.automaticLocked) {
+			this.automaticLocked = false;
+			this.automationFillStarted = false;
+			this.setChangedAndSync();
+		}
 	}
 
 	private void tryLoadProjectile(int group) {
@@ -209,6 +212,8 @@ public class CannonMagazineLoaderBlockEntity extends BlockEntity {
 			contraptionEntity = compactMount.getContraption();
 		} else if (target instanceof ExtendsCannonMount mountExtension && mountExtension.getCannonMount() != null) {
 			contraptionEntity = mountExtension.getCannonMount().getContraption();
+		} else if (target instanceof FixedCannonMountBlockEntity fixedMount) {
+			contraptionEntity = fixedMount.getContraption();
 		}
 		if (contraptionEntity == null || !(contraptionEntity.getContraption() instanceof MountedBigCannonContraption cannon))
 			return stack;
@@ -257,6 +262,8 @@ public class CannonMagazineLoaderBlockEntity extends BlockEntity {
 			return compactMount.getContraption();
 		if (target instanceof ExtendsCannonMount mountExtension && mountExtension.getCannonMount() != null)
 			return mountExtension.getCannonMount().getContraption();
+		if (target instanceof FixedCannonMountBlockEntity fixedMount)
+			return fixedMount.getContraption();
 		return null;
 	}
 

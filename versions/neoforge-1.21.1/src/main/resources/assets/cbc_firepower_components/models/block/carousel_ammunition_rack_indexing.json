@@ -1,4 +1,3 @@
 {
-  "parent":"cbc_firepower_components:block/carousel_ammunition_rack",
-  "textures":{"green":"minecraft:block/moss_block","marker":"minecraft:block/orange_concrete"}
+  "parent": "cbc_firepower_components:block/carousel_ammunition_rack"
 }

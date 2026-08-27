@@ -1,13 +1,13 @@
 {
   "parent": "minecraft:block/block",
   "textures": {
-    "6": "create:block/axis_top",
     "shaft": "createbigcannons:block/cannon_mount/cannon_mount_side_shaft",
     "axis": "create:block/axis",
     "particle": "createbigcannons:block/cannon_mount/cannon_mount_top",
     "top": "createbigcannons:block/cannon_mount/cannon_mount_top",
     "fire": "createbigcannons:block/cannon_mount/cannon_mount_firing",
-    "toggle": "createbigcannons:block/cannon_mount/cannon_mount_toggle"
+    "toggle": "createbigcannons:block/cannon_mount/cannon_mount_toggle",
+    "axis_top": "create:block/axis_top"
   },
   "elements": [
     {
@@ -632,8 +632,113 @@
       }
     },
     {
+      "name": "trunnion_left_end",
       "from": [
         -2,
+        19,
+        6
+      ],
+      "to": [
+        0,
+        23,
+        10
+      ],
+      "faces": {
+        "north": {
+          "uv": [
+            14,
+            6,
+            16,
+            10
+          ],
+          "texture": "#axis"
+        },
+        "south": {
+          "uv": [
+            14,
+            6,
+            16,
+            10
+          ],
+          "texture": "#axis"
+        },
+        "up": {
+          "uv": [
+            14,
+            6,
+            16,
+            10
+          ],
+          "texture": "#axis"
+        },
+        "down": {
+          "uv": [
+            14,
+            6,
+            16,
+            10
+          ],
+          "rotation": 180,
+          "texture": "#axis"
+        }
+      }
+    },
+    {
+      "name": "trunnion_center",
+      "from": [
+        0,
+        19,
+        6
+      ],
+      "to": [
+        16,
+        23,
+        10
+      ],
+      "faces": {
+        "north": {
+          "uv": [
+            0,
+            6,
+            16,
+            10
+          ],
+          "texture": "#axis"
+        },
+        "south": {
+          "uv": [
+            0,
+            6,
+            16,
+            10
+          ],
+          "texture": "#axis"
+        },
+        "up": {
+          "uv": [
+            0,
+            6,
+            16,
+            10
+          ],
+          "texture": "#axis"
+        },
+        "down": {
+          "uv": [
+            0,
+            6,
+            16,
+            10
+          ],
+          "rotation": 180,
+          "texture": "#axis"
+        }
+      }
+    },
+    {
+      "name": "trunnion_right_end",
+      "from": [
+        16,
         19,
         6
       ],
@@ -645,56 +750,39 @@
       "faces": {
         "north": {
           "uv": [
-            6,
             0,
-            10,
-            16
-          ],
-          "texture": "#axis"
-        },
-        "east": {
-          "uv": [
             6,
-            6,
-            10,
+            2,
             10
           ],
-          "texture": "#axis_top"
+          "texture": "#axis"
         },
         "south": {
           "uv": [
-            6,
             0,
-            10,
-            16
+            6,
+            2,
+            10
           ],
           "texture": "#axis"
         },
-        "west": {
-          "uv": [
-            6,
-            6,
-            10,
-            10
-          ],
-          "texture": "#axis_top"
-        },
         "up": {
           "uv": [
-            6,
             0,
-            10,
-            16
+            6,
+            2,
+            10
           ],
           "texture": "#axis"
         },
         "down": {
           "uv": [
-            6,
             0,
-            10,
-            16
+            6,
+            2,
+            10
           ],
+          "rotation": 180,
           "texture": "#axis"
         }
       }
