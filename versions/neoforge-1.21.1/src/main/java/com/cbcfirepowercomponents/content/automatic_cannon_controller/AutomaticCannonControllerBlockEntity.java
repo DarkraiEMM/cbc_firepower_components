@@ -8,7 +8,6 @@ import javax.annotation.Nullable;
 
 import com.cbcfirepowercomponents.compat.DriveByWireCompat;
 import com.cbcfirepowercomponents.content.AmmunitionSelectionSource;
-import com.cbcfirepowercomponents.content.compact_cannon_mount.CompactCannonMountBlockEntity;
 import com.cbcfirepowercomponents.content.carousel_ammunition_rack.CarouselAmmunitionRackStructuralBlock;
 import com.cbcfirepowercomponents.content.ready_ammunition_compartment.ReadyAmmunitionCompartmentBlockEntity;
 import com.cbcfirepowercomponents.network.MTNetwork;
@@ -230,7 +229,9 @@ public class AutomaticCannonControllerBlockEntity extends SmartBlockEntity imple
 		this.refreshRedstoneCommands();
 		boolean rising = this.commandPowered && !this.lastCommandPowered;
 		this.lastCommandPowered = this.commandPowered;
-		if (rising || this.manualFireQueued) {
+		if (rising && this.mode != FireMode.CONTINUOUS)
+			this.acceptFireCommand();
+		if (this.manualFireQueued) {
 			this.manualFireQueued = false;
 			this.acceptFireCommand();
 		}
@@ -260,7 +261,10 @@ public class AutomaticCannonControllerBlockEntity extends SmartBlockEntity imple
 	}
 
 	private void runContinuousSequence() {
-		if (!this.continuousLatched) {
+		// Redstone is level-triggered and therefore fails safe when its source
+		// disappears. A direct player interaction keeps its separate toggle
+		// latch, preserving manual continuous-fire operation.
+		if (!this.commandPowered && !this.continuousLatched) {
 			this.setOutput(false);
 			return;
 		}
@@ -311,7 +315,7 @@ public class AutomaticCannonControllerBlockEntity extends SmartBlockEntity imple
 		int interval = 0;
 		if (this.level != null) {
 			for (BlockPos pos : this.activeMounts) {
-				if (this.level.getBlockEntity(pos) instanceof CompactCannonMountBlockEntity mount)
+				if (this.level.getBlockEntity(pos) instanceof AutomaticFireMount mount)
 					interval = Math.max(interval, mount.getAutomaticFireIntervalTicks());
 			}
 		}
@@ -332,43 +336,46 @@ public class AutomaticCannonControllerBlockEntity extends SmartBlockEntity imple
 		if (!powered) {
 			if (this.level != null) {
 				for (BlockPos pos : this.activeMounts)
-					if (this.level.getBlockEntity(pos) instanceof CompactCannonMountBlockEntity mount)
+					if (this.level.getBlockEntity(pos) instanceof AutomaticFireMount mount)
 						mount.setAutomaticFirePowered(false, 0);
 			}
 			this.activeMounts.clear();
 			return;
 		}
-		List<CompactCannonMountBlockEntity> mounts = this.getControlledMounts();
+		List<AutomaticFireMount> mounts = this.getControlledMounts();
 		if (mounts.isEmpty())
 			return;
 		if (this.coordinationMode == CoordinationMode.SALVO) {
-			for (CompactCannonMountBlockEntity mount : mounts) {
+			for (AutomaticFireMount mount : mounts) {
 				mount.setAutomaticFirePowered(true, this.outputSignalStrength);
-				this.activeMounts.add(mount.getBlockPos());
+				this.activeMounts.add(mount.getAutomaticFireMountPos());
 			}
 		} else {
-			CompactCannonMountBlockEntity mount = mounts.get(Math.floorMod(this.pollingIndex++, mounts.size()));
+			AutomaticFireMount mount = mounts.get(Math.floorMod(this.pollingIndex++, mounts.size()));
 			mount.setAutomaticFirePowered(true, this.outputSignalStrength);
-			this.activeMounts.add(mount.getBlockPos());
+			this.activeMounts.add(mount.getAutomaticFireMountPos());
 			this.setChanged();
 		}
 	}
 
-	private List<CompactCannonMountBlockEntity> getControlledMounts() {
-		List<CompactCannonMountBlockEntity> mounts = new ArrayList<>();
+	private List<AutomaticFireMount> getControlledMounts() {
+		List<AutomaticFireMount> mounts = new ArrayList<>();
 		if (this.level == null)
 			return mounts;
 		List<BlockPos> linkedTargets = DriveByWireCompat.getLinkedTargets(this.level, this.worldPosition);
 		for (BlockPos targetPos : linkedTargets)
-			if (this.level.getBlockEntity(targetPos) instanceof CompactCannonMountBlockEntity mount)
-				mounts.add(mount);
+			this.addControlledMount(mounts, targetPos);
 		for (Direction direction : Direction.values()) {
-			if (this.level.getBlockEntity(this.worldPosition.relative(direction))
-				instanceof CompactCannonMountBlockEntity mount
-				&& mounts.stream().noneMatch(existing -> existing.getBlockPos().equals(mount.getBlockPos())))
-				mounts.add(mount);
+			this.addControlledMount(mounts, this.worldPosition.relative(direction));
 		}
 		return mounts;
+	}
+
+	private void addControlledMount(List<AutomaticFireMount> mounts, BlockPos targetPos) {
+		if (this.level.getBlockEntity(targetPos) instanceof AutomaticFireMount mount
+			&& mounts.stream().noneMatch(existing -> existing.getAutomaticFireMountPos()
+				.equals(mount.getAutomaticFireMountPos())))
+			mounts.add(mount);
 	}
 
 	private int countControlledMounts() {

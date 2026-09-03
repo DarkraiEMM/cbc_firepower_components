@@ -54,6 +54,9 @@ neoForge {
             server()
             programArgument '--nogui'
             systemProperty 'neoforge.enabledGameTestNamespaces', mod_id
+            if (providers.gradleProperty('radar_self_test').isPresent()) {
+                systemProperty 'cbcfpc.radarSelfTest', 'true'
+            }
         }
 
         data {
@@ -89,6 +92,15 @@ dependencies {
     implementation("com.rbasamoyai:ritchiesprojectilelib:${rpl_version}+mc.${minecraft_version}-neoforge") { transitive = false }
     implementation("maven.modrinth:create-big-cannons:${cbc_version}")
     compileOnly("curse.maven:cbc-enchanced-shells-create-big-cannons-1489732:8470471")
+
+    // Allows an unpublished Create Radar development build to participate in
+    // local integration runs without making it a required or bundled dependency.
+    if (providers.gradleProperty('radar_dev_jar').isPresent()) {
+        localRuntime files(providers.gradleProperty('radar_dev_jar').get())
+    }
+    if (providers.gradleProperty('sable_dev_jar').isPresent()) {
+        localRuntime files(providers.gradleProperty('sable_dev_jar').get())
+    }
 }
 
 var generateModMetadata = tasks.register('generateModMetadata', ProcessResources) {

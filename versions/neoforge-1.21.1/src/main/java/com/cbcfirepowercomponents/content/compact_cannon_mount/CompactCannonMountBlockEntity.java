@@ -9,6 +9,7 @@ import java.util.Locale;
 import javax.annotation.Nullable;
 
 import com.cbcfirepowercomponents.FirepowerComponents;
+import com.cbcfirepowercomponents.content.automatic_cannon_controller.AutomaticFireMount;
 import com.cbcfirepowercomponents.content.cannon_limiter.CannonLimiterSettings;
 import com.cbcfirepowercomponents.content.cannon_limiter.CannonLimiterMount;
 import com.cbcfirepowercomponents.content.compact_cannon_mount.input.MountedWeaponInputContext;
@@ -59,7 +60,8 @@ import rbasamoyai.createbigcannons.cannons.big_cannons.breeches.quickfiring_bree
 import rbasamoyai.createbigcannons.cannons.CannonContraptionProviderBlock;
 
 public class CompactCannonMountBlockEntity extends SmartBlockEntity implements IDisplayAssemblyExceptions,
-	ControlPitchContraption.Block, HasMultipleKineticInterfaces, IHaveGoggleInformation, CannonLimiterMount {
+	ControlPitchContraption.Block, HasMultipleKineticInterfaces, IHaveGoggleInformation, CannonLimiterMount,
+	AutomaticFireMount {
 
 	public enum LimitType {
 		PITCH_MIN,
@@ -242,6 +244,7 @@ public class CompactCannonMountBlockEntity extends SmartBlockEntity implements I
 		this.applyEffectiveFireSignal();
 	}
 
+	@Override
 	public void setAutomaticFirePowered(boolean powered, int firePower) {
 		int clampedPower = powered ? Math.max(1, Math.min(15, firePower)) : 0;
 		if (this.automaticFirePowered == powered && this.automaticFirePower == clampedPower)
@@ -249,6 +252,11 @@ public class CompactCannonMountBlockEntity extends SmartBlockEntity implements I
 		this.automaticFirePowered = powered;
 		this.automaticFirePower = clampedPower;
 		this.applyEffectiveFireSignal();
+	}
+
+	@Override
+	public BlockPos getAutomaticFireMountPos() {
+		return this.getBlockPos();
 	}
 
 	private void applyEffectiveFireSignal() {
@@ -269,6 +277,7 @@ public class CompactCannonMountBlockEntity extends SmartBlockEntity implements I
 			cannon.onRedstoneUpdate(serverLevel, this.mountedContraption, powerChanged, firePower, this);
 	}
 
+	@Override
 	public int getAutomaticFireIntervalTicks() {
 		if (this.mountedContraption == null
 			|| !(this.mountedContraption.getContraption() instanceof AbstractMountedCannonContraption cannon))
@@ -748,6 +757,8 @@ public class CompactCannonMountBlockEntity extends SmartBlockEntity implements I
 	@Override
 	public Vec3 getDismountPositionForContraption(PitchOrientedContraptionEntity poce) {
 		Direction preferred = this.getCannonSide().getOpposite();
+		if (!preferred.getAxis().isHorizontal())
+			preferred = this.getBlockState().getValue(CompactCannonMountBlock.HORIZONTAL_FACING).getOpposite();
 		Direction[] directions = { preferred, preferred.getClockWise(), preferred.getCounterClockWise(), preferred.getOpposite() };
 		if (this.level != null) {
 			for (int distance = 1; distance <= 2; ++distance) {

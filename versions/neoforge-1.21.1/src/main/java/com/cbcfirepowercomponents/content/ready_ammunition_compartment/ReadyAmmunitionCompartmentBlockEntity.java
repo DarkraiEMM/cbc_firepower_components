@@ -149,6 +149,14 @@ public class ReadyAmmunitionCompartmentBlockEntity extends BlockEntity implement
 		this.propellants[first] = this.propellants[second];
 		this.projectiles[second] = projectile;
 		this.propellants[second] = propellant;
+		// Slot zero is presented as the green queue head in the rack screen.
+		// Moving a complete round into that working slot must also change the
+		// selected type; otherwise the screen swaps visibly while the rack keeps
+		// feeding the previously selected ammunition from another slot.
+		if ((first == 0 || second == 0) && this.isComplete(0)) {
+			this.selectedProjectile = this.projectiles[0].copyWithCount(1);
+			this.selectedPropellant = this.propellants[0].copyWithCount(1);
+		}
 		if (this.pendingGroup == first)
 			this.pendingGroup = second;
 		else if (this.pendingGroup == second)

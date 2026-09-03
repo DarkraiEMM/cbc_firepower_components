@@ -9,6 +9,7 @@
     "CannonMountLimiterMixin",
     "CannonMountPointAmmoCompatMixin",
     "ControlPitchContraptionCompatMixin",
+    "FixedCannonMountAutomaticFireMixin",
     "LargeAutocannonAmmoBoxContainerWrapperMixin",
     "LargeAutocannonAmmoBoxMenuSlotMixin",
     "MountedAutocannonContraptionTwinFireMixin",
@@ -17,7 +18,13 @@
     "radar.AutoPitchControllerBlockEntityMixin",
     "radar.AutoYawControllerAccessor",
     "radar.AutoYawControllerBlockEntityMixin",
-    "radar.DataLinkBlockItemMixin"
+    "radar.DataLinkBlockItemMixin",
+    "radar.api.CannonMountContextMixin",
+    "radar.api.AutoPitchControllerBlockEntityMixin",
+    "radar.api.ApiMountPitchSpeedMixin",
+    "radar.api.ApiMountYawSpeedMixin",
+    "radar.api.MountApiPriorityMixin",
+    "radar.api.FireControllerBlockEntityMixin"
   ],
   "injectors": {
     "defaultRequire": 1

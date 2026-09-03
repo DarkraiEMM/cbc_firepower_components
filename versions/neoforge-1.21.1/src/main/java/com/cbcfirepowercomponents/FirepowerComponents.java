@@ -1,6 +1,7 @@
 package com.cbcfirepowercomponents;
 
 import com.cbcfirepowercomponents.compat.radar.RadarApiCompat;
+import com.cbcfirepowercomponents.compat.radar.RadarCompatSelfTest;
 import com.cbcfirepowercomponents.registry.MTBlockEntities;
 import com.cbcfirepowercomponents.registry.MTBlocks;
 import com.cbcfirepowercomponents.registry.MTCreativeTabs;
@@ -34,6 +35,8 @@ public class FirepowerComponents {
 		modBus.addListener(MTNetwork::register);
 		modBus.addListener(this::commonSetup);
 		NeoForge.EVENT_BUS.addListener(MTCommonEvents::onTooltip);
+		if (Boolean.getBoolean("cbcfpc.radarSelfTest"))
+			NeoForge.EVENT_BUS.addListener(RadarCompatSelfTest::onServerStarted);
 	}
 
 	private void commonSetup(FMLCommonSetupEvent event) {

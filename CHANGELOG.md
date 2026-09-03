@@ -1,5 +1,16 @@
 # Changelog
 
+## 0.4.1
+
+- Added Create: Radar 5.0 EA integration for all three compact-mount blocks through Radar's official mount API and complete CBC weapon-control context.
+- Forwarded Radar fire-controller output to compact mounts with explicit stop handling for target loss, network changes, and chunk unloads.
+- Kept the pre-API Create: Radar 4.9 compatibility path isolated from the new 5.0 API path.
+- Extended the Automatic Cannon Controller's virtual firing signal to CBC fixed cannon mounts without replacing their physical redstone input.
+- Changed continuous automatic fire to fail closed when its controlling signal or mount association disappears.
+- Fixed a server crash when dismounting from a downward-facing Vertical Compact Cannon Mount.
+- Fixed missing single-barrel large-autocannon breech handle variants and normalized their texture-slot assignments to prevent stacked or incorrect UV rendering.
+- Known upstream limitation: Create: Radar 5.0 EA currently ignores the weapon adapter's minimum pitch-firing tolerance, so a moving Sable target may remain locked while Radar withholds its fire signal.
+
 ## 0.4.0
 
 - Rebuilt the controller, cannon limiter, carousel ready rack, and ready ammunition compartment screens around one compact Create-inspired military interface, including corrected scaling and non-overlapping goggle text.

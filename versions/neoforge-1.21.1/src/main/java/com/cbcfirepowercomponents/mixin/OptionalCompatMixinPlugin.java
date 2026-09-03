@@ -25,9 +25,15 @@ public class OptionalCompatMixinPlugin implements IMixinConfigPlugin {
 	@Override
 	public boolean shouldApplyMixin(String targetClassName, String mixinClassName) {
 		if (mixinClassName.startsWith("com.cbcfirepowercomponents.mixin.radar.")) {
+			// API bridge mixins are @Pseudo and therefore safe when Radar is absent.
+			// Do not gate them on FML/resource discovery: this callback runs early
+			// enough that those two views of the mod class path can disagree.
+			if (mixinClassName.startsWith("com.cbcfirepowercomponents.mixin.radar.api."))
+				return true;
+
+			ClassLoader loader = OptionalCompatMixinPlugin.class.getClassLoader();
+			boolean publicApiAvailable = loader.getResource(RADAR_API_REGISTRY) != null;
 			boolean radarLoaded = FMLLoader.getLoadingModList().getModFileById("create_radar") != null;
-			boolean publicApiAvailable = OptionalCompatMixinPlugin.class.getClassLoader()
-				.getResource(RADAR_API_REGISTRY) != null;
 			return radarLoaded && !publicApiAvailable;
 		}
 		if (mixinClassName.startsWith("com.cbcfirepowercomponents.mixin.vestalihy."))

@@ -174,6 +174,15 @@ public class CarouselAmmunitionRackBlockEntity extends KineticBlockEntity implem
 		this.propellants[first] = this.propellants[second];
 		this.projectiles[second] = projectile;
 		this.propellants[second] = propellant;
+		// The green station is the carousel's active/output station. Swapping a
+		// complete round into it is also an ammunition-type selection; retaining
+		// the old selected stack would immediately index away from the user's
+		// newly arranged round.
+		if ((first == this.currentIndex || second == this.currentIndex)
+			&& this.isComplete(this.currentIndex)) {
+			this.selectedProjectile = this.projectiles[this.currentIndex].copyWithCount(1);
+			this.selectedPropellant = this.propellants[this.currentIndex].copyWithCount(1);
+		}
 		if (this.pendingPropellantIndex == first)
 			this.pendingPropellantIndex = second;
 		else if (this.pendingPropellantIndex == second)
