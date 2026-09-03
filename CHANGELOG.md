@@ -1,5 +1,11 @@
 # Changelog
 
+## 0.4.2
+
+- Reissued the NeoForge 1.21.1 release under the intended 0.4.2 version number.
+- Includes the Create: Radar 5.0 EA integration, fixed-mount automatic firing, vertical-mount dismount crash fix, and large-autocannon breech model/UV fixes documented for 0.4.1.
+- Retains the known upstream Create: Radar 5.0 EA pitch-tolerance limitation for moving Sable targets; no local override is applied.
+
 ## 0.4.1
 
 - Added Create: Radar 5.0 EA integration for all three compact-mount blocks through Radar's official mount API and complete CBC weapon-control context.
