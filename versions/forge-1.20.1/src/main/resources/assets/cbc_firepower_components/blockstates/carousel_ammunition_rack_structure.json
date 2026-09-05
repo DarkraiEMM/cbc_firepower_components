@@ -1,0 +1,13 @@
+{
+  "variants": {
+    "x_offset=0,z_offset=0": {"model":"cbc_firepower_components:block/carousel_ammunition_rack_structure_empty"},
+    "x_offset=1,z_offset=0": {"model":"cbc_firepower_components:block/carousel_ammunition_rack_structure_empty"},
+    "x_offset=2,z_offset=0": {"model":"cbc_firepower_components:block/carousel_ammunition_rack_structure_empty"},
+    "x_offset=0,z_offset=1": {"model":"cbc_firepower_components:block/carousel_ammunition_rack_structure_empty"},
+    "x_offset=1,z_offset=1": {"model":"cbc_firepower_components:block/carousel_ammunition_rack_structure_empty"},
+    "x_offset=2,z_offset=1": {"model":"cbc_firepower_components:block/carousel_ammunition_rack_structure_empty"},
+    "x_offset=0,z_offset=2": {"model":"cbc_firepower_components:block/carousel_ammunition_rack_structure_empty"},
+    "x_offset=1,z_offset=2": {"model":"cbc_firepower_components:block/carousel_ammunition_rack_structure_empty"},
+    "x_offset=2,z_offset=2": {"model":"cbc_firepower_components:block/carousel_ammunition_rack_structure_empty"}
+  }
+}

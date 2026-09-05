@@ -21,7 +21,7 @@
     }
   },
   "result": {
-    "item": "cbc_firepower_components:cannon_limiter",
+    "id": "cbc_firepower_components:cannon_limiter",
     "count": 1
   },
   "show_notification": true

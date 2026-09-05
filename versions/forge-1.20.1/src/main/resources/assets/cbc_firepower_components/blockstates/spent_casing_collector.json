@@ -1,0 +1,7 @@
+{
+  "multipart": [
+    {"apply":{"model":"cbc_firepower_components:block/spent_casing_collector"}},
+    {"when":{"fill":"1"},"apply":{"model":"cbc_firepower_components:block/spent_casing_collector_half"}},
+    {"when":{"fill":"2"},"apply":{"model":"cbc_firepower_components:block/spent_casing_collector_full"}}
+  ]
+}

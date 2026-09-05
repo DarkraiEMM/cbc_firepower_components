@@ -4,10 +4,10 @@
 	"parent": "minecraft:block/block",
 	"textures": {
 		"5": "cbc_firepower_components:block/large_autocannon_ammo_box_side",
-		"6": "cbc_firepower_components:block/large_autocannon_ammo_box_top",
-		"7": "cbc_firepower_components:block/large_autocannon_ammo_box_front",
-		"iron_top": "create:block/industrial_iron_block",
-		"particle": "create:item/industrial_iron_block"
+        "6": "cbc_firepower_components:block/large_autocannon_ammo_box_top",
+        "7": "cbc_firepower_components:block/large_autocannon_ammo_box_front",
+        "iron_top": "create:block/industrial_iron_block",
+		"particle": "create:block/industrial_iron_block"
 	},
 	"elements": [
 		{

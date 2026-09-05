@@ -1,0 +1,24 @@
+{
+	"format_version": "1.21.11",
+	"credit": "Generated for CBC: Firepower Components",
+	"texture_size": [32, 32],
+	"textures": {
+		"0": "cbc_firepower_components:block/steel_large_autocannon",
+		"particle": "cbc_firepower_components:block/steel_large_autocannon"
+	},
+	"elements": [
+		{
+			"from": [4, 0, 4],
+			"to": [12, 16, 12],
+			"rotation": {"angle": 0, "axis": "y", "origin": [8, 8, 8]},
+			"faces": {
+				"north": {"uv": [4.5, 8.5, 8.5, 16], "texture": "#0"},
+				"east": {"uv": [4.5, 8.5, 8.5, 16], "texture": "#0"},
+				"south": {"uv": [4.5, 8.5, 8.5, 16], "texture": "#0"},
+				"west": {"uv": [4.5, 8.5, 8.5, 16], "texture": "#0"},
+				"up": {"uv": [11.5, 0.5, 15.5, 4.5], "texture": "#0"},
+				"down": {"uv": [11.5, 0.5, 15.5, 4.5], "texture": "#0"}
+			}
+		}
+	]
+}

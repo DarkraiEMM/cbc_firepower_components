@@ -4,10 +4,13 @@ import com.cbcfirepowercomponents.registry.MTBlockEntities;
 import com.cbcfirepowercomponents.registry.MTBlocks;
 import com.cbcfirepowercomponents.registry.MTCreativeTabs;
 import com.cbcfirepowercomponents.registry.MTItems;
+import com.cbcfirepowercomponents.registry.MTEntityTypes;
 import com.cbcfirepowercomponents.registry.MTArmInteractionPointTypes;
 import com.cbcfirepowercomponents.network.MTNetwork;
+import com.cbcfirepowercomponents.event.MTCommonEvents;
 
 import net.minecraftforge.eventbus.api.IEventBus;
+import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
@@ -23,11 +26,13 @@ public class FirepowerComponents {
 		IEventBus modBus = FMLJavaModLoadingContext.get().getModEventBus();
 		MTBlocks.register(modBus);
 		MTItems.register(modBus);
+		MTEntityTypes.register(modBus);
 		MTBlockEntities.register(modBus);
 		MTCreativeTabs.register(modBus);
 		MTArmInteractionPointTypes.register(modBus);
 		MTNetwork.register();
 		modBus.addListener(this::commonSetup);
+		MinecraftForge.EVENT_BUS.addListener(MTCommonEvents::onTooltip);
 	}
 
 	private void commonSetup(FMLCommonSetupEvent event) {

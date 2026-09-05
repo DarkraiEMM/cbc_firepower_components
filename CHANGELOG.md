@@ -5,6 +5,12 @@
 - Reissued the NeoForge 1.21.1 release under the intended 0.4.2 version number.
 - Includes the Create: Radar 5.0 EA integration, fixed-mount automatic firing, vertical-mount dismount crash fix, and large-autocannon breech model/UV fixes documented for 0.4.1.
 - Retains the known upstream Create: Radar 5.0 EA pitch-tolerance limitation for moving Sable targets; no local override is applied.
+- Updated the independently maintained Forge 1.20.1 line from 0.3.2 to 0.4.2 for Create 6.0.8, Create Big Cannons 5.11.4, and Ritchie's Projectile Library 2.1.1.
+- Backported the automatic controller, vertical compact mount, carousel and ready ammunition racks, spent-casing collector, large autocannon family, unified GUIs, fixed-mount loading, ammunition switching, and related crash/model fixes to Forge 1.20.1.
+- Added optional legacy integration for the Create: Radar 0.4.6 distribution (internally versioned 0.4.5), with data-link selection and compact-mount yaw/pitch adapters. Full Radar-controlled automatic firing is not claimed for this pre-API release.
+- Excluded CBC Military Supplement/CBC More Shells metadata and dedicated compatibility code from Forge 1.20.1 because that addon targets CBC versions older than this build's required CBC 5.11.4.
+- Fixed Forge 1.20.1 production startup by targeting both mapped and SRG names for CBC's autocannon-ammo-container slot overrides; applied the same namespace-safe handling to Radar's data-link item interaction.
+- Follow-up testing of the corrected Forge release has not reproduced the startup failure; broader gameplay compatibility remains under observation.
 
 ## 0.4.1
 

@@ -20,23 +20,11 @@
           "source": "block_entity"
         },
         {
-          "function": "minecraft:copy_nbt",
-          "ops": [
-            {
-              "op": "replace",
-              "source": "Ammo",
-              "target": "Ammo"
-            },
-            {
-              "op": "replace",
-              "source": "Tracers",
-              "target": "Tracers"
-            },
-            {
-              "op": "replace",
-              "source": "TracerSpacing",
-              "target": "TracerSpacing"
-            }
+          "function": "minecraft:copy_components",
+          "include": [
+            "createbigcannons:ammo",
+            "createbigcannons:tracers",
+            "createbigcannons:tracer_spacing"
           ],
           "source": "block_entity"
         }

@@ -1,0 +1,25 @@
+{
+  "variants": {
+    "facing=north": {
+      "model": "cbc_firepower_components:block/automatic_cannon_controller"
+    },
+    "facing=east": {
+      "model": "cbc_firepower_components:block/automatic_cannon_controller",
+      "y": 90
+    },
+    "facing=south": {
+      "model": "cbc_firepower_components:block/automatic_cannon_controller",
+      "y": 180
+    },
+    "facing=west": {
+      "model": "cbc_firepower_components:block/automatic_cannon_controller",
+      "y": 270
+    },
+    "facing=up": {
+      "model": "cbc_firepower_components:block/automatic_cannon_controller"
+    },
+    "facing=down": {
+      "model": "cbc_firepower_components:block/automatic_cannon_controller"
+    }
+  }
+}

@@ -1,0 +1,80 @@
+{
+	"format_version": "1.21.11",
+	"credit": "Original twin-muzzle geometry for CBC: Firepower Components",
+	"texture_size": [32, 32],
+	"textures": {
+		"0": "cbc_firepower_components:block/steel_large_autocannon",
+		"1": "cbc_firepower_components:block/steel_large_autocannon_1",
+		"particle": "cbc_firepower_components:block/steel_large_autocannon"
+	},
+	"elements": [
+		{
+			"from": [-1, 0, 4],
+			"to": [7, 16, 12],
+			"rotation": {"angle": 0, "axis": "y", "origin": [-6, 0, -1]},
+			"faces": {
+				"north": {"uv": [4.5, 8, 8.5, 16], "texture": "#0"},
+				"east": {"uv": [4.5, 8, 8.5, 16], "texture": "#0"},
+				"south": {"uv": [4.5, 8, 8.5, 16], "texture": "#0"},
+				"west": {"uv": [4.5, 0, 8.5, 8], "texture": "#0"},
+				"up": {"uv": [7, 0, 11, 4], "texture": "#1"},
+				"down": {"uv": [11.5, 0.5, 15.5, 4.5], "texture": "#0"}
+			}
+		},
+		{
+			"from": [-0.75, 1, 4.25],
+			"to": [6.75, 15, 11.75],
+			"rotation": {"angle": 0, "axis": "y", "origin": [2, 12, 11]},
+			"faces": {
+				"north": {"uv": [13.5, 8, 16, 16], "texture": "#0"},
+				"east": {"uv": [13.5, 8, 16, 16], "texture": "#0"},
+				"south": {"uv": [13.5, 8, 16, 16], "texture": "#0"},
+				"west": {"uv": [13.5, 8, 16, 16], "texture": "#0"},
+				"up": {"uv": [9.25, 11.25, 13, 15], "texture": "#0"},
+				"down": {"uv": [9.25, 11.25, 13, 15], "texture": "#0"}
+			}
+		},
+		{
+			"from": [9, 0, 4],
+			"to": [17, 16, 12],
+			"rotation": {"angle": 0, "axis": "y", "origin": [4, 0, -1]},
+			"faces": {
+				"north": {"uv": [4.5, 8, 8.5, 16], "texture": "#0"},
+				"east": {"uv": [4.5, 0, 8.5, 8], "texture": "#0"},
+				"south": {"uv": [4.5, 8, 8.5, 16], "texture": "#0"},
+				"west": {"uv": [4.5, 8, 8.5, 16], "texture": "#0"},
+				"up": {"uv": [7, 0, 11, 4], "texture": "#1"},
+				"down": {"uv": [11.5, 0.5, 15.5, 4.5], "texture": "#0"}
+			}
+		},
+		{
+			"from": [9.25, 1, 4.25],
+			"to": [16.75, 15, 11.75],
+			"rotation": {"angle": 0, "axis": "y", "origin": [12, 12, 11]},
+			"faces": {
+				"north": {"uv": [13.5, 8, 16, 16], "texture": "#0"},
+				"east": {"uv": [13.5, 8, 16, 16], "texture": "#0"},
+				"south": {"uv": [13.5, 8, 16, 16], "texture": "#0"},
+				"west": {"uv": [13.5, 8, 16, 16], "texture": "#0"},
+				"up": {"uv": [9.25, 11.25, 13, 15], "texture": "#0"},
+				"down": {"uv": [9.25, 11.25, 13, 15], "texture": "#0"}
+			}
+		}
+	],
+	"groups": [
+		{
+			"name": "group",
+			"origin": [-1, 0, -1],
+			"scope": 0,
+			"color": 0,
+			"children": [0, 1]
+		},
+		{
+			"name": "group",
+			"origin": [-1, 0, -1],
+			"scope": 0,
+			"color": 0,
+			"children": [2, 3]
+		}
+	]
+}

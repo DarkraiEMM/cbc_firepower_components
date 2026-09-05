@@ -9,8 +9,11 @@ import java.util.Locale;
 import javax.annotation.Nullable;
 
 import com.cbcfirepowercomponents.FirepowerComponents;
+import com.cbcfirepowercomponents.content.automatic_cannon_controller.AutomaticFireMount;
 import com.cbcfirepowercomponents.content.cannon_limiter.CannonLimiterSettings;
-import com.cbcfirepowercomponents.content.large_autocannon_ammo_box.LargeAutocannonAmmoBoxItem;
+import com.cbcfirepowercomponents.content.cannon_limiter.CannonLimiterMount;
+import com.cbcfirepowercomponents.content.compact_cannon_mount.input.MountedWeaponInputContext;
+import com.cbcfirepowercomponents.content.compact_cannon_mount.input.MountedWeaponInputStrategies;
 import com.cbcfirepowercomponents.registry.MTBlockEntities;
 import com.simibubi.create.AllSoundEvents;
 import com.simibubi.create.api.equipment.goggles.IHaveGoggleInformation;
@@ -56,11 +59,10 @@ import rbasamoyai.createbigcannons.cannon_control.contraption.PitchOrientedContr
 import rbasamoyai.createbigcannons.cannons.autocannon.breech.AbstractAutocannonBreechBlockEntity;
 import rbasamoyai.createbigcannons.cannons.big_cannons.breeches.quickfiring_breech.CannonMountPoint;
 import rbasamoyai.createbigcannons.cannons.CannonContraptionProviderBlock;
-import rbasamoyai.createbigcannons.munitions.autocannon.AutocannonAmmoItem;
-import rbasamoyai.createbigcannons.munitions.autocannon.ammo_container.AutocannonAmmoContainerItem;
 
 public class CompactCannonMountBlockEntity extends SmartBlockEntity implements IDisplayAssemblyExceptions,
-	ControlPitchContraption.Block, HasMultipleKineticInterfaces, IHaveGoggleInformation {
+	ControlPitchContraption.Block, HasMultipleKineticInterfaces, IHaveGoggleInformation, CannonLimiterMount,
+	AutomaticFireMount {
 
 	public enum LimitType {
 		PITCH_MIN,
@@ -89,6 +91,11 @@ public class CompactCannonMountBlockEntity extends SmartBlockEntity implements I
 	private float prevPitch;
 	private float clientYawDiff;
 	private float clientPitchDiff;
+	private boolean physicalFirePowered;
+	private int physicalFirePower;
+	private boolean automaticFirePowered;
+	private int automaticFirePower;
+	private boolean effectiveFirePowered;
 
 	protected final CompactCannonMountInterfaceBlockEntity pitchInterface;
 	protected final CompactCannonMountInterfaceBlockEntity yawInterface;
@@ -232,12 +239,53 @@ public class CompactCannonMountBlockEntity extends SmartBlockEntity implements I
 				this.sendData();
 			}
 		}
-		if (firePowered != prevFirePowered)
-			this.getLevel().setBlock(this.worldPosition, this.getBlockState().setValue(CompactCannonMountBlock.FIRE_POWERED, firePowered), 3);
+		this.physicalFirePowered = firePowered;
+		this.physicalFirePower = firePowered ? Math.max(0, Math.min(15, firePower)) : 0;
+		this.applyEffectiveFireSignal();
+	}
 
+	@Override
+	public void setAutomaticFirePowered(boolean powered, int firePower) {
+		int clampedPower = powered ? Math.max(1, Math.min(15, firePower)) : 0;
+		if (this.automaticFirePowered == powered && this.automaticFirePower == clampedPower)
+			return;
+		this.automaticFirePowered = powered;
+		this.automaticFirePower = clampedPower;
+		this.applyEffectiveFireSignal();
+	}
+
+	@Override
+	public BlockPos getAutomaticFireMountPos() {
+		return this.worldPosition;
+	}
+
+	private void applyEffectiveFireSignal() {
+		boolean powered = this.physicalFirePowered || this.automaticFirePowered;
+		int firePower = Math.max(this.physicalFirePower, this.automaticFirePower);
+		boolean powerChanged = powered != this.effectiveFirePowered;
+		this.effectiveFirePowered = powered;
+		BlockState state = this.getBlockState();
+		if (state.hasProperty(CompactCannonMountBlock.FIRE_POWERED)
+			&& state.getValue(CompactCannonMountBlock.FIRE_POWERED) != powered)
+			this.getLevel().setBlock(this.worldPosition, state.setValue(CompactCannonMountBlock.FIRE_POWERED, powered), 3);
 		if (this.running && this.mountedContraption != null && this.getLevel() instanceof ServerLevel serverLevel
-			&& this.mountedContraption.getContraption() instanceof AbstractMountedCannonContraption cannon) {
-			cannon.onRedstoneUpdate(serverLevel, this.mountedContraption, firePowered != prevFirePowered, firePower, this);
+			&& this.mountedContraption.getContraption() instanceof AbstractMountedCannonContraption cannon)
+			cannon.onRedstoneUpdate(serverLevel, this.mountedContraption, powerChanged, firePower, this);
+	}
+
+	@Override
+	public int getAutomaticFireIntervalTicks() {
+		if (this.mountedContraption == null
+			|| !(this.mountedContraption.getContraption() instanceof AbstractMountedCannonContraption cannon))
+			return 0;
+		AbstractAutocannonBreechBlockEntity breech = this.findAutocannonBreech(cannon);
+		if (breech != null)
+			return Math.max(0, breech.getActualFireRate());
+		try {
+			Object result = cannon.getClass().getMethod("getReferencedFireRate").invoke(cannon);
+			return result instanceof Number number ? Math.max(0, number.intValue()) : 0;
+		} catch (ReflectiveOperationException | SecurityException ignored) {
+			return 0;
 		}
 	}
 
@@ -290,6 +338,18 @@ public class CompactCannonMountBlockEntity extends SmartBlockEntity implements I
 		if (yawLimit >= 0)
 			speed = (float) Mth.clamp(speed, -yawLimit, yawLimit);
 		return Mth.lerp(partialTicks, this.cannonYaw, this.clampYawToLimits(this.cannonYaw + speed));
+	}
+
+	public float getCannonPitch() {
+		return this.cannonPitch;
+	}
+
+	public float getCannonYaw() {
+		return this.cannonYaw;
+	}
+
+	public boolean isRunning() {
+		return this.running;
 	}
 
 	public float getDisplayPitch() {
@@ -678,7 +738,28 @@ public class CompactCannonMountBlockEntity extends SmartBlockEntity implements I
 
 	@Override
 	public Vec3 getDismountPositionForContraption(PitchOrientedContraptionEntity poce) {
-		return Vec3.atBottomCenterOf(this.worldPosition.relative(this.getCannonSide().getOpposite()));
+		Direction preferred = this.getCannonSide().getOpposite();
+		if (!preferred.getAxis().isHorizontal())
+			preferred = this.getBlockState().getValue(CompactCannonMountBlock.HORIZONTAL_FACING).getOpposite();
+		Direction[] directions = { preferred, preferred.getClockWise(), preferred.getCounterClockWise(), preferred.getOpposite() };
+		if (this.level != null) {
+			for (int distance = 1; distance <= 2; ++distance) {
+				for (int yOffset : new int[] { 0, 1, -1 }) {
+					for (Direction direction : directions) {
+						BlockPos candidate = this.worldPosition.relative(direction, distance).offset(0, yOffset, 0);
+						if (this.isSafeDismountPosition(candidate))
+							return Vec3.atBottomCenterOf(candidate);
+					}
+				}
+			}
+		}
+		return Vec3.atBottomCenterOf(this.worldPosition.relative(preferred));
+	}
+
+	private boolean isSafeDismountPosition(BlockPos pos) {
+		return this.level.getBlockState(pos).getCollisionShape(this.level, pos).isEmpty()
+			&& this.level.getBlockState(pos.above()).getCollisionShape(this.level, pos.above()).isEmpty()
+			&& !this.level.getBlockState(pos.below()).getCollisionShape(this.level, pos.below()).isEmpty();
 	}
 
 	@Override public AssemblyException getLastAssemblyException() { return this.lastException; }
@@ -720,6 +801,14 @@ public class CompactCannonMountBlockEntity extends SmartBlockEntity implements I
 	}
 
 	@Nullable
+	private MountedWeaponInputContext getMountedWeaponInputContext() {
+		if (this.mountedContraption == null
+			|| !(this.mountedContraption.getContraption() instanceof AbstractMountedCannonContraption cannon))
+			return null;
+		return new MountedWeaponInputContext(this.mountedContraption, cannon);
+	}
+
+	@Nullable
 	private AbstractAutocannonBreechBlockEntity findMountedAutocannonBreech() {
 		if (this.mountedContraption == null
 			|| !(this.mountedContraption.getContraption() instanceof AbstractMountedCannonContraption cannon))
@@ -738,52 +827,13 @@ public class CompactCannonMountBlockEntity extends SmartBlockEntity implements I
 		return null;
 	}
 
-	private ItemStack insertAutocannonAmmoContainer(ItemStack stack, boolean simulate) {
-		if (!(stack.getItem() instanceof AutocannonAmmoContainerItem))
-			return stack;
-		AbstractAutocannonBreechBlockEntity breech = this.findMountedAutocannonBreech();
-		if (breech == null)
-			return stack;
-		ItemStack oldContainer = breech.getMagazine();
-		// IItemHandler can return only one remainder stack. Refuse a swap so an
-		// existing magazine and a legacy stacked source can never be merged or lost.
-		if (!oldContainer.isEmpty())
-			return stack;
-		ItemStack remainder = stack.copy();
-		remainder.shrink(1);
-		if (simulate)
-			return remainder;
-		ItemStack inserted = stack.copy();
-		inserted.setCount(1);
-		LargeAutocannonAmmoBoxItem.sanitizeForCbcMagazine(inserted);
-		breech.setMagazine(inserted);
-		breech.setChanged();
-		return remainder;
-	}
-
-	private ItemStack insertLooseAutocannonAmmo(ItemStack stack, boolean simulate) {
-		if (!(stack.getItem() instanceof AutocannonAmmoItem))
-			return stack;
-		AbstractAutocannonBreechBlockEntity breech = this.findMountedAutocannonBreech();
-		if (breech == null || breech.isInputFull())
-			return stack;
-		ItemStack remainder = stack.copy();
-		remainder.shrink(1);
-		if (!simulate) {
-			ItemStack inserted = stack.copy();
-			inserted.setCount(1);
-			breech.getInputBuffer().add(inserted);
-			breech.setChanged();
-		}
-		return remainder;
+	public ItemStack insertMountedWeaponAmmo(ItemStack stack, boolean simulate) {
+		MountedWeaponInputContext context = this.getMountedWeaponInputContext();
+		return context == null ? stack : MountedWeaponInputStrategies.insert(context, stack, simulate);
 	}
 
 	public ItemStack insertAutocannonFeedAmmo(ItemStack stack, boolean simulate) {
-		ItemStack insertedAmmo = this.insertLooseAutocannonAmmo(stack, simulate);
-		if (insertedAmmo.getCount() != stack.getCount() || !ItemStack.matches(insertedAmmo, stack))
-			return insertedAmmo;
-		ItemCannon itemCannon = this.getMountedItemCannon();
-		return itemCannon == null ? stack : itemCannon.insertItemIntoCannon(stack, simulate);
+		return this.insertMountedWeaponAmmo(stack, simulate);
 	}
 
 	public ItemStack insertCannonMagazineAmmo(ItemStack stack, boolean simulate) {
@@ -808,17 +858,7 @@ public class CompactCannonMountBlockEntity extends SmartBlockEntity implements I
 
 		@Override
 		public ItemStack insertItem(int slot, ItemStack stack, boolean simulate) {
-			ItemStack insertedContainer = CompactCannonMountBlockEntity.this.insertAutocannonAmmoContainer(stack, simulate);
-			if (insertedContainer.getCount() != stack.getCount() || !ItemStack.matches(insertedContainer, stack))
-				return insertedContainer;
-			ItemStack insertedAmmo = CompactCannonMountBlockEntity.this.insertLooseAutocannonAmmo(stack, simulate);
-			if (insertedAmmo.getCount() != stack.getCount() || !ItemStack.matches(insertedAmmo, stack))
-				return insertedAmmo;
-			ItemCannon itemCannon = CompactCannonMountBlockEntity.this.getMountedItemCannon();
-			if (itemCannon != null)
-				return itemCannon.insertItemIntoCannon(stack, simulate);
-			IItemHandler mountedHandler = CompactCannonMountBlockEntity.this.getMountedItemHandler();
-			return mountedHandler == null ? stack : mountedHandler.insertItem(slot, stack, simulate);
+			return CompactCannonMountBlockEntity.this.insertMountedWeaponAmmo(stack, simulate);
 		}
 
 		@Override
@@ -838,8 +878,8 @@ public class CompactCannonMountBlockEntity extends SmartBlockEntity implements I
 
 		@Override
 		public boolean isItemValid(int slot, ItemStack stack) {
-			IItemHandler mountedHandler = CompactCannonMountBlockEntity.this.getMountedItemHandler();
-			return mountedHandler == null || mountedHandler.isItemValid(slot, stack);
+			MountedWeaponInputContext context = CompactCannonMountBlockEntity.this.getMountedWeaponInputContext();
+			return context != null && MountedWeaponInputStrategies.canInsert(context, stack);
 		}
 	}
 

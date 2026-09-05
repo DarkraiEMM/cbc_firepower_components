@@ -20,6 +20,9 @@ minecraft {
     runs {
         client {
             workingDirectory project.file('run')
+            arg '-mixin.config=cbc_firepower_components.mixins.json'
+            property 'mixin.env.remapRefMap', 'true'
+            property 'mixin.env.refMapRemappingFile', "${projectDir}/build/createSrgToMcp/output.srg"
             property 'forge.logging.markers', 'REGISTRIES'
             property 'forge.logging.console.level', 'debug'
             property 'forge.enabledGameTestNamespaces', mod_id
@@ -32,6 +35,9 @@ minecraft {
 
         server {
             workingDirectory project.file('run')
+            arg '-mixin.config=cbc_firepower_components.mixins.json'
+            property 'mixin.env.remapRefMap', 'true'
+            property 'mixin.env.refMapRemappingFile', "${projectDir}/build/createSrgToMcp/output.srg"
             property 'forge.logging.markers', 'REGISTRIES'
             property 'forge.logging.console.level', 'debug'
             property 'forge.enabledGameTestNamespaces', mod_id
@@ -44,6 +50,9 @@ minecraft {
 
         data {
             workingDirectory project.file('run')
+            arg '-mixin.config=cbc_firepower_components.mixins.json'
+            property 'mixin.env.remapRefMap', 'true'
+            property 'mixin.env.refMapRemappingFile', "${projectDir}/build/createSrgToMcp/output.srg"
             property 'forge.logging.markers', 'REGISTRIES'
             property 'forge.logging.console.level', 'debug'
             args '--mod', mod_id, '--all', '--output', file('src/generated/resources/'), '--existing', file('src/main/resources/')
@@ -94,6 +103,7 @@ dependencies {
     implementation("io.github.llamalad7:mixinextras-forge:${mixin_extras_version}")
     implementation fg.deobf("curse.maven:createbigcannons-646668:${cbc_file_id}")
     implementation fg.deobf("com.rbasamoyai:ritchiesprojectilelib:${rpl_version}+mc.${minecraft_version}-forge") { transitive = false }
+
 }
 
 tasks.named('processResources', ProcessResources).configure {
@@ -119,4 +129,12 @@ tasks.named('processResources', ProcessResources).configure {
 
 tasks.withType(JavaCompile).configureEach {
     options.encoding = 'UTF-8'
+}
+
+jar {
+    manifest {
+        attributes([
+            'MixinConfigs': 'cbc_firepower_components.mixins.json'
+        ])
+    }
 }

@@ -1,12 +1,24 @@
 {
   "required": true,
+  "minVersion": "0.8.5",
   "package": "com.cbcfirepowercomponents.mixin",
+  "plugin": "com.cbcfirepowercomponents.mixin.OptionalCompatMixinPlugin",
   "compatibilityLevel": "JAVA_17",
   "mixins": [
     "AutocannonAmmoContainerItemContainerAccessor",
     "AutocannonAmmoContainerWrapperAccessor",
+    "CannonMountLimiterMixin",
+    "CannonMountPointAmmoCompatMixin",
+    "ControlPitchContraptionCompatMixin",
+    "FixedCannonMountAutomaticFireMixin",
     "LargeAutocannonAmmoBoxContainerWrapperMixin",
-    "LargeAutocannonAmmoBoxMenuSlotMixin"
+    "LargeAutocannonAmmoBoxMenuSlotMixin",
+    "MountedAutocannonContraptionTwinFireMixin",
+    "radar.AutoPitchControllerAccessor",
+    "radar.AutoPitchControllerBlockEntityMixin",
+    "radar.AutoYawControllerAccessor",
+    "radar.AutoYawControllerBlockEntityMixin",
+    "radar.DataLinkBlockItemMixin"
   ],
   "injectors": {
     "defaultRequire": 1

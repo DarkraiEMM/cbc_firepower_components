@@ -1,0 +1,171 @@
+{
+	"format_version": "1.21.11",
+	"credit": "Original twin-breech geometry for CBC: Firepower Components",
+	"texture_size": [
+		32,
+		32
+	],
+	"textures": {
+		"0": "cbc_firepower_components:block/steel_large_autocannon",
+		"1": "cbc_firepower_components:block/steel_large_autocannon_1",
+		"particle": "cbc_firepower_components:block/steel_large_autocannon"
+	},
+	"elements": [
+		{
+			"from": [
+				-2,
+				0,
+				3
+			],
+			"to": [
+				8,
+				16,
+				13
+			],
+			"rotation": {
+				"angle": 0,
+				"axis": "y",
+				"origin": [
+					-1,
+					0,
+					0
+				]
+			},
+			"faces": {
+				"north": {
+					"uv": [
+						0,
+						0,
+						5,
+						8
+					],
+					"rotation": 180,
+					"texture": "#0"
+				},
+				"east": {
+					"uv": [
+						0,
+						8,
+						5,
+						16
+					],
+					"texture": "#0"
+				},
+				"south": {
+					"uv": [
+						0,
+						8,
+						5,
+						16
+					],
+					"texture": "#0"
+				},
+				"west": {
+					"uv": [
+						0,
+						0,
+						5,
+						8
+					],
+					"texture": "#0"
+				},
+				"up": {
+					"uv": [
+						11,
+						0,
+						16,
+						5
+					],
+					"texture": "#0"
+				},
+				"down": {
+					"uv": [
+						11,
+						0,
+						16,
+						5
+					],
+					"texture": "#1"
+				}
+			}
+		},
+		{
+			"from": [
+				8,
+				0,
+				3
+			],
+			"to": [
+				18,
+				16,
+				13
+			],
+			"rotation": {
+				"angle": 0,
+				"axis": "y",
+				"origin": [
+					8,
+					0,
+					0
+				]
+			},
+			"faces": {
+				"north": {
+					"uv": [
+						5,
+						0,
+						0,
+						8
+					],
+					"rotation": 180,
+					"texture": "#0"
+				},
+				"east": {
+					"uv": [
+						5,
+						0,
+						0,
+						8
+					],
+					"texture": "#0"
+				},
+				"south": {
+					"uv": [
+						5,
+						8,
+						0,
+						16
+					],
+					"texture": "#0"
+				},
+				"west": {
+					"uv": [
+						5,
+						8,
+						0,
+						16
+					],
+					"texture": "#0"
+				},
+				"up": {
+					"uv": [
+						11,
+						0,
+						16,
+						5
+					],
+					"texture": "#0"
+				},
+				"down": {
+					"uv": [
+						11,
+						0,
+						16,
+						5
+					],
+					"texture": "#1"
+				}
+			}
+		}
+	]
+}

@@ -1,0 +1,15 @@
+{
+  "type": "minecraft:block",
+  "pools": [
+    {
+      "bonus_rolls": 0.0,
+      "conditions": [
+        { "condition": "minecraft:survives_explosion" }
+      ],
+      "entries": [
+        { "type": "minecraft:item", "name": "cbc_firepower_components:steel_thick_large_autocannon_barrel" }
+      ],
+      "rolls": 1.0
+    }
+  ]
+}

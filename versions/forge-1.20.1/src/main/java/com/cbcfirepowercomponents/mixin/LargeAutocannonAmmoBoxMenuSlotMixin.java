@@ -29,7 +29,9 @@ public abstract class LargeAutocannonAmmoBoxMenuSlotMixin extends Slot {
 		super(container, slot, x, y);
 	}
 
-	@Inject(method = "mayPlace", at = @At("HEAD"), cancellable = true)
+	// The target is a CBC class, so this mixin cannot be remapped as a whole. These two
+	// overrides, however, inherit vanilla Slot methods and are SRG-named in production.
+	@Inject(method = { "mayPlace", "m_5857_" }, at = @At("HEAD"), cancellable = true)
 	private void cbcfpc$largeAmmoBoxMayPlace(ItemStack stack, CallbackInfoReturnable<Boolean> cir) {
 		if (!LargeAutocannonAmmoBoxCapacity.isLargeCapacityContainer(this.ammoContainer))
 			return;
@@ -37,7 +39,7 @@ public abstract class LargeAutocannonAmmoBoxMenuSlotMixin extends Slot {
 			&& LargeAutocannonAmmoBoxCapacity.canPlace(this.ammoContainer, this.getContainerSlot(), stack));
 	}
 
-	@Inject(method = "getMaxStackSize", at = @At("HEAD"), cancellable = true)
+	@Inject(method = { "getMaxStackSize", "m_5866_" }, at = @At("HEAD"), cancellable = true)
 	private void cbcfpc$largeAmmoBoxMaxStackSize(ItemStack stack, CallbackInfoReturnable<Integer> cir) {
 		if (!LargeAutocannonAmmoBoxCapacity.isLargeCapacityContainer(this.ammoContainer))
 			return;

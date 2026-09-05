@@ -17,14 +17,14 @@
       "tag": "createbigcannons:gunpowder"
     },
     "P": {
-      "tag": "forge:plates/iron"
+      "tag": "c:plates/iron"
     },
     "S": {
       "item": "create:shaft"
     }
   },
   "result": {
-    "item": "cbc_firepower_components:compact_cannon_mount",
+    "id": "cbc_firepower_components:compact_cannon_mount",
     "count": 1
   },
   "show_notification": true
