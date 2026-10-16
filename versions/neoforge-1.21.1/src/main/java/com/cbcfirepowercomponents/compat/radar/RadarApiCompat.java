@@ -33,11 +33,9 @@ import net.neoforged.fml.ModList;
  *
  * <p>Reflection is used only to keep Create Radar an optional dependency while
  * its API is distributed with development builds rather than a Maven artifact.
- * Public mount registration uses Radar's official add-on contract. A narrowly
- * gated compatibility layer also adapts that mount to Radar's CBC firing
- * context because the public mount adapter currently covers aiming but not
- * {@code WeaponFiringControl}. Pre-API Radar releases continue to use the
- * separately gated legacy compatibility mixins.</p>
+ * EA 3 registers both public mount and weapon adapters. Earlier EA builds
+ * retain the CBC context bridge that their mount-only API requires. Pre-API
+ * Radar releases use separately gated legacy compatibility mixins.</p>
  */
 public final class RadarApiCompat {
 	private static final Logger LOGGER = LogUtils.getLogger();
@@ -228,6 +226,8 @@ public final class RadarApiCompat {
 	public static float getOfficialMountInputSpeed(BlockEntity controller) {
 		if (controller == null)
 			return 0.0F;
+		if (!controlsCompactApiMount(controller))
+			return controller instanceof KineticBlockEntity kinetic ? kinetic.getSpeed() : 0.0F;
 		try {
 			double speed = ((Number) controller.getClass().getMethod("getAvailableInputSpeed")
 				.invoke(controller)).doubleValue();
@@ -513,7 +513,10 @@ public final class RadarApiCompat {
 				(proxy, method, args) -> invokeProvider(proxy, method, args, adapterType));
 
 			registryType.getMethod("register", providerType).invoke(null, provider);
-			registerWeaponShotAdapter(loader);
+			if (RadarPublicWeaponCompat.isAvailable())
+				RadarPublicWeaponCompat.register();
+			else
+				registerWeaponShotAdapter(loader);
 			registered = true;
 			LOGGER.info("Registered compact cannon mounts with Create Radar's public mount API");
 		} catch (ClassNotFoundException exception) {
@@ -596,7 +599,9 @@ public final class RadarApiCompat {
 		};
 	}
 
-	private static Object findAdapter(Level level, BlockPos pos, Class<?> adapterType) {
+	static Object findAdapter(Level level, BlockPos pos, Class<?> adapterType) {
+		if (level == null || pos == null || !level.hasChunkAt(pos))
+			return null;
 		if (!(level.getBlockEntity(pos) instanceof CompactCannonMountBlockEntity mount))
 			return null;
 
@@ -606,23 +611,33 @@ public final class RadarApiCompat {
 	}
 
 	private static Object invokeAdapter(Object proxy, Method method, Object[] args, Level level,
-									BlockPos pos, CompactCannonMountBlockEntity mount) {
+									BlockPos pos, CompactCannonMountBlockEntity mount) throws ReflectiveOperationException {
 		return switch (method.getName()) {
 			case "isValid" -> isValid(level, pos, mount);
 			case "isAssembled" -> mount.getContraption() != null && mount.getContraption().isAlive();
 			case "supportsYaw", "supportsPitch" -> true;
-			case "getYaw" -> (double) mount.getCannonYaw();
-			case "getPitch" -> (double) mount.getCannonPitch();
+			case "getYaw" -> RadarWorldAim.moving(mount) ? RadarWorldAim.angles(mount)[0] : (double) mount.getCannonYaw();
+			case "getPitch" -> RadarWorldAim.moving(mount) ? RadarWorldAim.angles(mount)[1] : (double) mount.getCannonPitch();
 			case "setYaw" -> {
 				double yaw = (double) args[0];
-				if (Double.isFinite(yaw) && isValid(level, pos, mount))
-					setRadarYaw(mount, (float) yaw);
+				if (Double.isFinite(yaw) && isValid(level, pos, mount)) {
+					if (RadarWorldAim.moving(mount)) {
+						double[] local = RadarWorldAim.localAngles(mount, yaw, RadarWorldAim.angles(mount)[1]);
+						setRadarYaw(mount, (float) local[0]);
+						setRadarPitch(mount, (float) local[1]);
+					} else setRadarYaw(mount, (float) yaw);
+				}
 				yield null;
 			}
 			case "setPitch" -> {
 				double pitch = (double) args[0];
-				if (Double.isFinite(pitch) && isValid(level, pos, mount))
-					setRadarPitch(mount, (float) pitch);
+				if (Double.isFinite(pitch) && isValid(level, pos, mount)) {
+					if (RadarWorldAim.moving(mount)) {
+						double[] local = RadarWorldAim.localAngles(mount, RadarWorldAim.angles(mount)[0], pitch);
+						setRadarYaw(mount, (float) local[0]);
+						setRadarPitch(mount, (float) local[1]);
+					} else setRadarPitch(mount, (float) pitch);
+				}
 				yield null;
 			}
 			case "getAimOrigin" -> getAimOrigin(level, mount);

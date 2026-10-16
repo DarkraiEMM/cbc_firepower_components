@@ -15,6 +15,10 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
 @Mixin(targets = "com.happysg.radar.block.controller.pitch.AutoPitchControllerBlockEntity", remap = false)
 public abstract class AutoPitchControllerBlockEntityMixin {
+	@Inject(method = "getFiringControl", at = @At("HEAD"), cancellable = true, remap = false)
+	private void cbcfpc$createLegacyFireControl(CallbackInfo ci) {
+		if (com.cbcfirepowercomponents.compat.radar.RadarLegacyWeaponCompat.ensureControl((BlockEntity) (Object) this)) ci.cancel();
+	}
 	@Inject(
 		method = "tick",
 		at = @At(
@@ -25,6 +29,7 @@ public abstract class AutoPitchControllerBlockEntityMixin {
 		remap = false
 	)
 	private void cbcfpc$tickCompactMount(CallbackInfo ci) {
+		com.cbcfirepowercomponents.compat.radar.RadarLegacyWeaponCompat.ensureControl((BlockEntity) (Object) this);
 		if (RadarCompactMountCompat.tickPitch((BlockEntity) (Object) this))
 			ci.cancel();
 	}
@@ -37,6 +42,10 @@ public abstract class AutoPitchControllerBlockEntityMixin {
 
 	@Inject(method = "setAndAcquireTrack", at = @At("HEAD"), cancellable = true, remap = false)
 	private void cbcfpc$setCompactTrackTarget(@Coerce Object track, @Coerce Object config, CallbackInfo ci) {
+		if (com.cbcfirepowercomponents.compat.radar.RadarLegacyWeaponCompat.setTrack((BlockEntity) (Object) this, track, config)) {
+			ci.cancel();
+			return;
+		}
 		if (RadarCompactMountCompat.setPitchTrackTarget((BlockEntity) (Object) this, track))
 			ci.cancel();
 	}

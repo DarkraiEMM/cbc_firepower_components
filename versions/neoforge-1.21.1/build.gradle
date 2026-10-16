@@ -56,6 +56,7 @@ neoForge {
             systemProperty 'neoforge.enabledGameTestNamespaces', mod_id
             if (providers.gradleProperty('radar_self_test').isPresent()) {
                 systemProperty 'cbcfpc.radarSelfTest', 'true'
+                systemProperty 'cbcfpc.radarTestVariant', providers.gradleProperty('radar_test_variant').getOrElse('standard')
             }
         }
 

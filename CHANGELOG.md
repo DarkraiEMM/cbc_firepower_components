@@ -1,5 +1,13 @@
 # Changelog
 
+## 0.4.3 (NeoForge 1.21.1)
+
+- Adopted Radar 5.0 EA 3.1.3 public weapon and ballistic-shot APIs alongside its public mount API.
+- Corrected world/local aiming on moving, tilted Sable ships and respected CBC's projectile velocity-inheritance setting.
+- Added real loaded-ammunition profiles and disabled firing readiness for empty or unsupported ammunition.
+- Completed the isolated Radar 0.4.9.4 automatic-fire bridge and cleared stale output on empty ammunition, invalid targets, controller removal, and network unlink.
+- Expanded opt-in dedicated-server tests to moving ships, all three compact mount blocks, CBC artillery, and single/twin large autocannons.
+
 ## 0.4.2
 
 - Reissued the NeoForge 1.21.1 release under the intended 0.4.2 version number.

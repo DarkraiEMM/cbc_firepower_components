@@ -23,7 +23,7 @@ import rbasamoyai.createbigcannons.cannon_control.contraption.MountedAutocannonC
 import rbasamoyai.createbigcannons.cannon_control.contraption.PitchOrientedContraptionEntity;
 
 @Mixin(MountedAutocannonContraption.class)
-public abstract class MountedAutocannonContraptionTwinFireMixin {
+public abstract class MountedAutocannonContraptionTwinFireMixin implements com.cbcfirepowercomponents.content.large_autocannon.AutocannonBarrelOffset {
 	@Unique
 	private static final String CBCFPC_NEXT_RIGHT_TAG = "CBCFPCNextTwinBarrelRight";
 	@Unique
@@ -149,7 +149,8 @@ public abstract class MountedAutocannonContraptionTwinFireMixin {
 	}
 
 	@Unique
-	private Vec3 cbcfpc$offsetForCurrentTwinBarrel(Vec3 localPosition) {
+	@Override
+	public Vec3 cbcfpc$offsetForCurrentTwinBarrel(Vec3 localPosition) {
 		MountedAutocannonContraption contraption = (MountedAutocannonContraption) (Object) this;
 		if (!cbcfpc$isTwinLargeAutocannon(contraption))
 			return localPosition;

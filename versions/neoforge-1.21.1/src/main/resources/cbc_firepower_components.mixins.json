@@ -19,12 +19,14 @@
     "radar.AutoYawControllerAccessor",
     "radar.AutoYawControllerBlockEntityMixin",
     "radar.DataLinkBlockItemMixin",
+    "radar.FireControllerBlockEntityMixin",
     "radar.api.CannonMountContextMixin",
     "radar.api.AutoPitchControllerBlockEntityMixin",
     "radar.api.ApiMountPitchSpeedMixin",
     "radar.api.ApiMountYawSpeedMixin",
     "radar.api.MountApiPriorityMixin",
-    "radar.api.FireControllerBlockEntityMixin"
+    "radar.api.FireControllerBlockEntityMixin",
+    "radar.api.WeaponNetworkRuntimeMixin"
   ],
   "injectors": {
     "defaultRequire": 1
