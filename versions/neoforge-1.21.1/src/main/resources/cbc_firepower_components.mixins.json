@@ -26,7 +26,9 @@
     "radar.api.ApiMountYawSpeedMixin",
     "radar.api.MountApiPriorityMixin",
     "radar.api.FireControllerBlockEntityMixin",
-    "radar.api.WeaponNetworkRuntimeMixin"
+    "radar.api.WeaponNetworkRuntimeMixin",
+    "radar.api.WeaponLiveTrackMixin",
+    "radar.api.WeaponNetworkLifecycleMixin"
   ],
   "injectors": {
     "defaultRequire": 1

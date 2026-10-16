@@ -47,6 +47,9 @@ public class OptionalCompatMixinPlugin implements IMixinConfigPlugin {
 			"com/happysg/radar/api/weapon/RadarWeaponRegistry.class"));
 		if (weaponApi)
 			supported &= hasMethods("com.happysg.radar.block.behavior.networks.WeaponNetworkRuntime", "addDirectMount")
+				&& hasMethods("com.happysg.radar.block.behavior.networks.WeaponFiringControl", "tickGenericWeapon", "stopWeaponOutput")
+				&& hasMethods("com.happysg.radar.api.network.RadarNetworkApi", "isLinked", "getSelectedContact")
+				&& hasMethods("com.happysg.radar.block.radar.track.RadarTrack", "copy", "getScannedTime", "setPosition")
 				&& hasMethods("com.happysg.radar.api.weapon.RadarWeaponAdapter", "getWeaponIdentity", "setFiring", "createContext")
 				&& hasMethods("com.happysg.radar.api.weapon.WeaponShotProfile", "ballistic", "disabled");
 		radarLayer = supported ? (api ? (weaponApi ? RadarLayer.WEAPON_API : RadarLayer.API) : RadarLayer.LEGACY) : RadarLayer.UNSUPPORTED;
@@ -91,8 +94,11 @@ public class OptionalCompatMixinPlugin implements IMixinConfigPlugin {
 				return apiMixin && (mixinClassName.endsWith("ApiMountPitchSpeedMixin")
 					|| mixinClassName.endsWith("ApiMountYawSpeedMixin")
 					|| mixinClassName.endsWith("WeaponNetworkRuntimeMixin")
+					|| mixinClassName.endsWith("WeaponLiveTrackMixin")
+					|| mixinClassName.endsWith("WeaponNetworkLifecycleMixin")
 					|| mixinClassName.endsWith("MountApiPriorityMixin"));
-			if (mixinClassName.endsWith("WeaponNetworkRuntimeMixin")) return false;
+			if (mixinClassName.endsWith("WeaponNetworkRuntimeMixin") || mixinClassName.endsWith("WeaponLiveTrackMixin")
+				|| mixinClassName.endsWith("WeaponNetworkLifecycleMixin")) return false;
 			return radarLayer() == (apiMixin ? RadarLayer.API : RadarLayer.LEGACY);
 		}
 		if (mixinClassName.startsWith("com.cbcfirepowercomponents.mixin.vestalihy."))

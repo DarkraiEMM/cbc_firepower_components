@@ -316,7 +316,8 @@ public final class RadarCompatSelfTest {
 		controlType.getMethod("stopWeaponOutput").invoke(firingControl);
 		if (mount.getBlockState().getValue(CompactCannonMountBlock.FIRE_POWERED))
 			throw new IllegalStateException("Radar stop did not stop cannon");
-		testTracking(level, mount, controller, firingControl);
+		if (VARIANT.startsWith("scan-impact")) RadarScanImpactSelfTest.run(level, mount, controller);
+		else testTracking(level, mount, controller, firingControl);
 		LogUtils.getLogger().info("CBCFPC_PUBLIC_WEAPON_TEST PASS registry=true emptyNotReady=true loadedBallistics=true firingSignal=true radarStop=true");
 	}
 

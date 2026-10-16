@@ -1,5 +1,12 @@
 # Changelog
 
+## 0.4.4 (NeoForge 1.21.1)
+
+- Refresh Radar EA 3 public-weapon tracking from the network's selected contact instead of retaining the initial acquisition snapshot.
+- Compensate for recent scan age using the reported target velocity, without reading hidden entity positions.
+- Clear cached automatic fire when a previously linked compact mount loses its data link.
+- Add native radar scanning, data-link item interactions, filter exclusion, moving-target projectile impacts, and unlink-stop integration coverage.
+
 ## 0.4.3 (NeoForge 1.21.1)
 
 - Adopted Radar 5.0 EA 3.1.3 public weapon and ballistic-shot APIs alongside its public mount API.

@@ -1,6 +1,59 @@
 # Radar EA 3.1.3 compatibility validation
 
-Date: 2026-10-16. Release line: NeoForge 1.21.1 / CBC Firepower Components 0.4.3.
+Date: 2026-10-16. Release line: NeoForge 1.21.1 / CBC Firepower Components 0.4.4.
+
+## 0.4.4 native scan-to-impact validation
+
+The new `scan-impact` variants place a native directional radar and network filterer.
+A NeoForge fake player uses the actual data-link item on the filterer and then the
+radar/pitch endpoint; both links must be placed successfully. Real filter items are
+inserted into the filterer's inventory. For the first 30 ticks animals are excluded:
+the radar must detect the pig while selection and firing remain inactive. Enabling
+the animal filter must then result in automatic selection and actual CBC projectile
+collision damage. No track is fabricated, no target is assigned directly to the
+weapon, and the test never calls a damage method on the target.
+
+| Target scenario | Result | Evidence |
+| --- | --- | --- |
+| Lateral motion, +0.12 blocks/tick, initial forward separation 45 blocks | 2 projectiles spawned before lethal impact; filter exclusion and unlink-stop passed | `radar-044-final-scan-impact.log` |
+| Faster lateral motion, +0.4 blocks/tick, initial forward separation 45 blocks | 3 projectiles spawned before lethal impact; filter exclusion and unlink-stop passed | `radar-044-final-scan-impact-fast.log` |
+| Reverse lateral motion, -0.4 blocks/tick, initial forward separation 90 blocks | 4 projectiles spawned before lethal impact; filter exclusion and unlink-stop passed | `radar-044-unlink-recreated.log` |
+
+Shot counts count spawned projectiles before the first observed hit; they are not a
+statistical accuracy measurement. The pig follows controlled constant-velocity
+motion with AI/gravity disabled. Real scanning/filterer/controller/coordinator,
+contraption entity, and projectile ticks are driven by the server harness; kinetic
+input is supplied by the fixture. The tests exercise server-side item interactions,
+not mouse interaction with the client UI. They do not establish hits on moving
+Sable target hulls, evasive targets, or every ammunition/range combination.
+
+Two release defects were reproduced before fixing them:
+
+- `radar-scan-impact-native-coordinator.log`: the selected contact moved but the
+  generic weapon retained its initial position, so projectiles missed. The fix
+  refreshes only our compact weapon's active snapshot from the public network API.
+  It projects the reported position by up to 10 ticks of recent sample age before
+  Radar adds projectile flight-time lead. Shared network contacts are not mutated.
+- `radar-044-unlink-diagnostic.log`: after removal, the endpoint was unlinked and
+  the filterer selection was null, but firing remained powered. The controller can
+  recreate firing control from stale state after removal. The fix remembers network
+  ownership with weak references and clears detached output from controller ticks,
+  including recreated controls. Explicit binocular control releases that ownership.
+
+The two new EA 3-only injections target `WeaponFiringControl.tickGenericWeapon()V`
+(HEAD) and `AutoPitchControllerBlockEntity.tick()V` (RETURN). Public APIs provide the
+selected contact and weapon output, but do not expose a callback for refreshing the
+private generic active-track snapshot or cleaning a detached coordinator entry.
+Version-family gating excludes both injections from Radar 4.9, EA 1.2.2 and absent
+Radar. Initially standalone controls and foreign weapons are unaffected.
+
+Final 0.4.4 regressions also passed: moving Sable mount (`radar-044-final-moving.log`),
+Radar 4.9 actual automatic fire and stop cases (`radar-044-final-legacy-fire.log`),
+EA 1.2.2 startup/aiming (`radar-044-final-standard122.log`), and no-Radar startup plus
+the NeoForge build (`radar-044-build-absent.log`). The final JAR is 618,619 bytes;
+SHA-256: `2ba7180eec96921de62eeb0b1df558db8bd5301e7e42f35b632cebbb2dbf9d57`.
+
+## Historical 0.4.3 validation
 
 ## Environment
 
@@ -38,7 +91,8 @@ then apply controlled translation/rotation and nonzero linear/angular velocity.
 
 These are dedicated-server integration tests, not a claim that every modpack,
 sensor scan, UI interaction, multiplayer latency case, or projectile impact has
-been tested. The EA 1.2.2 regression covers startup/aiming, not its older moving-ship
+been tested. Native scanning and selected moving-entity impacts were added in
+0.4.4 as described above. The EA 1.2.2 regression covers startup/aiming, not its older moving-ship
 automatic-fire limitation. The moving-ship scenario applies to EA 3.1.3; it does
 not establish moving-ship support for Radar 4.9.
 
